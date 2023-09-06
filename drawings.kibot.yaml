@@ -1,0 +1,37 @@
+kiplot:
+  version: 1
+
+preflight:
+  ignore_unconnected: true
+
+outputs:
+  - name: 'print_diff'
+    dir: .
+    type: diff 
+
+  - name: 'drawt'
+    comment: "Drawings to compare the original top side against"
+    type: render_3d
+    dir: drawings
+    options:
+      output: front-drawn.jpg
+      auto_crop: true
+      zoom: 7
+      silk: "#d0d595"
+
+  - name: 'drawb'
+    comment: "Drawings to compare the original back side against"
+    type: pcbdraw
+    dir: drawings
+    options:
+      bottom: true
+      mirror: true
+      format: jpg
+      output: back-drawn.jpg
+      show_components: all
+      style:
+        clad: "#3e453e"
+        board: "#101f22"
+        copper: "#15564e"
+        pads: "#787679"
+        silk: "#d3d099"
