@@ -54,10 +54,6 @@ jobs:
         name: Drawings
         path: .
 
-    - name: Scale down 3D render
-      run: |
-        convert ./front-drawn.jpg -resize 3664x3073 ./front-drawn.jpg
-
     - name: Compare ours against a photo
       run: | 
         composite ./front-drawn.jpg ./photo/front.jpg -compose difference  ./front-difference.jpg || true
