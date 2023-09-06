@@ -1830,7 +1830,7 @@
     (property "Value" "Conn_01x06_Socket" (at 149.86 41.91 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Connector_Molex:Molex_SPOX_5268-06A_1x06_P2.50mm_Horizontal" (at 148.59 39.37 0)
+    (property "Footprint" "Connector_Molex:Molex_Nano-Fit_105313-xx06_1x06_P2.50mm_Horizontal" (at 148.59 39.37 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 148.59 39.37 0)
