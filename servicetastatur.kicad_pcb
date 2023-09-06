@@ -757,7 +757,7 @@
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp 43406609-7f29-4332-b7e5-7efc04cec22b))
   (gr_line (start 85 130) (end 85 142)
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp 5bcb8250-0139-4ebe-8e69-b756fcc9b527))
-  (gr_line (start 76 84) (end 76 133)
+  (gr_line (start 76 84) (end 76 130)
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp 72543c32-2bbb-451f-88d7-5e60ebf471b8))
   (gr_line (start 76 130) (end 85 130)
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp 730f8f58-e67d-4a74-b769-674502c0889e))
