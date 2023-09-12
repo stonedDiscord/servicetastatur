@@ -5,10 +5,6 @@ preflight:
   ignore_unconnected: true
 
 outputs:
-  - name: 'print_diff'
-    dir: .
-    type: diff 
-
   - name: 'drawt'
     comment: "Drawings to compare the original top side against"
     type: render_3d
