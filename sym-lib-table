@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "MCU_Atmel")(type "KiCad")(uri "${KIPRJMOD}/MCU_Atmel.kicad_sym")(options "")(descr ""))
+)
