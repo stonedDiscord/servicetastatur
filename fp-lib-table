@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "ConnPad")(type "KiCad")(uri "${KIPRJMOD}/ConnPad.pretty")(options "")(descr ""))
+)
