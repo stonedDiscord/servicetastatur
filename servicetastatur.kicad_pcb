@@ -198,7 +198,7 @@
 				)
 			)
 		)
-		(property "Value" "1 kΩ ±1%"
+		(property "Value" "1 kΩ"
 			(at 5.08 0 90)
 			(layer "F.SilkS")
 			(uuid "c7b3c517-77dc-417a-8e3c-27cb290f7186")
@@ -1305,13 +1305,14 @@
 			)
 		)
 		(property "Value" "MC34063AP"
-			(at 3.8 3.8 180)
+			(at 4.696 3.8 180)
 			(layer "F.SilkS")
 			(uuid "1f5075b0-88d6-4b3b-bd63-7b2231f0a779")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 1)
+					(thickness 0.2)
+					(bold yes)
 				)
 			)
 		)
@@ -1508,13 +1509,13 @@
 			(uuid "3e046b04-9db7-4b5d-b99c-6e89f150d436")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 3.81 90)
+			(at 3.81 3.81 180)
 			(layer "B.SilkS")
 			(uuid "ca4a9dd9-30da-4777-bf48-c15f2739ed03")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -1636,7 +1637,7 @@
 				)
 			)
 		)
-		(property "Value" "3.3 kΩ ±5%"
+		(property "Value" "3.3 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "cd4e3647-4e2d-490f-aace-0050d8460bc8")
@@ -1909,7 +1910,7 @@
 				)
 			)
 		)
-		(property "Value" "1 Ω ±5%"
+		(property "Value" "1 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "6163ec1c-c9f2-4c19-afe2-63e77940a340")
@@ -2183,14 +2184,14 @@
 			)
 		)
 		(property "Value" "Automat"
-			(at 2.6 0 90)
+			(at 4.669 0 90)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "0a26e4e9-08e8-4c97-b080-49bb18fdf828")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 			)
 		)
@@ -2321,7 +2322,7 @@
 		(descr "CP, Radial_Tantal series, Radial, pin pitch=2.50mm, , diameter=4.5mm, Tantal Electrolytic Capacitor, http://cdn-reichelt.de/documents/datenblatt/B300/TANTAL-TB-Serie%23.pdf")
 		(tags "CP Radial_Tantal series Radial pin pitch 2.50mm  diameter 4.5mm Tantal Electrolytic Capacitor")
 		(property "Reference" "C8"
-			(at -2 1.2 0)
+			(at -2 0.75 0)
 			(layer "F.SilkS")
 			(uuid "e13e0636-cf7a-407f-abc1-771b99aec172")
 			(effects
@@ -2518,13 +2519,13 @@
 			)
 		)
 		(property "Value" "Tasten"
-			(at 9.675 6.1 180)
+			(at 6.01 6.1 180)
 			(layer "F.SilkS")
 			(uuid "a1e82d55-8695-43aa-91bd-1cc3f8b5462c")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 			)
 		)
@@ -3106,8 +3107,8 @@
 			(uuid "fb4cb363-a542-4c18-8e87-952ce1978e9c")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -3307,13 +3308,13 @@
 			(uuid "c0edbc71-fd51-4b3b-9050-4353852e93a2")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 8.89 90)
+			(at 3.81 8.89 180)
 			(layer "B.SilkS")
 			(uuid "16eade64-a1a0-498d-9d8a-7e2028236fd9")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -3529,8 +3530,9 @@
 			(uuid "d8e85789-0d14-4fe5-b55f-b960ddeed8cb")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 1.2 2)
+					(thickness 0.2)
+					(bold yes)
 				)
 			)
 		)
@@ -3727,13 +3729,13 @@
 			(uuid "4d679265-c51b-41a4-ab3f-e790f223238d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 7.65 0 90)
+			(at 7.65 -0.543 180)
 			(layer "B.SilkS")
 			(uuid "73f8e2c4-93c7-422e-9a8a-8c55aa42967e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -4295,7 +4297,7 @@
 				)
 			)
 		)
-		(property "Value" "100 kΩ ±5%"
+		(property "Value" "100 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "977fcf6e-8e0b-47ef-a3ab-bf33853551ee")
@@ -4571,14 +4573,14 @@
 				)
 			)
 		)
-		(property "Value" "220 Ω ±5%"
-			(at 7.62 0 0)
+		(property "Value" "220 Ω"
+			(at 8.475 0 0)
 			(layer "F.SilkS")
 			(uuid "57fc0962-10c0-437d-8706-560295bbe803")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -4789,8 +4791,8 @@
 			(uuid "9f753e69-1505-4f58-88f3-97441fe79b8d")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 				(justify mirror)
 			)
@@ -5039,8 +5041,8 @@
 			(uuid "e2b5beb5-a623-4b9a-b641-bfeb8184574b")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -5237,13 +5239,14 @@
 			(uuid "462428f8-04fc-4b7d-b4a8-241f9188dc23")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 8.89 90)
+			(at 3.81 8.89 0)
+			(unlocked yes)
 			(layer "B.SilkS")
 			(uuid "c0f2d57a-b5b9-413a-816d-5667a49b5941")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -5454,13 +5457,13 @@
 			)
 		)
 		(property "Value" "LCD"
-			(at 0.8 17.875 90)
+			(at -3.002 7.385 180)
 			(layer "F.SilkS")
 			(uuid "099fb52a-d8bb-45a4-9cab-63e5bf9c47ea")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -5865,7 +5868,7 @@
 				)
 			)
 		)
-		(property "Value" "D"
+		(property "Value" "1N5819"
 			(at 7.62 2.92 -90)
 			(layer "F.Fab")
 			(uuid "eb45a457-e2f9-4944-b003-5be342a67301")
@@ -6252,13 +6255,13 @@
 			)
 		)
 		(property "Value" "74LS573"
-			(at 5.095 5.65 180)
+			(at 5.056 6.375 180)
 			(layer "F.SilkS")
 			(uuid "8a0352f8-8be9-4789-b02c-408e5c3e56f6")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -6458,13 +6461,13 @@
 			(uuid "c94cfe3c-97d5-44a9-aeae-0ec5091c6efc")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.845 0.025 90)
+			(at 3.845 10.439 180)
 			(layer "B.SilkS")
 			(uuid "d2cdffae-5c0d-467a-8cad-7acf796af4b1")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -6718,7 +6721,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7 kΩ ±1%"
+		(property "Value" "4.7 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "491ae0f1-c0ab-4c20-843a-64eb7f6a612d")
@@ -7270,7 +7273,7 @@
 				)
 			)
 		)
-		(property "Value" "1 kΩ ±1%"
+		(property "Value" "1 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "a8b813b3-b503-4af2-88c9-a0b8434fe6d6")
@@ -8899,7 +8902,7 @@
 				)
 			)
 		)
-		(property "Value" "270 Ω ±5%"
+		(property "Value" "270 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "027f11e7-b1a8-4d72-a6f2-00f83566c176")
@@ -9172,7 +9175,7 @@
 				)
 			)
 		)
-		(property "Value" "47 kΩ ±5%"
+		(property "Value" "47 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "8c32a410-326f-459d-956a-2a3d139dd2ea")
@@ -9445,7 +9448,7 @@
 				)
 			)
 		)
-		(property "Value" "1 Ω ±5%"
+		(property "Value" "1 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "7b20390a-5ab0-4e45-b9db-18e840a999e7")
@@ -9718,7 +9721,7 @@
 				)
 			)
 		)
-		(property "Value" "1 kΩ ±1%"
+		(property "Value" "1 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "12ab79dd-96d6-4d39-95a7-3ad40111d064")
@@ -10267,7 +10270,7 @@
 				)
 			)
 		)
-		(property "Value" "270 Ω ±5%"
+		(property "Value" "270 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "cab236c2-36e5-4895-b503-0fa1c13ce584")
@@ -10540,7 +10543,7 @@
 				)
 			)
 		)
-		(property "Value" "1 kΩ ±1%"
+		(property "Value" "1 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "4c3d231d-076c-4b02-8ece-18e8b29c7de9")
@@ -12176,8 +12179,8 @@
 			(uuid "71083f48-462e-4522-8f6f-7b58440f55e0")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -12377,13 +12380,13 @@
 			(uuid "9e25f266-a185-492b-9183-de07720b7b2b")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 8.89 90)
+			(at 3.81 8.89 180)
 			(layer "B.SilkS")
 			(uuid "e114dd45-113a-4eab-870b-df268497d0e0")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -12599,8 +12602,8 @@
 			(uuid "5c86ded7-e29d-49f2-bcc1-715381923ef5")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -12800,13 +12803,13 @@
 			(uuid "9917ea94-a109-4f9c-a94c-af73564786aa")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 8.89 90)
+			(at 3.81 8.89 180)
 			(layer "B.SilkS")
 			(uuid "d92934c4-0ca3-4a1f-90c0-e2521308256e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -13567,8 +13570,8 @@
 			(uuid "049162ed-84d0-494f-8edc-25739239c4a0")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 1.5)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -13765,14 +13768,15 @@
 			(uuid "743567f1-ae7f-47e3-b6f1-4f65b4ce0d93")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 3.81 90)
-			(layer "F.Fab")
+			(at 3.81 3.81 180)
+			(layer "B.SilkS")
 			(uuid "d4b6c9c1-b310-4bf8-a1ca-52b3578b0f45")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
+				(justify mirror)
 			)
 		)
 		(pad "1" thru_hole rect
@@ -13892,7 +13896,7 @@
 				)
 			)
 		)
-		(property "Value" "10 kΩ ±5%"
+		(property "Value" "10 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "fbd34816-d654-4d91-9bbd-dbd898ed5145")
@@ -14351,7 +14355,7 @@
 				)
 			)
 		)
-		(property "Value" "270 Ω ±5%"
+		(property "Value" "270 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "8a83eb53-fa08-4445-b18b-8646c8f06106")
@@ -15005,7 +15009,7 @@
 				)
 			)
 		)
-		(property "Value" "1 kΩ ±1%"
+		(property "Value" "1 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "283cd3f7-9261-41f1-b68b-a1da5f5d336e")
@@ -15456,7 +15460,7 @@
 		(descr "Resistor, Axial_DIN0207 series, Axial, Horizontal, pin pitch=10.16mm, 0.25W = 1/4W, length*diameter=6.3*2.5mm^2, http://cdn-reichelt.de/documents/datenblatt/B400/1_4W%23YAG.pdf")
 		(tags "Resistor Axial_DIN0207 series Axial Horizontal pin pitch 10.16mm 0.25W = 1/4W length 6.3mm diameter 2.5mm")
 		(property "Reference" "R12"
-			(at 10.875 1.35 0)
+			(at 10.875 1.25 0)
 			(layer "F.SilkS")
 			(uuid "63acec85-69a2-4055-98a4-fa47e35eee71")
 			(effects
@@ -15466,7 +15470,7 @@
 				)
 			)
 		)
-		(property "Value" "22 Ω ±5%"
+		(property "Value" "22 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "d7dc7f6f-829c-405b-89b7-7fb3e2cdf267")
@@ -15925,7 +15929,7 @@
 				)
 			)
 		)
-		(property "Value" "1 Ω ±5%"
+		(property "Value" "1 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "e084e8c1-e55b-43e7-8048-ba474751043a")
@@ -16198,7 +16202,7 @@
 				)
 			)
 		)
-		(property "Value" "47 Ω ±1%"
+		(property "Value" "47 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "c915107d-f49e-4b84-87da-2f9f521e094d")
@@ -16471,7 +16475,7 @@
 				)
 			)
 		)
-		(property "Value" "270 Ω ±5%"
+		(property "Value" "270 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "cf30d5fb-8724-4f7f-a0e6-2ad840328cf5")
@@ -17131,13 +17135,13 @@
 			)
 		)
 		(property "Value" "74HC00"
-			(at 5.65 6.05 180)
+			(at 2.676 7.359 180)
 			(layer "F.SilkS")
 			(uuid "ff85c720-d295-4272-800c-28daf4ddba81")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -17334,13 +17338,13 @@
 			(uuid "a990410e-186e-4323-b299-028f496e04ef")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 7.62 90)
+			(at 3.81 7.62 180)
 			(layer "B.SilkS")
 			(uuid "478e291f-6412-47f3-9d1f-376dc284a325")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -17789,9 +17793,9 @@
 				)
 			)
 		)
-		(property "Value" "D"
-			(at 7.62 2.92 0)
-			(layer "F.Fab")
+		(property "Value" "1N5819"
+			(at 8.259 0.136 0)
+			(layer "F.SilkS")
 			(uuid "97211fdb-dbc0-4c73-ac5f-8041f5fc9934")
 			(effects
 				(font
@@ -18091,8 +18095,8 @@
 			(uuid "4a229581-6667-4269-bc41-232589a6fd56")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 				(justify mirror)
 			)
@@ -18359,7 +18363,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7 kΩ ±1%"
+		(property "Value" "4.7 kΩ"
 			(at 5.225 0.075 0)
 			(layer "F.SilkS")
 			(uuid "bf732d69-6ec4-40ef-8665-bc13fc0379c0")
@@ -20005,7 +20009,7 @@
 				)
 			)
 		)
-		(property "Value" "100 Ω ±1%"
+		(property "Value" "100 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "7c0a679e-246f-4945-95bb-3fff4bdde6cc")
@@ -20551,7 +20555,7 @@
 				)
 			)
 		)
-		(property "Value" "1 kΩ ±1%"
+		(property "Value" "1 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "b7d03043-bb0d-4820-aa79-669e0d5ed9b3")
@@ -20825,13 +20829,13 @@
 			)
 		)
 		(property "Value" "80C31"
-			(at -5.7 6.625 180)
+			(at -5.126 6.039 180)
 			(layer "F.SilkS")
 			(uuid "2de31374-41e8-46a8-b20d-0c7c15104f5f")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 2)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -21086,14 +21090,15 @@
 			(uuid "3f079d21-12ea-4fd4-a29c-a6abb511fb2d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at -1.27 6.35 90)
+			(at 1.986 6.35 180)
 			(layer "B.SilkS")
 			(uuid "2a36201f-6128-4c9f-9dbf-a256c31ed86f")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
+				(justify mirror)
 			)
 		)
 		(pad "1" thru_hole rect
@@ -21609,7 +21614,7 @@
 				)
 			)
 		)
-		(property "Value" "3.3 kΩ ±5%"
+		(property "Value" "3.3 kΩ"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "89e53524-2ab4-4ff5-bdd8-5f7d0268e0e6")
@@ -23179,8 +23184,8 @@
 			(uuid "cf180616-d0ca-4e6a-bbf6-9edfa3d4a50e")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 2 1.5)
+					(thickness 0.2)
 				)
 			)
 		)
@@ -23377,13 +23382,13 @@
 			(uuid "d07e2f99-d6e8-47ce-bb53-868b9f0c3526")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 3.81 90)
+			(at 3.81 3.81 180)
 			(layer "B.SilkS")
 			(uuid "c8eade3a-6522-4e4f-937f-f0bbab9d45a9")
 			(effects
 				(font
-					(size 1 1)
-					(thickness 0.15)
+					(size 3 3)
+					(thickness 0.3)
 				)
 				(justify mirror)
 			)
@@ -23783,7 +23788,7 @@
 				)
 			)
 		)
-		(property "Value" "22 Ω ±5%"
+		(property "Value" "22 Ω"
 			(at 5.08 0 0)
 			(layer "F.SilkS")
 			(uuid "e749bb9d-2907-4c2c-b3b9-f56bb57c9be4")
@@ -24644,8 +24649,9 @@
 	)
 	(gr_poly
 		(pts
-			(xy 154.675 89.25) (xy 154.675 79.45) (xy 163.775 79.45) (xy 163.775 41.55) (xy 154.675 41.55) (xy 154.675 31.25)
-			(xy 58.225 31.25) (xy 58.225 41.55) (xy 49.875 41.55) (xy 49.875 79.45) (xy 58.225 79.45) (xy 58.225 89.25)
+			(xy 154.675 89.25) (xy 154.675 80.01) (xy 155.194 79.45) (xy 163.775 79.45) (xy 163.775 41.55) (xy 155.194 41.55)
+			(xy 154.675 41.021) (xy 154.675 31.25) (xy 58.225 31.25) (xy 58.225 41) (xy 57.7088 41.55) (xy 49.875 41.55)
+			(xy 49.875 79.45) (xy 57.7596 79.45) (xy 58.225 79.9084) (xy 58.225 89.25)
 		)
 		(stroke
 			(width 0.1)
