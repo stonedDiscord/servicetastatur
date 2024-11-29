@@ -10,3 +10,6 @@ und wird wahrscheinlich die Tasten mit auf der Platine haben.
 
 Außerdem sollen die ICs durch SMD-Bauteile ersetzt werden soweit es geht,
 um das Nachbauen ~~einfacher~~billiger zu machen mit einer Heizplatte/Reflow-Ofen/PCBA-Service.
+
+Nachbauen und Modifizieren durch Dritte ist erlaubt, die Lizenz gibt es hier auf Deutsch
+https://creativecommons.org/licenses/by-sa/4.0/deed.de
