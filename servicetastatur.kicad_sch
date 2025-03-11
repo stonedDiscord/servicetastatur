@@ -7090,233 +7090,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Power_Supervisor:TL7705A"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at -8.89 8.89 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "TL7705A"
-				(at 10.16 8.89 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify right)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "http://www.ti.com.cn/cn/lit/ds/symlink/tl7705a.pdf"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Supply-Voltage Supervisors, 4.55V, PDIP-8/SOIC-8"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "voltage supervisor"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "TL7705A_0_1"
-				(rectangle
-					(start -10.16 7.62)
-					(end 10.16 -7.62)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "TL7705A_1_1"
-				(pin input line
-					(at -12.7 5.08 0)
-					(length 2.54)
-					(name "SENSE"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -12.7 0 0)
-					(length 2.54)
-					(name "~{RESIN}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -12.7 -5.08 0)
-					(length 2.54)
-					(name "CT"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 10.16 270)
-					(length 2.54)
-					(name "VCC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -10.16 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin open_collector line
-					(at 12.7 5.08 180)
-					(length 2.54)
-					(name "~{RESET}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin open_collector line
-					(at 12.7 0 180)
-					(length 2.54)
-					(name "RESET"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 12.7 -5.08 180)
-					(length 2.54)
-					(name "REF"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Switch:SW_Push"
 			(pin_numbers
 				(hide yes)
@@ -7968,12 +7741,6 @@
 		(uuid "16cc7015-09da-44da-b8bb-64189aa5e732")
 	)
 	(junction
-		(at 100.33 176.53)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1b04accd-52d0-4f26-a11e-d38f7d1be924")
-	)
-	(junction
 		(at 229.87 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8190,12 +7957,6 @@
 		(uuid "77d2b751-69c5-4722-8217-043fd881a08a")
 	)
 	(junction
-		(at 64.77 171.45)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7aaf0cc7-cb6e-4a8c-b24e-656b129ef567")
-	)
-	(junction
 		(at 177.8 63.5)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8364,10 +8125,6 @@
 	(no_connect
 		(at 95.25 82.55)
 		(uuid "170a8877-5d1d-414d-91aa-e7c5f733a583")
-	)
-	(no_connect
-		(at 90.17 171.45)
-		(uuid "20eddc5f-26bb-4746-9422-5444c2ba935a")
 	)
 	(no_connect
 		(at 200.66 60.96)
@@ -8708,16 +8465,6 @@
 			(type default)
 		)
 		(uuid "22db8ced-5fa6-419f-bec6-01d7ee6482d3")
-	)
-	(wire
-		(pts
-			(xy 90.17 176.53) (xy 100.33 176.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "230b9850-dfe5-415e-99c7-7cb86c7afa0a")
 	)
 	(wire
 		(pts
@@ -9341,16 +9088,6 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 171.45) (xy 64.77 176.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7c0d1a50-6b6e-45bb-b0c5-20149b24f8cc")
-	)
-	(wire
-		(pts
 			(xy 229.87 73.66) (xy 245.11 73.66)
 		)
 		(stroke
@@ -9781,16 +9518,6 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 166.37) (xy 64.77 171.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bd349b62-104a-4323-b11f-8343e27b7988")
-	)
-	(wire
-		(pts
 			(xy 275.59 45.72) (xy 288.29 45.72)
 		)
 		(stroke
@@ -10078,16 +9805,6 @@
 			(type default)
 		)
 		(uuid "e4a8ee69-1608-4bbb-a0ef-3aef1b73ed70")
-	)
-	(wire
-		(pts
-			(xy 100.33 176.53) (xy 102.87 176.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7f6eb2e-57f2-457c-be88-53574c5a1877")
 	)
 	(wire
 		(pts
@@ -10901,6 +10618,28 @@
 			)
 		)
 	)
+	(global_label "RESET"
+		(shape input)
+		(at 257.81 92.71 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "6f86dff1-cf01-4a2d-b221-16765b2888d5")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 249.0797 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "A0"
 		(shape input)
 		(at 40.64 123.19 0)
@@ -11178,28 +10917,6 @@
 		(uuid "8775bcd1-6e2b-4b9b-a3d1-9713e8211df6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 100.7147 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "RESET"
-		(shape input)
-		(at 102.87 176.53 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "8b8e9271-7065-46a9-a620-0ecfd5d814b9")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 111.6003 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12325,72 +12042,6 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "#PWR043")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VCC")
-		(at 77.47 166.37 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "15a07d97-dfc5-4bb0-9754-abceb57d4fe1")
-		(property "Reference" "#PWR063"
-			(at 77.47 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VCC"
-			(at 77.47 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 77.47 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 77.47 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 77.47 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "002daaca-a452-40c8-98fa-6beccd7f0c19")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "#PWR063")
 					(unit 1)
 				)
 			)
@@ -15732,76 +15383,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R")
-		(at 100.33 180.34 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "59a1c3c6-ffe5-4d9d-995e-4a8540593c3e")
-		(property "Reference" "R11"
-			(at 102.87 179.0699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "10 kΩ"
-			(at 102.87 181.6099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 102.108 180.34 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 100.33 180.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 100.33 180.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "9c3a2b3b-8e1a-4bb5-b1a4-324d2e3f05aa")
-		)
-		(pin "2"
-			(uuid "fc9b4158-5367-4759-9d5d-cedccaeed5b6")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 359.41 121.92 90)
 		(unit 1)
@@ -16035,76 +15616,6 @@
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "U2")
 					(unit 4)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 64.77 185.42 0)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "618d72e6-24f9-4e19-bce5-e23ef6c65c28")
-		(property "Reference" "C10"
-			(at 60.96 184.1499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "0,1uF"
-			(at 60.96 186.6899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 65.7352 181.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 64.77 185.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 64.77 185.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4fade2b1-f1ae-4ead-b252-007ad1bb5ab8")
-		)
-		(pin "2"
-			(uuid "5ace5469-529f-4cb3-a1ae-117945c41963")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "C10")
-					(unit 1)
 				)
 			)
 		)
@@ -16534,73 +16045,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 100.33 184.15 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "743f5a7e-fb15-4750-8172-29bf839f0e98")
-		(property "Reference" "#PWR023"
-			(at 100.33 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 100.33 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 100.33 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 100.33 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 100.33 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8b2e325e-c538-4dbd-af68-feef68dea477")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "#PWR023")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 229.87 168.91 90)
 		(mirror x)
@@ -16775,6 +16219,73 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "U20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 265.43 92.71 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7b2b9f62-2571-41c0-80d8-0d53a08bad91")
+		(property "Reference" "#PWR071"
+			(at 261.62 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 269.24 92.7099 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 265.43 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 265.43 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 265.43 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "35f3ce3d-cc5d-4abd-9b3d-a50443bf4ef0")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "#PWR071")
 					(unit 1)
 				)
 			)
@@ -17051,93 +16562,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Power_Supervisor:TL7705A")
-		(at 77.47 176.53 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "8c625556-9842-443b-88e7-377f58cfc4fc")
-		(property "Reference" "U17"
-			(at 74.4535 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "TL7705A"
-			(at 74.4535 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Package_SO:SO-8_3.9x4.9mm_P1.27mm"
-			(at 77.47 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com.cn/cn/lit/ds/symlink/tl7705a.pdf"
-			(at 77.47 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Supply-Voltage Supervisors, 4.55V, PDIP-8/SOIC-8"
-			(at 77.47 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "24b9b53c-dc53-424a-8f87-31edcc35f2d5")
-		)
-		(pin "2"
-			(uuid "0d257b65-c7a4-46bc-a5a1-9fd15fe0396b")
-		)
-		(pin "3"
-			(uuid "7d5fd102-8b40-4efe-a686-41c029b1b32f")
-		)
-		(pin "4"
-			(uuid "4e86828c-ab3a-4567-a2ba-764d824aa46d")
-		)
-		(pin "5"
-			(uuid "43f8653b-b40a-4c9a-9e88-086db4f58fdb")
-		)
-		(pin "6"
-			(uuid "4796270f-86a4-4e44-9cb2-2654b500d128")
-		)
-		(pin "7"
-			(uuid "32290861-ad61-4e5b-8b1d-1554c9d2db40")
-		)
-		(pin "8"
-			(uuid "ca2169f8-9790-4ed7-b133-2b2ac9658014")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "U17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 248.92 73.66 270)
 		(unit 1)
@@ -17354,76 +16778,6 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "U15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C")
-		(at 90.17 185.42 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "90d34aa5-23b9-4373-8434-56a6172dc236")
-		(property "Reference" "C6"
-			(at 93.98 184.1499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "0,1uF"
-			(at 93.98 186.6899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 89.2048 181.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 90.17 185.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 90.17 185.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "585bce2f-1cb5-4373-a449-c4a81633f7bf")
-		)
-		(pin "2"
-			(uuid "c0d2e271-2916-44a5-a5b7-e59a2f926ee9")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "C6")
 					(unit 1)
 				)
 			)
@@ -17701,72 +17055,6 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "#PWR032")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VCC")
-		(at 64.77 166.37 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "950bde1d-6132-4b54-ac07-65812e7facf9")
-		(property "Reference" "#PWR071"
-			(at 64.77 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VCC"
-			(at 64.77 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 64.77 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 64.77 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 64.77 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f4a9ccd9-3738-4c48-9b2d-0384ef7e79ca")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "#PWR071")
 					(unit 1)
 				)
 			)
@@ -18723,73 +18011,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 90.17 189.23 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b4122a0a-6504-46f0-aa68-aa0c559e0b66")
-		(property "Reference" "#PWR01"
-			(at 90.17 195.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 90.17 194.31 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 90.17 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 90.17 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 90.17 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "74200b95-51c8-4513-ae77-ee4d6b5bccb0")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 184.15 87.63 0)
 		(mirror x)
@@ -19004,73 +18225,6 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "J3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 77.47 186.69 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ba6768d7-cbdd-451d-bcb9-a227ea9b468f")
-		(property "Reference" "#PWR012"
-			(at 77.47 193.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 77.47 191.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 77.47 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 77.47 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 77.47 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6b0fd7bb-bf6e-4d26-99a0-9389268f1c0a")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -20830,73 +19984,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 64.77 189.23 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e6551097-7b2d-4b0f-ba99-ed9630544eff")
-		(property "Reference" "#PWR09"
-			(at 64.77 195.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 64.77 194.31 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 64.77 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 64.77 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 64.77 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2bfd180e-65fb-4427-853d-6dc96298ea72")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "#PWR09")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:VCC")
 		(at 214.63 30.48 0)
 		(unit 1)
@@ -21290,6 +20377,74 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "R9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 261.62 92.71 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f636c8e1-b914-4e03-bdf0-caddfa17b6a6")
+		(property "Reference" "C19"
+			(at 261.62 85.09 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1uF"
+			(at 261.62 87.63 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 265.43 91.7448 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 261.62 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 261.62 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7eb3df19-0e66-4ef7-b40f-f5665bc322b0")
+		)
+		(pin "2"
+			(uuid "acf9960a-2932-4ad2-a735-b6ac4c0355eb")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "C19")
 					(unit 1)
 				)
 			)
