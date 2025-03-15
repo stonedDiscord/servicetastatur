@@ -6280,6 +6280,113 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Mechanical:MountingHole_Pad_MP"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim yes)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "H"
+				(at 0 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole_Pad_MP"
+				(at 0 4.445 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Mounting Hole with connection as pad named MP"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*Pad*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "MountingHole_Pad_MP_0_1"
+				(circle
+					(center 0 1.27)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "MountingHole_Pad_MP_1_1"
+				(pin input line
+					(at 0 -2.54 90)
+					(length 2.54)
+					(name "MP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Memory_EEPROM:24LC16"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -7771,6 +7878,12 @@
 		(uuid "246ffedd-dca8-4e51-9f75-027d4843e914")
 	)
 	(junction
+		(at 191.77 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "25d86175-ac93-436e-977b-7e7957bb0829")
+	)
+	(junction
 		(at 234.95 168.91)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8111,6 +8224,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f571595a-f163-49db-a2a8-f505e83ac16e")
+	)
+	(junction
+		(at 184.15 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f9d52e61-1798-4a31-995c-ca09ad7af6a0")
 	)
 	(junction
 		(at 171.45 3.81)
@@ -11810,74 +11929,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 243.84 132.08 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0cbd62bb-0627-4d72-8557-6f7618faef01")
-		(property "Reference" "C3"
-			(at 243.84 139.7 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "68pF"
-			(at 243.84 137.16 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 240.03 131.1148 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 243.84 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor"
-			(at 243.84 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "952edbc6-f2a1-402d-81da-9d4f31618556")
-		)
-		(pin "2"
-			(uuid "e51c9ed1-8226-475b-a04d-4c5e9cca7f86")
-		)
-		(instances
-			(project "servicetastatur"
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "C3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "74xx:74HC00")
 		(at 133.35 30.48 0)
 		(unit 2)
@@ -12693,6 +12744,76 @@
 	)
 	(symbol
 		(lib_id "Device:C")
+		(at 191.77 87.63 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "242275da-3ca8-46b9-b98d-0581663762e3")
+		(property "Reference" "C11"
+			(at 195.58 86.3599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "33pF"
+			(at 195.58 88.8999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 190.8048 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 191.77 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 191.77 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6b1f66e4-9012-4a11-8449-27f687bd6821")
+		)
+		(pin "2"
+			(uuid "cf7ede40-b34b-4802-9834-5b5da1ce5e73")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "C11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
 		(at 328.93 76.2 90)
 		(unit 1)
 		(exclude_from_sim no)
@@ -13169,7 +13290,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-16W_5.3x10.2mm_P1.27mm"
+		(property "Footprint" "Package_SO:SOP-16_4.4x10.4mm_P1.27mm"
 			(at 171.45 176.53 0)
 			(effects
 				(font
@@ -13658,10 +13779,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "36eb23f1-ff44-4594-8e3b-fefe3e991618")
 		(property "Reference" "U1"
-			(at 216.7733 31.115 0)
+			(at 209.296 31.242 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13669,7 +13789,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "~"
+		(property "Value" "DIP-40 Socket"
 			(at 216.7733 32.385 0)
 			(effects
 				(font
@@ -14134,7 +14254,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "27C128"
+		(property "Value" "DIP-28 Socket"
 			(at 300.6441 30.48 0)
 			(effects
 				(font
@@ -14538,9 +14658,9 @@
 		(at 187.96 83.82 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "48b39004-ac81-4fb0-bc8f-c9a190d1df88")
 		(property "Reference" "Y1"
@@ -14559,7 +14679,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Crystal:Resonator-2Pin_W7.0mm_H2.5mm"
+		(property "Footprint" "Crystal:Crystal_HC49-U_Vertical"
 			(at 187.96 83.82 0)
 			(effects
 				(font
@@ -14885,7 +15005,7 @@
 				)
 			)
 		)
-		(property "Value" "Fuse"
+		(property "Value" "0,5A"
 			(at 256.54 190.5 90)
 			(effects
 				(font
@@ -14998,6 +15118,72 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "#PWR049")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 378.46 205.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4cfa4a12-2c5c-4702-8f37-d1aae0b7b0b2")
+		(property "Reference" "#PWR09"
+			(at 378.46 212.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 378.46 210.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 378.46 205.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 378.46 205.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 378.46 205.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ae3dbe98-bd74-44fb-98b5-182740677fe2")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -15621,6 +15807,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole_Pad_MP")
+		(at 378.46 187.96 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "60059750-8315-4848-9b3e-87ecf04ceaf1")
+		(property "Reference" "H1"
+			(at 381 185.4199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole_Pad_MP"
+			(at 381 187.9599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad"
+			(at 378.46 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 378.46 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole with connection as pad named MP"
+			(at 378.46 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "MP"
+			(uuid "53f0b4ad-1451-45bc-958c-c60bcf65e678")
+		)
+		(instances
+			(project ""
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 328.93 110.49 270)
 		(unit 1)
@@ -15885,92 +16138,6 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "C2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 243.84 124.46 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6fa805b5-2182-4969-b9ff-d263ae3fcaff")
-		(property "Reference" "D4"
-			(at 243.84 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "D"
-			(at 243.84 128.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_0805_2012Metric"
-			(at 243.84 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 243.84 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Diode"
-			(at 243.84 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 243.84 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 243.84 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "ebfdddef-da92-42c8-9e80-2d45a20f0cc2")
-		)
-		(pin "1"
-			(uuid "187b8fc9-d26b-45c8-8a58-47c36298f1d3")
-		)
-		(instances
-			(project ""
-				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
-					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -16802,7 +16969,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "Kontrast"
+		(property "Value" "10k"
 			(at 53.34 123.1899 0)
 			(effects
 				(font
@@ -16811,7 +16978,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Potentiometer_THT:Potentiometer_ACP_CA9-V10_Vertical_Hole"
+		(property "Footprint" "Potentiometer_THT:Potentiometer_Piher_PT-10-V10_Vertical_Hole"
 			(at 55.88 121.92 0)
 			(effects
 				(font
@@ -16924,6 +17091,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 378.46 190.5 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "92135ae2-894b-4246-9d55-cf09737b8cfe")
+		(property "Reference" "#PWR01"
+			(at 378.46 196.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 378.46 195.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 378.46 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 378.46 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 378.46 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3c8289c2-b6ea-4e0b-bf45-1f32d5b93377")
+		)
+		(instances
+			(project ""
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 250.19 137.16 0)
 		(unit 1)
@@ -16988,6 +17221,76 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 243.84 132.08 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "934f28e8-8820-4846-b766-12604d86df3d")
+		(property "Reference" "C12"
+			(at 242.57 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "33pF"
+			(at 245.11 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 240.03 131.1148 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 243.84 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 243.84 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7de5f966-b706-4ac0-ab9c-1dfeb416cdce")
+		)
+		(pin "2"
+			(uuid "df13e669-0e8f-4c7f-a47c-5bc2cef7f4e0")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "C12")
 					(unit 1)
 				)
 			)
@@ -17257,6 +17560,92 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "SW2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D")
+		(at 243.84 124.46 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "98a05c43-4909-4724-a8ac-d5bcb4968a09")
+		(property "Reference" "D4"
+			(at 243.84 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1N5819"
+			(at 243.84 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 243.84 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 243.84 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Diode"
+			(at 243.84 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "D"
+			(at 243.84 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 243.84 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a503c3af-c7cf-4df2-b0f1-c4d5e30c743f")
+		)
+		(pin "2"
+			(uuid "5417f2d6-9b1a-471b-9f6a-2357b4c2711c")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -18016,9 +18405,9 @@
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "b5cfafa7-cc2c-49d7-a62e-b70accc499d7")
 		(property "Reference" "C9"
 			(at 180.34 86.36 0)
@@ -18153,7 +18542,7 @@
 		(at 255.27 163.83 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
@@ -18909,7 +19298,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "cd4d90d6-1101-46a6-9cd2-07145a7676eb")
 		(property "Reference" "U11"
 			(at 216.7733 27.94 0)
@@ -18920,8 +19308,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "80C31"
-			(at 216.7733 30.48 0)
+		(property "Value" "PLCC-44_THT-Socket"
+			(at 216.916 30.226 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19248,7 +19636,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "Helligkeit"
+		(property "Value" "10k"
 			(at 49.53 107.9499 0)
 			(effects
 				(font
@@ -19257,7 +19645,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Potentiometer_THT:Potentiometer_ACP_CA9-V10_Vertical_Hole"
+		(property "Footprint" "Potentiometer_THT:Potentiometer_Piher_PT-10-V10_Vertical_Hole"
 			(at 52.07 106.68 0)
 			(effects
 				(font
@@ -19520,7 +19908,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "74LS573"
+		(property "Value" "74HC573"
 			(at 265.0841 22.86 0)
 			(effects
 				(font
@@ -19529,7 +19917,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm"
+		(property "Footprint" "Package_SO:TSSOP-20_4.4x6.5mm_P0.65mm"
 			(at 262.89 40.64 0)
 			(effects
 				(font
@@ -19762,6 +20150,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole_Pad_MP")
+		(at 378.46 203.2 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dfc5528c-0c4b-49bd-abb5-4f2deb418434")
+		(property "Reference" "H2"
+			(at 381 200.6599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole_Pad_MP"
+			(at 381 203.1999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad"
+			(at 378.46 203.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 378.46 203.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole with connection as pad named MP"
+			(at 378.46 203.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "MP"
+			(uuid "2da836e4-9bf2-4593-9390-8b3497171b0a")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 240.03 124.46 270)
 		(unit 1)
@@ -19856,7 +20311,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_2010_5025Metric"
+		(property "Footprint" "Diode_SMD:D_SOD-123"
 			(at 241.3 175.26 0)
 			(effects
 				(font
@@ -20112,6 +20567,76 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "R14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 184.15 87.63 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f0690cc7-0570-425a-aa5b-a43d947f44c9")
+		(property "Reference" "C10"
+			(at 180.34 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "33pF"
+			(at 180.34 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 185.1152 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 184.15 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 184.15 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ee244f77-1eae-414d-bfd2-07f016de9662")
+		)
+		(pin "2"
+			(uuid "87c48651-9c35-4e23-9d86-b86943d9fc67")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "C10")
 					(unit 1)
 				)
 			)
