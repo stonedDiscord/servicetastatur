@@ -1,15 +1,12 @@
-An diesem Punkt sollte dies eine 1:1 Kopie der blauen Servicetastatur sein.
-Die Platinen sind da aber noch nicht zusammen gebaut oder getestet.
+# Servicetastatur
 
-Da das Display und auch die Folientastatur aber schwer zu beschaffen sind,
-ist der Zukunftsplan für dieses Repo die 1:1 Kopie mit einem Tag zu versehen
-und danach das Layout nochmal komplett neu zu machen nachdem ich bestätigen kann das die Kopie so stimmt und funktioniert.
+Ein Nachbau der Servicetastatur für Merkur Geräte ab Profitech 3000.
 
-Die nächste Platine wird einen simplen Pin Header haben um das Ersatz-Display einfach aufzulöten
-und wird wahrscheinlich die Tasten mit auf der Platine haben.
+Man kann diese bei Auftragsfertigern bauen lassen,
+EPROM, CPU, Display und Gehäuse müssen seperat beschafft werden.
 
-Außerdem sollen die ICs durch SMD-Bauteile ersetzt werden soweit es geht,
-um das Nachbauen ~~einfacher~~billiger zu machen mit einer Heizplatte/Reflow-Ofen/PCBA-Service.
+Gehäuse gibt es noch keins, vielleicht ändere ich nochmal was daran um diese mit den anderen Nachbauten kompatibel zu bekommen.
 
-Nachbauen und Modifizieren durch Dritte ist erlaubt, die Lizenz gibt es hier auf Deutsch
+Nachbauen und Modifizieren durch Dritte ist erlaubt, die Dokumentation inkl Schaltplan und Gerber müssen aber mit weitergegeben werden.
+Die Lizenz gibt es hier auf Deutsch
 https://creativecommons.org/licenses/by-sa/4.0/deed.de
