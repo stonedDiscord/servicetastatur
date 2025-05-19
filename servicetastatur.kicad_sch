@@ -7197,6 +7197,142 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Power_Supervisor:LM810"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 2.54 12.7 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LM810"
+				(at 5.08 10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+				(at 7.62 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm809.pdf"
+				(at 7.62 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Microprocessor Reset (active-high) Circuit, SOT-23"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "reset supervisor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SOT?23*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LM810_0_1"
+				(rectangle
+					(start 5.08 7.62)
+					(end -5.08 -7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "LM810_1_1"
+				(pin power_in line
+					(at 0 10.16 270)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -10.16 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name "RESET"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Switch:SW_Push"
 			(pin_numbers
 				(hide yes)
@@ -8258,10 +8394,6 @@
 		(uuid "6cd06d0d-b526-46b4-8a63-e5e0508b80fe")
 	)
 	(no_connect
-		(at 104.14 82.55)
-		(uuid "7e3704a4-2f45-4e9c-81f4-0f94792beb77")
-	)
-	(no_connect
 		(at 95.25 80.01)
 		(uuid "9553b606-8c69-405c-8a86-dc158baa53eb")
 	)
@@ -8276,10 +8408,6 @@
 	(no_connect
 		(at 54.61 22.86)
 		(uuid "bc6f7185-f0fd-400e-9da1-719ab74c7b08")
-	)
-	(no_connect
-		(at 184.15 163.83)
-		(uuid "d8c6473a-12fa-49ce-9201-d4f4d9bae3db")
 	)
 	(no_connect
 		(at 54.61 17.78)
@@ -8347,7 +8475,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 161.29) (xy 158.75 161.29)
+			(xy 151.13 161.29) (xy 160.02 161.29)
 		)
 		(stroke
 			(width 0)
@@ -8817,7 +8945,7 @@
 	)
 	(wire
 		(pts
-			(xy 140.97 186.69) (xy 158.75 186.69)
+			(xy 140.97 186.69) (xy 160.02 186.69)
 		)
 		(stroke
 			(width 0)
@@ -9127,7 +9255,7 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 194.31) (xy 151.13 194.31)
+			(xy 160.02 194.31) (xy 151.13 194.31)
 		)
 		(stroke
 			(width 0)
@@ -9667,7 +9795,7 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 161.29) (xy 214.63 161.29)
+			(xy 185.42 161.29) (xy 214.63 161.29)
 		)
 		(stroke
 			(width 0)
@@ -9947,6 +10075,26 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 82.55) (xy 101.6 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eb28d1bf-13f1-4a93-8abb-5808608287ba")
+	)
+	(wire
+		(pts
+			(xy 104.14 82.55) (xy 101.6 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f070b057-0f9f-4982-adbd-4f0c559322fd")
+	)
+	(wire
+		(pts
 			(xy 189.23 3.81) (xy 189.23 -1.27)
 		)
 		(stroke
@@ -10101,7 +10249,7 @@
 	)
 	(global_label "D4"
 		(shape input)
-		(at 158.75 173.99 180)
+		(at 160.02 173.99 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10111,7 +10259,7 @@
 		)
 		(uuid "085ef42a-8ff9-4f10-a17b-697924550c8b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 173.99 0)
+			(at 154.5553 173.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10167,7 +10315,7 @@
 	)
 	(global_label "CLOCK"
 		(shape input)
-		(at 158.75 191.77 180)
+		(at 160.02 191.77 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10177,7 +10325,7 @@
 		)
 		(uuid "0c8e4cf5-48f3-4798-9487-7a2b3c5a25e6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 149.5962 191.77 0)
+			(at 150.8662 191.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10255,7 +10403,7 @@
 	)
 	(global_label "D1"
 		(shape input)
-		(at 158.75 166.37 180)
+		(at 160.02 166.37 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10265,7 +10413,7 @@
 		)
 		(uuid "0f0f3c9b-8d8a-4a45-b511-4523932dd274")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 166.37 0)
+			(at 154.5553 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10343,7 +10491,7 @@
 	)
 	(global_label "D0"
 		(shape input)
-		(at 158.75 163.83 180)
+		(at 160.02 163.83 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -10353,7 +10501,7 @@
 		)
 		(uuid "2527d66e-7acb-43f0-ad43-6125ca765cef")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 163.83 0)
+			(at 154.5553 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11135,7 +11283,7 @@
 	)
 	(global_label "D3"
 		(shape input)
-		(at 158.75 171.45 180)
+		(at 160.02 171.45 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -11145,7 +11293,7 @@
 		)
 		(uuid "a0b3243c-0758-4234-bfbd-58e42369a8da")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 171.45 0)
+			(at 154.5553 171.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11201,7 +11349,7 @@
 	)
 	(global_label "D2"
 		(shape input)
-		(at 158.75 168.91 180)
+		(at 160.02 168.91 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -11211,7 +11359,7 @@
 		)
 		(uuid "a5d1f98e-af1f-4353-97a9-09a3fd407ce4")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 168.91 0)
+			(at 154.5553 168.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11261,6 +11409,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "RESET"
+		(shape input)
+		(at 279.4 111.76 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "adae7e1c-e560-4ef3-beeb-05986cc58ec9")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 288.1303 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -11333,7 +11503,7 @@
 	)
 	(global_label "D7"
 		(shape input)
-		(at 158.75 181.61 180)
+		(at 160.02 181.61 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -11343,7 +11513,7 @@
 		)
 		(uuid "b3fc81c4-9315-4c56-aef8-9dae32a34ea8")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 181.61 0)
+			(at 154.5553 181.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11355,7 +11525,7 @@
 	)
 	(global_label "D5"
 		(shape input)
-		(at 158.75 176.53 180)
+		(at 160.02 176.53 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -11365,7 +11535,7 @@
 		)
 		(uuid "b9b67640-32bf-43d5-bd5a-0d2eae0a779a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 176.53 0)
+			(at 154.5553 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11707,7 +11877,7 @@
 	)
 	(global_label "D6"
 		(shape input)
-		(at 158.75 179.07 180)
+		(at 160.02 179.07 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -11717,7 +11887,7 @@
 		)
 		(uuid "fe91b6cd-7079-4dfc-8b1e-2a0ddedbf9e3")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 153.2853 179.07 0)
+			(at 154.5553 179.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11752,7 +11922,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 363.22 133.6548 0)
 			(effects
 				(font
@@ -11820,7 +11990,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 353.06 152.7048 0)
 			(effects
 				(font
@@ -12124,7 +12294,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 229.87 168.148 90)
 			(effects
 				(font
@@ -12260,7 +12430,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 218.44 179.578 90)
 			(effects
 				(font
@@ -12396,7 +12566,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 347.98 173.228 90)
 			(effects
 				(font
@@ -12675,6 +12845,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 113.03 63.5 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "21752346-bde6-42ea-ac7c-a9a51348075a")
+		(property "Reference" "R4"
+			(at 111.7599 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "270"
+			(at 114.2999 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+			(at 113.03 61.722 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 113.03 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 113.03 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "f21294b9-7c36-4042-aa5e-fa227bdf297d")
+		)
+		(pin "1"
+			(uuid "c583bcb7-cf49-444d-aa36-06c826c4446a")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Switch:SW_Push")
 		(at 148.59 -16.51 0)
 		(unit 1)
@@ -12770,7 +13010,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 190.8048 83.82 0)
 			(effects
 				(font
@@ -12838,7 +13078,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 332.74 75.2348 0)
 			(effects
 				(font
@@ -12974,7 +13214,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 325.12 135.5852 0)
 			(effects
 				(font
@@ -13264,7 +13504,7 @@
 	)
 	(symbol
 		(lib_id "74xx:74HC165")
-		(at 171.45 176.53 0)
+		(at 172.72 176.53 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13273,7 +13513,7 @@
 		(fields_autoplaced yes)
 		(uuid "289fa217-6a67-4590-b08b-b7918e0b6382")
 		(property "Reference" "U13"
-			(at 173.6441 153.67 0)
+			(at 174.9141 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13282,7 +13522,7 @@
 			)
 		)
 		(property "Value" "74HC165"
-			(at 173.6441 156.21 0)
+			(at 174.9141 156.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13291,7 +13531,7 @@
 			)
 		)
 		(property "Footprint" "Package_SO:SOP-16_4.4x10.4mm_P1.27mm"
-			(at 171.45 176.53 0)
+			(at 172.72 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13300,7 +13540,7 @@
 			)
 		)
 		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT165.pdf"
-			(at 171.45 176.53 0)
+			(at 172.72 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13309,7 +13549,7 @@
 			)
 		)
 		(property "Description" "Shift Register, 8-bit, Parallel Load"
-			(at 171.45 176.53 0)
+			(at 172.72 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14385,7 +14625,7 @@
 	)
 	(symbol
 		(lib_id "power:VCC")
-		(at 171.45 153.67 0)
+		(at 172.72 153.67 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14394,7 +14634,7 @@
 		(fields_autoplaced yes)
 		(uuid "42cab233-d615-4250-b73c-050fa6535517")
 		(property "Reference" "#PWR019"
-			(at 171.45 157.48 0)
+			(at 172.72 157.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14403,7 +14643,7 @@
 			)
 		)
 		(property "Value" "VCC"
-			(at 171.45 148.59 0)
+			(at 172.72 148.59 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14411,7 +14651,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 171.45 153.67 0)
+			(at 172.72 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14420,7 +14660,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 171.45 153.67 0)
+			(at 172.72 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14429,7 +14669,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 171.45 153.67 0)
+			(at 172.72 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14477,7 +14717,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 240.538 181.61 90)
 			(effects
 				(font
@@ -15190,6 +15430,83 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:LED")
+		(at 105.41 63.5 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4e94dfe4-0b36-41ca-8151-d53a90214ffc")
+		(property "Reference" "D5"
+			(at 106.9975 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "RX"
+			(at 106.9975 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_1206_3216Metric"
+			(at 105.41 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 105.41 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 105.41 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 105.41 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ea475660-38a8-431f-9e54-7eb45e9b7d17")
+		)
+		(pin "1"
+			(uuid "63361b68-16ae-4a91-a588-ebbe94cc6292")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "D5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 234.95 153.67 90)
 		(unit 1)
@@ -15215,7 +15532,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 234.95 155.448 90)
 			(effects
 				(font
@@ -15594,7 +15911,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 363.22 120.9548 0)
 			(effects
 				(font
@@ -15834,7 +16151,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad"
+		(property "Footprint" "MountingHole:MountingHole_3.5mm_Pad"
 			(at 378.46 187.96 0)
 			(effects
 				(font
@@ -15899,7 +16216,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 325.12 111.4552 0)
 			(effects
 				(font
@@ -16237,7 +16554,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 229.87 167.132 90)
 			(effects
 				(font
@@ -16820,7 +17137,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 248.92 71.882 90)
 			(effects
 				(font
@@ -17250,7 +17567,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 248.412 137.16 90)
 			(effects
 				(font
@@ -17320,7 +17637,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 240.03 131.1148 0)
 			(effects
 				(font
@@ -17430,6 +17747,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 116.84 63.5 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "950550b6-89a5-47a2-82ce-263c4c070b0c")
+		(property "Reference" "#PWR076"
+			(at 123.19 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 121.92 63.5 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 116.84 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 116.84 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 116.84 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "45b439e6-3b4c-4b3a-982a-10b0bb14c8c1")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "#PWR076")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 359.41 109.22 90)
 		(unit 1)
@@ -17455,7 +17838,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 363.22 108.2548 0)
 			(effects
 				(font
@@ -17558,6 +17941,85 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "#PWR021")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:LED")
+		(at 185.42 167.64 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "971a8f18-51ed-4c9b-90ed-3370e77e324d")
+		(property "Reference" "D2"
+			(at 189.23 167.9574 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "TX"
+			(at 189.23 170.4974 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_1206_3216Metric"
+			(at 185.42 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 185.42 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Light emitting diode"
+			(at 185.42 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 185.42 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "90ba1306-3848-4e5e-835d-134569b2860e")
+		)
+		(pin "1"
+			(uuid "8bb36036-912c-47c0-ab3c-e724a6857616")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -17712,6 +18174,76 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "D4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 185.42 175.26 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "98f9c548-73d7-4a08-bf43-a2b0b78a54a3")
+		(property "Reference" "R2"
+			(at 187.96 173.9899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "270"
+			(at 187.96 176.5299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
+			(at 187.198 175.26 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 185.42 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 185.42 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "a85c6f62-9d3e-4165-ab71-ca3d8b0b807a")
+		)
+		(pin "1"
+			(uuid "ea3f12b2-ce86-4977-94d8-56c51cd0786b")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -18078,7 +18610,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 332.74 86.6648 0)
 			(effects
 				(font
@@ -18189,7 +18721,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 171.45 201.93 0)
+		(at 172.72 201.93 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18198,7 +18730,7 @@
 		(fields_autoplaced yes)
 		(uuid "ae93fea7-fb87-417b-ad11-1f50df80fd16")
 		(property "Reference" "#PWR02"
-			(at 171.45 208.28 0)
+			(at 172.72 208.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18207,7 +18739,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 171.45 207.01 0)
+			(at 172.72 207.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18215,7 +18747,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 171.45 201.93 0)
+			(at 172.72 201.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18224,7 +18756,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 171.45 201.93 0)
+			(at 172.72 201.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18233,7 +18765,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 171.45 201.93 0)
+			(at 172.72 201.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18279,7 +18811,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 332.74 98.0948 0)
 			(effects
 				(font
@@ -18339,7 +18871,7 @@
 				)
 			)
 		)
-		(property "Value" "LED"
+		(property "Value" "PWR"
 			(at 354.0125 167.64 0)
 			(effects
 				(font
@@ -18347,7 +18879,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
+		(property "Footprint" "LED_SMD:LED_1206_3216Metric"
 			(at 355.6 171.45 0)
 			(effects
 				(font
@@ -18493,7 +19025,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 185.1152 83.82 0)
 			(effects
 				(font
@@ -18561,7 +19093,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 325.12 122.8852 0)
 			(effects
 				(font
@@ -18598,6 +19130,79 @@
 			(project "servicetastatur"
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "C20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Supervisor:LM810")
+		(at 271.78 111.76 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b7fda63e-0332-4699-b2a1-a72df37ef165")
+		(property "Reference" "U4"
+			(at 265.43 110.4899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "LM810"
+			(at 265.43 113.0299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+			(at 279.4 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm809.pdf"
+			(at 279.4 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Microprocessor Reset (active-high) Circuit, SOT-23"
+			(at 271.78 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ccee1c5e-23fb-452b-bff6-cb7fa2a53dbb")
+		)
+		(pin "1"
+			(uuid "fca4f72b-234f-4496-8ce5-990b3619475c")
+		)
+		(pin "3"
+			(uuid "aff0b3d1-80ed-422d-8138-56f2b808b7ae")
+		)
+		(instances
+			(project ""
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "U4")
 					(unit 1)
 				)
 			)
@@ -18844,7 +19449,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 363.22 85.3948 0)
 			(effects
 				(font
@@ -19115,7 +19720,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 190.8048 83.82 0)
 			(effects
 				(font
@@ -19546,6 +20151,72 @@
 			(project ""
 				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
 					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 271.78 101.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "cfb42991-c079-48a1-a2e3-35a1bbda29e6")
+		(property "Reference" "#PWR078"
+			(at 271.78 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 271.78 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 271.78 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 271.78 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 271.78 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "be95db82-7180-4c78-936c-bc3a0aac9899")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "#PWR078")
 					(unit 1)
 				)
 			)
@@ -20082,6 +20753,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 271.78 121.92 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dc9d9ff0-2b9d-40bf-8f81-eb19ca25729d")
+		(property "Reference" "#PWR012"
+			(at 271.78 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 271.78 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 271.78 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 271.78 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 271.78 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8f854894-b00d-4bbb-a36e-0faa52b36367")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "#PWR012")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Switch:SW_Push")
 		(at 166.37 -16.51 0)
 		(unit 1)
@@ -20177,7 +20914,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "MountingHole:MountingHole_3.7mm_Pad"
+		(property "Footprint" "MountingHole:MountingHole_3.5mm_Pad"
 			(at 378.46 203.2 0)
 			(effects
 				(font
@@ -20530,7 +21267,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 147.32 159.512 90)
 			(effects
 				(font
@@ -20600,7 +21337,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 185.1152 83.82 0)
 			(effects
 				(font
@@ -20865,7 +21602,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 229.87 165.608 90)
 			(effects
 				(font
@@ -20914,7 +21651,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "f636c8e1-b914-4e03-bdf0-caddfa17b6a6")
 		(property "Reference" "C19"
@@ -20933,7 +21670,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 265.43 91.7448 0)
 			(effects
 				(font
@@ -21241,6 +21978,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 185.42 179.07 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "fb30aab3-d7ec-44f7-8cf4-268598d439f5")
+		(property "Reference" "#PWR074"
+			(at 185.42 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 185.42 184.15 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 185.42 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 185.42 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 185.42 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b7581603-8007-40a0-bc5d-09211a51c26d")
+		)
+		(instances
+			(project "servicetastatur"
+				(path "/f1547e98-e012-47b0-8f5e-c4ff3a098fc5"
+					(reference "#PWR074")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Switch:SW_Push")
 		(at 148.59 -1.27 0)
 		(unit 1)
@@ -21440,7 +22243,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 218.44 163.068 90)
 			(effects
 				(font
