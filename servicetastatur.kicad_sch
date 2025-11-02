@@ -8424,6 +8424,12 @@
 		(uuid "ac07a183-e600-4abb-9c47-81a71f13287e")
 	)
 	(junction
+		(at 144.78 179.07)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b36fb9ae-bcb8-4194-bdac-2366ac789cc6")
+	)
+	(junction
 		(at 162.56 224.79)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8580,6 +8586,16 @@
 			(type default)
 		)
 		(uuid "029241c7-2139-4f55-916e-98c60d4dbe72")
+	)
+	(wire
+		(pts
+			(xy 144.78 274.32) (xy 250.19 274.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03c3ac66-abef-4f5a-baaa-c2eb4219779d")
 	)
 	(wire
 		(pts
@@ -9543,6 +9559,16 @@
 	)
 	(wire
 		(pts
+			(xy 250.19 274.32) (xy 250.19 248.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8b334b51-871e-4c81-8cc7-86136916b921")
+	)
+	(wire
+		(pts
 			(xy 182.88 29.21) (xy 182.88 34.29)
 		)
 		(stroke
@@ -10063,6 +10089,16 @@
 	)
 	(wire
 		(pts
+			(xy 144.78 179.07) (xy 144.78 274.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d83f0d4a-49c2-4470-9354-6e680d3216de")
+	)
+	(wire
+		(pts
 			(xy 252.73 257.81) (xy 264.16 257.81)
 		)
 		(stroke
@@ -10310,6 +10346,16 @@
 			(justify left bottom)
 		)
 		(uuid "17576a4c-52d0-4523-82b3-f24c997dec98")
+	)
+	(label "InST"
+		(at 140.97 151.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "25fdad94-8af7-414e-8806-47f999ee949a")
 	)
 	(label "InST"
 		(at 261.62 232.41 180)
@@ -11561,22 +11607,22 @@
 	)
 	(global_label "CLOCK"
 		(shape input)
-		(at 78.74 156.21 180)
+		(at 144.78 179.07 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "abe80517-74ac-4864-b4c6-8fd8db69b03a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 69.5862 156.21 0)
+			(at 153.9338 179.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
 				(hide yes)
 			)
 		)
