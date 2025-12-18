@@ -15,9 +15,9 @@ jobs:
     - uses: actions/checkout@v6
 
     - name: Build with sdcc
-      working-directory: lcd_test
       uses: docker://panoti/sdcc
       with:
+        path: lcd_test
         args: sdcc -mmcs51 main.c
 
     - name: Convert to binary
