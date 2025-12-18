@@ -4,8 +4,10 @@
  * Displays the current keypad state on the connected LCD
  */
 
-#include <stdint.h>
 #include <8051.h>
+#include <stdint.h>
+
+#include "hd44780.h"
 
 // External memory-mapped LCD registers
 __xdata volatile uint8_t* const LCD_CMD_W  = (__xdata uint8_t*)0x0070;
@@ -48,10 +50,10 @@ static void lcd_puts(const char *s) {
 
 static void lcd_init(void) {
     lcd_delay();
-    lcd_cmd(0x38); // Function set: 8-bit, 2 lines, 5x7 dots
-    lcd_cmd(0x0C); // Display ON, cursor off
-    lcd_cmd(0x06); // Entry mode: increment cursor
-    lcd_cmd(0x01); // Clear display
+    lcd_cmd(HD44780_CMD_FUNCTION_SET | HD44780_FUNCTION_8BIT | HD44780_FUNCTION_2LINE | HD44780_FUNCTION_5x7DOTS);
+    lcd_cmd(HD44780_CMD_DISPLAY_CTRL | HD44780_DISPLAY_ON | HD44780_DISPLAY_CURSOR_OFF | HD44780_DISPLAY_BLINK_OFF);
+    lcd_cmd(HD44780_CMD_ENTRY_MODE   | HD44780_ENTRY_LTR);
+    lcd_cmd(HD44780_CMD_CLEAR);
 }
 
 // Reversed keypad scan function
