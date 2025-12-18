@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    paths: ['lcd_test/main.c']
+  pull_request:
+    paths: ['lcd_test/main.c']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: panoti/sdcc
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Build with sdcc
+      working-directory: lcd_test
+      run: sdcc main.c
+
+    - name: Upload ROM artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: servicet
+        path: lcd_test/service_tastatur_v3.3.u3
+
