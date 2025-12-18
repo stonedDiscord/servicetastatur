@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    paths: ['lcd_test/main.c']
+    paths: ['firmware/main.c']
   pull_request:
-    paths: ['lcd_test/main.c']
+    paths: ['firmware/main.c']
   workflow_dispatch:
 
 jobs:
@@ -20,15 +20,15 @@ jobs:
         packages: sdcc binutils
 
     - name: Build with sdcc
-      working-directory: lcd_test
+      working-directory: firmware
       run: sdcc -mmcs51 main.c
 
     - name: Convert to binary
-      working-directory: lcd_test
+      working-directory: firmware
       run: objcopy -Iihex -Obinary main.ihx service_tastatur_v3.3.u3
 
     - name: Upload ROM artifact
       uses: actions/upload-artifact@v6
       with:
         name: servicet
-        path: lcd_test/service_tastatur_v3.3.u3
+        path: firmware/service_tastatur_v3.3.u3

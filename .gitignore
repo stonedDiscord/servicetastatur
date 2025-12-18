@@ -32,13 +32,13 @@ drawings/
 difference/
 *.pdf
 
-lcd_test/*.bin
-lcd_test/*.asm
-lcd_test/*.ihx
-lcd_test/*.lk
-lcd_test/*.lst
-lcd_test/*.map
-lcd_test/*.mem
-lcd_test/*.rel
-lcd_test/*.rst
-lcd_test/*.sym
+firmware/*.bin
+firmware/*.asm
+firmware/*.ihx
+firmware/*.lk
+firmware/*.lst
+firmware/*.map
+firmware/*.mem
+firmware/*.rel
+firmware/*.rst
+firmware/*.sym
