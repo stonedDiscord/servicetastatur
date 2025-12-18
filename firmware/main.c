@@ -15,9 +15,6 @@ __xdata volatile uint8_t* const LCD_CMD_R  = (__xdata uint8_t*)0x0071;
 __xdata volatile uint8_t* const LCD_DATA_W = (__xdata uint8_t*)0x0072;
 __xdata volatile uint8_t* const LCD_DATA_R = (__xdata uint8_t*)0x0073;
 
-// Busy flag in status register (bit 7)
-#define LCD_BUSY 0x80
-
 // Globals for keypad state (as in reversed function)
 __data uint8_t DAT_INTMEM_22;
 __data uint8_t DAT_INTMEM_23;
@@ -29,7 +26,7 @@ static void lcd_delay(void) {
 }
 
 static void lcd_wait_ready(void) {
-    while (*LCD_CMD_R & LCD_BUSY);
+    while (*LCD_CMD_R & HD44780_BUSY);
 }
 
 static void lcd_cmd(uint8_t cmd) {
@@ -60,19 +57,19 @@ static void lcd_init(void) {
 void maybe_scan_kbd(void) {
     uint8_t bVar1;
     DAT_INTMEM_23 = 0;
-    P1 = 0xfb;
+    P1 = 0xfb; // P1.2 column 3, F3, F1, F2
     bVar1 = P1 & 0x70;
     if (bVar1 == 0x50) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 1; }
     else if (bVar1 == 0x30) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 2; }
     else if (bVar1 == 0x60) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 3; }
 
-    P1 = 0xfd;
+    P1 = 0xfd; // P1.1 column 2, Right, Left, Down
     bVar1 = P1 & 0x70;
     if (bVar1 == 0x50) { DAT_INTMEM_23++; DAT_INTMEM_4f = 7; }
     else if (bVar1 == 0x30) { DAT_INTMEM_23++; DAT_INTMEM_4f = 8; }
     else if (bVar1 == 0x60) { DAT_INTMEM_23++; DAT_INTMEM_4f = 9; }
 
-    P1 = 0xfe;
+    P1 = 0xfe; // P1.0 column 1, OK, F4, Up
     bVar1 = P1;
     DAT_INTMEM_22 = bVar1 & 0x70;
     if (DAT_INTMEM_22 == 0x50) {
@@ -109,15 +106,15 @@ void main(void) {
     lcd_init();
 
     // Line 1: title
-    lcd_cmd(0x80 | 0x00);
+    lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE1_ADDR | 0x00);
     lcd_puts("Keypad Test");
 
     while (1) {
         maybe_scan_kbd();
 
-        lcd_cmd(0x80 | 0x40); // Line 2
+        lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x00); // Line 2
         lcd_puts("Key:     ");  // clear old value with spaces
-        lcd_cmd(0x80 | 0x45); // move cursor after "Key: "
+        lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
         lcd_putnum(DAT_INTMEM_4f);
     }
 }

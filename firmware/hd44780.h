@@ -33,3 +33,7 @@
 
 #define HD44780_CMD_SET_DDRAM_ADDR  0x80
 
+#define HD44780_BUSY                0x80
+
+#define HD44780_LINE1_ADDR          0x00
+#define HD44780_LINE2_ADDR          0x40
