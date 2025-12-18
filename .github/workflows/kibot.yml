@@ -1,4 +1,4 @@
-name: Export
+name: KiBot
 
 on:
   push:
@@ -9,9 +9,10 @@ on:
     paths:
       - '**.kicad_sch'
       - '**.kicad_pcb'
+  workflow_dispatch:
 
 jobs:
-  example:
+  kibot:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
