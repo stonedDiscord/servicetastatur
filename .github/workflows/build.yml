@@ -15,7 +15,9 @@ jobs:
     - uses: actions/checkout@v6
 
     - name: Install sdcc
-      run: sudo apt update && sudo apt install sdcc objcopy
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: sdcc objcopy
 
     - name: Build with sdcc
       working-directory: lcd_test
