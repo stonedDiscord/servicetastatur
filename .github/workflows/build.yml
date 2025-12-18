@@ -17,11 +17,10 @@ jobs:
 
     - name: Build with sdcc
       working-directory: lcd_test
-      run: sdcc main.c
+      run: sdcc -mmcs51 main.c
 
     - name: Upload ROM artifact
       uses: actions/upload-artifact@v6
       with:
         name: servicet
         path: lcd_test/service_tastatur_v3.3.u3
-
