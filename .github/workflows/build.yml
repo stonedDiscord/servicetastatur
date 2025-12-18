@@ -19,6 +19,10 @@ jobs:
       working-directory: lcd_test
       run: sdcc -mmcs51 main.c
 
+    - name: Convert to binary
+      working-directory: lcd_test
+      run: objcopy -Iihex -Obinary main.ihx service_tastatur_v3.3.u3
+
     - name: Upload ROM artifact
       uses: actions/upload-artifact@v6
       with:
