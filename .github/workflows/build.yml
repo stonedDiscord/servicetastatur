@@ -14,11 +14,12 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
+    - name: Install sdcc
+      run: sudo apt update && sudo apt install sdcc objcopy
+
     - name: Build with sdcc
-      uses: docker://panoti/sdcc
-      with:
-        path: lcd_test
-        args: sdcc -mmcs51 main.c
+      working-directory: lcd_test
+      run: sdcc -mmcs51 main.c
 
     - name: Convert to binary
       working-directory: lcd_test
