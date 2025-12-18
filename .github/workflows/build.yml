@@ -10,14 +10,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: panoti/sdcc
 
     steps:
     - uses: actions/checkout@v6
 
     - name: Build with sdcc
-      working-directory: lcd_test
-      run: sdcc -mmcs51 main.c
+      uses: docker://panoti/sdcc
+      with:
+        args: cd lcd_test && sdcc -mmcs51 main.c
 
     - name: Convert to binary
       working-directory: lcd_test
