@@ -1,7 +1,7 @@
 /*
- * keypad_lcd.c
- * SDCC-compatible program to show "Keypad Test" on line 1
- * and display the keypad state (from maybe_scan_kbd) on line 2.
+ * Keypad test
+ * compile with sdcc -mmcs51
+ * Displays the current keypad state on the connected LCD
  */
 
 #include <stdint.h>
