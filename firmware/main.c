@@ -15,11 +15,6 @@ __xdata volatile uint8_t* const LCD_CMD_R  = (__xdata uint8_t*)0x0071;
 __xdata volatile uint8_t* const LCD_DATA_W = (__xdata uint8_t*)0x0072;
 __xdata volatile uint8_t* const LCD_DATA_R = (__xdata uint8_t*)0x0073;
 
-// Globals for keypad state
-__data uint8_t column_input;
-__data uint8_t key_count;
-__data uint8_t key_code;
-
 static void lcd_delay(void) {
     unsigned int i;
     for (i = 0; i < 1000; i++);
@@ -54,9 +49,11 @@ static void lcd_init(void) {
 }
 
 // Keypad scan function
-void scan_kbd(void) {
+uint8_t scan_kbd(void) {
     uint8_t row_state;
-    key_count = 0;
+    uint8_t key_count = 0;
+    uint8_t key_code = 0;
+    uint8_t column_input;
     P1 = 0xfb; // P1.2 column 3, F3, F1, F2
     row_state = P1 & 0x70;
     if (row_state == 0x50) { key_count = 1; key_code = 1; } // F3
@@ -84,6 +81,7 @@ void scan_kbd(void) {
 
     P1 = 0xff;
     if (key_count != 1) key_code = 0; // No key or multiple keys pressed
+    return key_code;
 }
 
 // Convert a small number to decimal string and display it
@@ -110,11 +108,11 @@ void main(void) {
     lcd_puts("Keypad Test");
 
     while (1) {
-        scan_kbd();
-
-        lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x00); // Line 2
-        lcd_puts("Key:     ");  // clear old value with spaces
-        lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
-        lcd_putnum(key_code);
-    }
+            uint8_t key = scan_kbd();
+    
+            lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x00); // Line 2
+            lcd_puts("Key:     ");  // clear old value with spaces
+            lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
+            lcd_putnum(key);
+        }
 }
