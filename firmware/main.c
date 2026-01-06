@@ -100,6 +100,13 @@ static void lcd_putnum(uint8_t n) {
     lcd_puts(p);
 }
 
+// Interrupt handler External 0
+void ext0_isr(void) __interrupt(0) {
+    // Set cursor to bottom right (assuming 16-char display, position 13-15 for "INT")
+    lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 13));
+    lcd_puts("INT");
+}
+
 void main(void) {
     lcd_init();
 
