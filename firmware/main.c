@@ -53,37 +53,37 @@ static void lcd_init(void) {
     lcd_cmd(HD44780_CMD_CLEAR);
 }
 
-// Reversed keypad scan function
-void maybe_scan_kbd(void) {
+// Keypad scan function
+void scan_kbd(void) {
     uint8_t bVar1;
     DAT_INTMEM_23 = 0;
     P1 = 0xfb; // P1.2 column 3, F3, F1, F2
     bVar1 = P1 & 0x70;
-    if (bVar1 == 0x50) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 1; }
-    else if (bVar1 == 0x30) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 2; }
-    else if (bVar1 == 0x60) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 3; }
+    if (bVar1 == 0x50) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 1; } // F3
+    else if (bVar1 == 0x30) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 2; } // F1
+    else if (bVar1 == 0x60) { DAT_INTMEM_23 = 1; DAT_INTMEM_4f = 3; } // F2
 
     P1 = 0xfd; // P1.1 column 2, Right, Left, Down
     bVar1 = P1 & 0x70;
-    if (bVar1 == 0x50) { DAT_INTMEM_23++; DAT_INTMEM_4f = 7; }
-    else if (bVar1 == 0x30) { DAT_INTMEM_23++; DAT_INTMEM_4f = 8; }
-    else if (bVar1 == 0x60) { DAT_INTMEM_23++; DAT_INTMEM_4f = 9; }
+    if (bVar1 == 0x50) { DAT_INTMEM_23++; DAT_INTMEM_4f = 7; } // Right
+    else if (bVar1 == 0x30) { DAT_INTMEM_23++; DAT_INTMEM_4f = 8; } // Left
+    else if (bVar1 == 0x60) { DAT_INTMEM_23++; DAT_INTMEM_4f = 9; } // Down
 
     P1 = 0xfe; // P1.0 column 1, OK, F4, Up
     bVar1 = P1;
     DAT_INTMEM_22 = bVar1 & 0x70;
     if (DAT_INTMEM_22 == 0x50) {
-        if (DAT_INTMEM_4f == 1) DAT_INTMEM_4f = 0x10;
-        else { DAT_INTMEM_4f = 4; DAT_INTMEM_23++; }
+        if (DAT_INTMEM_4f == 1) DAT_INTMEM_4f = 0x10; // F3 + OK
+        else { DAT_INTMEM_4f = 4; DAT_INTMEM_23++; } // OK
     }
     else if (DAT_INTMEM_22 == 0x30) {
-        if (DAT_INTMEM_4f == 2) DAT_INTMEM_4f = 0x11;
-        else { DAT_INTMEM_23++; DAT_INTMEM_4f = 5; }
+        if (DAT_INTMEM_4f == 2) DAT_INTMEM_4f = 0x11; // F1 + F4
+        else { DAT_INTMEM_23++; DAT_INTMEM_4f = 5; } // F4
     }
-    else if (DAT_INTMEM_22 == 0x60) { DAT_INTMEM_23++; DAT_INTMEM_4f = 6; }
+    else if (DAT_INTMEM_22 == 0x60) { DAT_INTMEM_23++; DAT_INTMEM_4f = 6; } // Up
 
     P1 = 0xff;
-    if (DAT_INTMEM_23 != 1) DAT_INTMEM_4f = 0;
+    if (DAT_INTMEM_23 != 1) DAT_INTMEM_4f = 0; // No key or multiple keys pressed
 }
 
 // Convert a small number to decimal string and display it
@@ -110,7 +110,7 @@ void main(void) {
     lcd_puts("Keypad Test");
 
     while (1) {
-        maybe_scan_kbd();
+        scan_kbd();
 
         lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x00); // Line 2
         lcd_puts("Key:     ");  // clear old value with spaces
