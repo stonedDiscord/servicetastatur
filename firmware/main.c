@@ -25,9 +25,9 @@ __xdata volatile uint8_t* const GSG1_R  = (__xdata uint8_t*)0x0040;
 __xdata volatile uint8_t* const GSG2_R  = (__xdata uint8_t*)0x0050;
 
 
-static void spin_delay(void) {
-    unsigned int i;
-    for (i = 0; i < 1000; i++);
+static void spin_delay(uint16_t delay) {
+    uint16_t i;
+    for (i = 0; i < delay; i++);
 }
 
 static void lcd_wait_ready(void) {
@@ -112,15 +112,15 @@ static void lcd_putnum(uint8_t n) {
 // Convert key code to key name
 static const char* key_code_to_name(uint8_t key_code) {
     switch (key_code) {
-        case 1: return "F1";
-        case 2: return "F2";
-        case 3: return "F3";
-        case 4: return "F4";
-        case 5: return "Up";
-        case 6: return "OK";
-        case 7: return "Left";
-        case 8: return "Down";
-        case 9: return "Right";
+        case 0x01: return "F1";
+        case 0x02: return "F2";
+        case 0x03: return "F3";
+        case 0x04: return "F4";
+        case 0x05: return "Up";
+        case 0x06: return "OK";
+        case 0x07: return "Left";
+        case 0x08: return "Down";
+        case 0x09: return "Right";
         case 0x10: return "F1+F4";
         case 0x11: return "F2+Up";
         default: return "None";
@@ -154,6 +154,7 @@ void read_gsg(void)
 
 // Interrupt handler External 0
 void INT0_ISR (void) __interrupt (0) {
+    EA=0;
     //lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 15));
     //lcd_puts("INT0");
     read_gsg();
@@ -161,6 +162,7 @@ void INT0_ISR (void) __interrupt (0) {
 
 // Interrupt handler External 1
 void INT1_ISR (void) __interrupt (2) {
+    EA=0;
     //lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE1_ADDR + 15));
     //lcd_puts("INT1");
     read_gsg();
@@ -169,12 +171,13 @@ void INT1_ISR (void) __interrupt (2) {
 void main(void) {
     lcd_init();
     EX1 = 1;
-    EA = 1;
+
+    uint16_t rend = 0;
 
     // Line 1: title
     lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE1_ADDR | 0x00);
     lcd_puts("Keypad Test        ");
-
+    //EA = 1;
     while (1) {
             uint8_t key = scan_kbd();
      
@@ -182,5 +185,14 @@ void main(void) {
             lcd_puts("Key:          ");  // clear old value with spaces
             lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
             lcd_puts(key_code_to_name(key));
+            rend++;
+            *GSG1_W= (uint8_t)(rend & 0x00FF);
+            *GSG2_W= (uint8_t)(rend & 0x00FF);
+            *GSG3_W= (uint8_t)(rend & 0x00FF);
+            *GSG4_W= (uint8_t)(rend & 0x00FF);
+            EA=1;
+            spin_delay(100);
+            EA=0;
+            
         }
 }
