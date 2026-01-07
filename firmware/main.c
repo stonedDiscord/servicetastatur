@@ -25,7 +25,7 @@ __xdata volatile uint8_t* const GSG1_R  = (__xdata uint8_t*)0x0040;
 __xdata volatile uint8_t* const GSG2_R  = (__xdata uint8_t*)0x0050;
 
 
-static void lcd_delay(void) {
+static void spin_delay(void) {
     unsigned int i;
     for (i = 0; i < 1000; i++);
 }
@@ -51,7 +51,6 @@ static void lcd_puts(const char *s) {
 }
 
 static void lcd_init(void) {
-    lcd_delay();
     lcd_cmd(HD44780_CMD_FUNCTION_SET | HD44780_FUNCTION_8BIT | HD44780_FUNCTION_2LINE | HD44780_FUNCTION_5x7DOTS);
     lcd_cmd(HD44780_CMD_DISPLAY_CTRL | HD44780_DISPLAY_ON | HD44780_DISPLAY_CURSOR_OFF | HD44780_DISPLAY_BLINK_OFF);
     lcd_cmd(HD44780_CMD_ENTRY_MODE   | HD44780_ENTRY_LTR);
@@ -128,18 +127,43 @@ static const char* key_code_to_name(uint8_t key_code) {
     }
 }
 
+void read_gsg(void)
+{
+    uint8_t direction = 1;
+    uint8_t gsg_command = 0;
+    if (direction == 0x03)
+    {
+        direction = 0x02;
+    }
+    gsg_command = *GSG2_R >> 1 & 7;
+    if (direction == 0x01)
+    {
+        if ((*GSG2_R & 1) != 0)
+        {
+            if ((*GSG1_R & 0x20) == 0)
+            {
+                lcd_putc((*GSG2_R >> 4) + *GSG1_R * 0x10);
+            }
+            else
+            {
+                lcd_cmd((*GSG2_R >> 4) + *GSG1_R * 0x10);
+            }
+        }
+    }
+}
+
 // Interrupt handler External 0
 void INT0_ISR (void) __interrupt (0) {
-    // Set cursor to bottom right (assuming 16-char display, position 13-15 for "INT")
-    lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 15));
-    lcd_puts("INT0");
+    //lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 15));
+    //lcd_puts("INT0");
+    read_gsg();
 }
 
 // Interrupt handler External 1
 void INT1_ISR (void) __interrupt (2) {
-    // Set cursor to bottom right (assuming 16-char display, position 13-15 for "INT")
-    lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE1_ADDR + 15));
-    lcd_puts("INT1");
+    //lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE1_ADDR + 15));
+    //lcd_puts("INT1");
+    read_gsg();
 }
 
 void main(void) {
