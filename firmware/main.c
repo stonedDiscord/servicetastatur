@@ -54,30 +54,30 @@ uint8_t scan_kbd(void) {
     uint8_t key_count = 0;
     uint8_t key_code = 0;
     uint8_t column_input;
-    P1 = 0xfb; // P1.2 column 3, F3, F1, F2
+    P1 = 0xfb; // P1.2 column 3, F1, F2, F3
     row_state = P1 & 0x70;
-    if (row_state == 0x50) { key_count = 1; key_code = 1; } // F3
-    else if (row_state == 0x30) { key_count = 1; key_code = 2; } // F1
-    else if (row_state == 0x60) { key_count = 1; key_code = 3; } // F2
+    if (row_state == 0x50) { key_count = 1; key_code = 1; } // F1
+    else if (row_state == 0x30) { key_count = 1; key_code = 2; } // F2
+    else if (row_state == 0x60) { key_count = 1; key_code = 3; } // F3
 
-    P1 = 0xfd; // P1.1 column 2, Right, Left, Down
+    P1 = 0xfd; // P1.1 column 2, Left, Down, Right
     row_state = P1 & 0x70;
-    if (row_state == 0x50) { key_count++; key_code = 7; } // Right
-    else if (row_state == 0x30) { key_count++; key_code = 8; } // Left
-    else if (row_state == 0x60) { key_count++; key_code = 9; } // Down
+    if (row_state == 0x50) { key_count++; key_code = 7; } // Left
+    else if (row_state == 0x30) { key_count++; key_code = 8; } // Down
+    else if (row_state == 0x60) { key_count++; key_code = 9; } // Right
 
-    P1 = 0xfe; // P1.0 column 1, OK, F4, Up
+    P1 = 0xfe; // P1.0 column 1, F4, Up, OK
     row_state = P1;
     column_input = row_state & 0x70;
     if (column_input == 0x50) {
-        if (key_code == 1) key_code = 0x10; // F3 + OK
-        else { key_code = 4; key_count++; } // OK
+        if (key_code == 1) key_code = 0x10; // F1 + F4
+        else { key_code = 4; key_count++; } // F4
     }
     else if (column_input == 0x30) {
-        if (key_code == 2) key_code = 0x11; // F1 + F4
-        else { key_count++; key_code = 5; } // F4
+        if (key_code == 2) key_code = 0x11; // F2 + Up
+        else { key_count++; key_code = 5; } // Up
     }
-    else if (column_input == 0x60) { key_count++; key_code = 6; } // Up
+    else if (column_input == 0x60) { key_count++; key_code = 6; } // OK
 
     P1 = 0xff;
     if (key_count != 1) key_code = 0; // No key or multiple keys pressed
