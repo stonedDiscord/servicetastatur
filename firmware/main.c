@@ -15,6 +15,16 @@ __xdata volatile uint8_t* const LCD_CMD_R  = (__xdata uint8_t*)0x0071;
 __xdata volatile uint8_t* const LCD_DATA_W = (__xdata uint8_t*)0x0072;
 __xdata volatile uint8_t* const LCD_DATA_R = (__xdata uint8_t*)0x0073;
 
+
+__xdata volatile uint8_t* const GSG1_W  = (__xdata uint8_t*)0x0010;
+__xdata volatile uint8_t* const GSG2_W  = (__xdata uint8_t*)0x0020;
+__xdata volatile uint8_t* const GSG3_W  = (__xdata uint8_t*)0x0030;
+__xdata volatile uint8_t* const GSG4_W  = (__xdata uint8_t*)0x0060;
+
+__xdata volatile uint8_t* const GSG1_R  = (__xdata uint8_t*)0x0040;
+__xdata volatile uint8_t* const GSG2_R  = (__xdata uint8_t*)0x0050;
+
+
 static void lcd_delay(void) {
     unsigned int i;
     for (i = 0; i < 1000; i++);
@@ -100,26 +110,53 @@ static void lcd_putnum(uint8_t n) {
     lcd_puts(p);
 }
 
+// Convert key code to key name
+static const char* key_code_to_name(uint8_t key_code) {
+    switch (key_code) {
+        case 1: return "F1";
+        case 2: return "F2";
+        case 3: return "F3";
+        case 4: return "F4";
+        case 5: return "Up";
+        case 6: return "OK";
+        case 7: return "Left";
+        case 8: return "Down";
+        case 9: return "Right";
+        case 0x10: return "F1+F4";
+        case 0x11: return "F2+Up";
+        default: return "None";
+    }
+}
+
 // Interrupt handler External 0
-void ext0_isr(void) __interrupt(0) {
+void INT0_ISR (void) __interrupt (0) {
     // Set cursor to bottom right (assuming 16-char display, position 13-15 for "INT")
-    lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 13));
-    lcd_puts("INT");
+    lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 15));
+    lcd_puts("INT0");
+}
+
+// Interrupt handler External 1
+void INT1_ISR (void) __interrupt (2) {
+    // Set cursor to bottom right (assuming 16-char display, position 13-15 for "INT")
+    lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE1_ADDR + 15));
+    lcd_puts("INT1");
 }
 
 void main(void) {
     lcd_init();
+    EX1 = 1;
+    EA = 1;
 
     // Line 1: title
     lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE1_ADDR | 0x00);
-    lcd_puts("Keypad Test");
+    lcd_puts("Keypad Test        ");
 
     while (1) {
             uint8_t key = scan_kbd();
-    
+     
             lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x00); // Line 2
-            lcd_puts("Key:     ");  // clear old value with spaces
+            lcd_puts("Key:          ");  // clear old value with spaces
             lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
-            lcd_putnum(key);
+            lcd_puts(key_code_to_name(key));
         }
 }
