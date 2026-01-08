@@ -9,20 +9,24 @@
 
 #include "hd44780.h"
 
-// External memory-mapped LCD registers
+// NC
+__xdata volatile uint8_t* const GSG1_W  = (__xdata uint8_t*)0x0010;
+__xdata volatile uint8_t* const GSG2_W  = (__xdata uint8_t*)0x0020;
+__xdata volatile uint8_t* const GSG3_W  = (__xdata uint8_t*)0x0030;
+
+// upper in
+__xdata volatile uint8_t* const GSG4_R  = (__xdata uint8_t*)0x0040;
+// lower in
+__xdata volatile uint8_t* const GSG5_R  = (__xdata uint8_t*)0x0050;
+
+//out
+__xdata volatile uint8_t* const GSG6_W  = (__xdata uint8_t*)0x0060;
+
+// lcd
 __xdata volatile uint8_t* const LCD_CMD_W  = (__xdata uint8_t*)0x0070;
 __xdata volatile uint8_t* const LCD_CMD_R  = (__xdata uint8_t*)0x0071;
 __xdata volatile uint8_t* const LCD_DATA_W = (__xdata uint8_t*)0x0072;
 __xdata volatile uint8_t* const LCD_DATA_R = (__xdata uint8_t*)0x0073;
-
-
-__xdata volatile uint8_t* const GSG1_W  = (__xdata uint8_t*)0x0010;
-__xdata volatile uint8_t* const GSG2_W  = (__xdata uint8_t*)0x0020;
-__xdata volatile uint8_t* const GSG3_W  = (__xdata uint8_t*)0x0030;
-__xdata volatile uint8_t* const GSG4_W  = (__xdata uint8_t*)0x0060;
-
-__xdata volatile uint8_t* const GSG1_R  = (__xdata uint8_t*)0x0040;
-__xdata volatile uint8_t* const GSG2_R  = (__xdata uint8_t*)0x0050;
 
 
 static void spin_delay(uint16_t delay) {
@@ -135,18 +139,18 @@ void read_gsg(void)
     {
         direction = 0x02;
     }
-    gsg_command = *GSG2_R >> 1 & 7;
+    gsg_command = *GSG5_R >> 1 & 7;
     if (direction == 0x01)
     {
-        if ((*GSG2_R & 1) != 0)
+        if ((*GSG5_R & 1) != 0)
         {
-            if ((*GSG1_R & 0x20) == 0)
+            if ((*GSG4_R & 0x20) == 0)
             {
-                lcd_putc((*GSG2_R >> 4) + *GSG1_R * 0x10);
+                lcd_putc((*GSG5_R >> 4) + *GSG4_R * 0x10);
             }
             else
             {
-                lcd_cmd((*GSG2_R >> 4) + *GSG1_R * 0x10);
+                lcd_cmd((*GSG5_R >> 4) + *GSG4_R * 0x10);
             }
         }
     }
@@ -186,10 +190,7 @@ void main(void) {
             lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
             lcd_puts(key_code_to_name(key));
             rend++;
-            *GSG1_W= (uint8_t)(rend & 0x00FF);
-            *GSG2_W= (uint8_t)(rend & 0x00FF);
-            *GSG3_W= (uint8_t)(rend & 0x00FF);
-            *GSG4_W= (uint8_t)(rend & 0x00FF);
+            *GSG6_W= (uint8_t)(rend & 0x00FF);
             EA=1;
             spin_delay(100);
             EA=0;
