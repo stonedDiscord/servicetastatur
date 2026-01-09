@@ -15,11 +15,21 @@ box_make(print=true,halves=TOP,explode=5,hide_box=false)
     box_shell_base_lid(sz,wall_sides=2,wall_top=1.2,rbot_inside=1,rtop_inside=1,rsides=15,rim_height=3,k=0.2,rim_snap=true) {
         // display
         box_part([TOP]) fwd(24) box_cutout(rect([150,15]),anchor=FRONT);
+
         // taster
-        box_part([TOP]) X(-60) Y(15) box_cutout(rect([6,6]),anchor=FRONT);
-        box_part([TOP]) X(-30) Y(15) box_cutout(rect([6,6]),anchor=FRONT);
-        box_part([TOP]) X(30) Y(15) box_cutout(rect([6,6]),anchor=FRONT);
-        box_part([TOP]) X(60) Y(15) box_cutout(rect([6,6]),anchor=FRONT);
+        box_part([TOP]) X(-80) Y(15) box_cutout(rect([6,6]),anchor=FRONT); //Left
+        box_part([TOP]) X(-70) Y(10) box_cutout(rect([6,6]),anchor=FRONT); //Up
+        box_part([TOP]) X(-70) Y(20) box_cutout(rect([6,6]),anchor=FRONT); //Down
+        box_part([TOP]) X(-60) Y(15) box_cutout(rect([6,6]),anchor=FRONT); //Right
+        
+        
+        box_part([TOP]) X(-30) Y(20) box_cutout(rect([6,6]),anchor=FRONT); //F1
+        box_part([TOP]) X(-10) Y(20) box_cutout(rect([6,6]),anchor=FRONT); //F2
+        box_part([TOP]) X(10) Y(20) box_cutout(rect([6,6]),anchor=FRONT);  //F3
+        box_part([TOP]) X(30) Y(20) box_cutout(rect([6,6]),anchor=FRONT);  //F4
+
+        box_part([TOP]) X(70) Y(15) box_cutout(rect([6,6]),anchor=FRONT);  //OK
+ 
         // halter
         X(87.5) Y(23) box_part([BOT]) standoff(h=3,od=3,id=0.2);
         X(-87.5) Y(23) box_part([BOT]) standoff(h=3,od=3,id=0.2);
