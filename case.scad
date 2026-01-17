@@ -7,21 +7,21 @@ $fn = $preview?16:48;
 $attachable_dump_tree = true;
 
 module button_guide(
-    size = 6,
+    size = 7,
     wall = 1.2,
     h = 10,
     clearance = 0.25
 ){
     difference() {
         // OUTER sleeve (extends DOWN into box)
-        translate([0,-wall,0])
+        translate([0,-1.5,0])
         cuboid(
             [size + wall*2, size + wall*2, h],
             anchor=FRONT+BOTTOM
         );
 
         // INNER hole
-        translate([0,0,-0.01])
+        translate([0,-0.5,-0.01])
             cuboid(
                 [size + clearance, size + clearance, h + 0.02],
                 anchor=FRONT+BOTTOM
@@ -39,18 +39,18 @@ box_make(print=true,halves=TOP,explode=5,hide_box=false)
         box_part([TOP]) fwd(18) box_cutout(rect([150,15]),anchor=FRONT);
 
         // taster
-        box_part([TOP]) X(-85) Y(14) { box_cutout(rect([6,6]),anchor=FRONT); } //Left
-        box_part([TOP]) X(-75) Y(7)  { box_cutout(rect([6,6]),anchor=FRONT); } //Up
-        box_part([TOP]) X(-75) Y(21) { box_cutout(rect([6,6]),anchor=FRONT); } //Down
-        box_part([TOP]) X(-65) Y(14) { box_cutout(rect([6,6]),anchor=FRONT); } //Right
+        box_part([TOP]) X(-85) Y(14) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //Left
+        box_part([TOP]) X(-75) Y(7)  { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //Up
+        box_part([TOP]) X(-75) Y(21) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //Down
+        box_part([TOP]) X(-65) Y(14) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //Right
         
         
-        box_part([TOP]) X(-34) Y(20) { box_cutout(rect([6,6]),anchor=FRONT); } //F1
-        box_part([TOP]) X(-8)  Y(20) { box_cutout(rect([6,6]),anchor=FRONT); } //F2
-        box_part([TOP]) X(17)  Y(20) { box_cutout(rect([6,6]),anchor=FRONT); } //F3
-        box_part([TOP]) X(45)  Y(20) { box_cutout(rect([6,6]),anchor=FRONT); } //F4
+        box_part([TOP]) X(-34) Y(20) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //F1
+        box_part([TOP]) X(-8)  Y(20) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //F2
+        box_part([TOP]) X(17)  Y(20) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //F3
+        box_part([TOP]) X(45)  Y(20) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //F4
 
-        box_part([TOP]) X(77)  Y(17) { box_cutout(rect([6,6]),anchor=FRONT); } //OK
+        box_part([TOP]) X(77)  Y(17) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //OK
  
         // halter
         // lcd oben
