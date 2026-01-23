@@ -9,7 +9,7 @@ $attachable_dump_tree = true;
 module button_guide(
     size = 7,
     wall = 1.2,
-    h = 10,
+    h = 8,
     clearance = 0.25
 ){
     difference() {
@@ -31,12 +31,12 @@ module button_guide(
 
 sz = [183+4,57+4,24];
 
-box_make(print=true,halves=TOP,explode=5,hide_box=false)
+box_make(print=true,halves=BOT,explode=5,hide_box=false)
 {
     // rim snap
     box_shell_base_lid(sz,wall_sides=2,wall_top=1.2,rbot_inside=1,rtop_inside=1,rsides=15,rim_height=3,k=0.2,rim_snap=true) {
         // display
-        box_part([TOP]) fwd(18) box_cutout(rect([150,15]),anchor=FRONT);
+        box_part([TOP]) X(1.5) fwd(18) box_cutout(rect([150,15]),anchor=FRONT);
 
         // taster
         box_part([TOP]) X(-85) Y(14) { box_cutout(rect([6,6]),anchor=FRONT); button_guide(); } //Left
@@ -68,14 +68,15 @@ box_make(print=true,halves=TOP,explode=5,hide_box=false)
         // board unten
         X(87.5)  Y(-26)  box_standoff_clamp(h=6,od=3,id=1.5,gap=2,pin_h=2);
         X(-87.5) Y(-26)  box_standoff_clamp(h=6,od=3,id=1.5,gap=2,pin_h=2);
-        // kabel
-        X(70)    Z(-6)   box_part([BACK]) box_hole(5.5,chamfer=1);
+        
+        // kabel loch
+        X(70)    Z(-6)   box_part([BACK]) box_hole(6,chamfer=1);
         
         // button wall
         X(50) Y(18) box_part([TOP],FRONT) box_wall(RIGHT,height=15,length=70,width=1,fillet=1.5,gap=0.5);
         
         // screen wall
-        Y(25) box_part([TOP],FRONT) box_wall(RIGHT,height=8,length=140,width=1,fillet=1.5,gap=0.5);
+        Y(25) box_part([TOP],FRONT) box_wall(RIGHT,height=9,length=140,width=1,fillet=1.5,gap=0.5);
         
         // screen
         box_part([TOP])
