@@ -19606,7 +19606,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "33pF"
+		(property "Value" "68pF"
 			(at 256.54 199.39 0)
 			(effects
 				(font
