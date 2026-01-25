@@ -1,0 +1,4 @@
+0x7000 disable service schalter
+
+0x0E00 profitech 3000 mode
+
