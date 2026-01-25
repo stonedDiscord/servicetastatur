@@ -10,10 +10,56 @@ int clockPin = 12;
 //Pin connected to D of 74HC4094
 int dataPin = 11;
 
-//holders for information you're going to pass to shifting function
-unsigned int data;
 
-unsigned int dataArray[10];
+unsigned int dataArray[13] = {
+  0x0F80,  // reg 7, bit 7 = 1  (arm / acknowledge)
+  0x0F00,  // reg 7, bit 7 = 0  (exit service mode)
+
+  0x4100, 0x8100,  // H
+  0x4100, 0x5100,  // E
+  0x4100, 0xC100,  // L
+  0x4100, 0xC100,  // L
+  0x4100, 0xF100   // O
+};
+
+
+/*
+unsigned int dataArray[13] = {
+0x1111,
+0x2222,
+0x3333,
+0x4444,
+0x5555,
+0x1111,
+0x2222,
+0x3333,
+0x4444,
+0x5555,
+0x1111,
+0x2222,
+0x3333  
+};
+*/
+
+unsigned int stupidSwap(unsigned int value) {
+  // Extract upper byte (DAT_EXTMEM_0050)
+  unsigned int upper = (value >> 8) & 0xFF;
+  unsigned int lower = value & 0xFF;
+
+  // Extract bits 1 and 3
+  unsigned int bit1 = (upper >> 1) & 1;
+  unsigned int bit3 = (upper >> 3) & 1;
+
+  // Clear bits 1 and 3
+  upper &= ~((1 << 1) | (1 << 3));
+
+  // Swap them
+  upper |= (bit1 << 3);
+  upper |= (bit3 << 1);
+
+  // Reassemble 16-bit word
+  return (upper << 8) | lower;
+}
 
 void setup() {
 
@@ -22,60 +68,41 @@ void setup() {
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
 
+  // Initialize strobe low to enable shifting
+  digitalWrite(strobePin, LOW);
+
   Serial.begin(9600);
 
-  dataArray[0] = 0x6666;
-  dataArray[1] = 0x7777;
-  dataArray[2] = 0x1234;
-  dataArray[3] = 0x5678;
-  dataArray[4] = 0x9ABC;
-  dataArray[5] = 0xDEF0;
-  dataArray[6] = 0x1111;
-  dataArray[7] = 0x2222;
-  dataArray[8] = 0x3333;
-  dataArray[9] = 0x4444;
+}
+
+void shiftOut16(int dataPin, int clockPin, unsigned int value) {
+
+  for (int i = 15; i >= 0; i--) {
+
+    digitalWrite(clockPin, LOW);
+
+    digitalWrite(dataPin, (value & (1 << i)) ? HIGH : LOW);
+    digitalWrite(clockPin, HIGH);
+    delay(1);
+  }
+
+  digitalWrite(clockPin, LOW);
+  delay(1);
 }
 
 void loop() {
 
-  for (int j = 0; j < 10; j++) {
+  for (int j = 0; j < 13; j++) {
 
-    //load the data you want from array
-    data = dataArray[j];
+    //unsigned int data = stupidSwap(dataArray[j]);
+    unsigned int data = dataArray[j];
 
-    digitalWrite(strobePin, 1);
+    digitalWrite(strobePin, LOW);
 
-    //move 'em out
-    shiftOut(dataPin, clockPin, data);
+    shiftOut16(dataPin, clockPin, data);
 
-    digitalWrite(strobePin, 0);
-    delay(600);
+    digitalWrite(strobePin, HIGH);   // latch outputs
+    delay(1);
+    digitalWrite(strobePin, LOW);
   }
-}
-
-void shiftOut(int myDataPin, int myClockPin, unsigned int myDataOut) {
-
-  int i=0;
-  int pinState;
-  digitalWrite(myDataPin, 0);
-  digitalWrite(myClockPin, 0);
-
-  for (i=15; i>=0; i--)  {
-    digitalWrite(myClockPin, 0);
-    if ( myDataOut & (1<<i) ) {
-      pinState= 1;
-    }
-    else {
-      pinState= 0;
-    }
-
-    digitalWrite(myDataPin, pinState);
-
-    digitalWrite(myClockPin, 1);
-
-    digitalWrite(myDataPin, 0);
-
-  }
-
-  digitalWrite(myClockPin, 0);
 }
