@@ -2,6 +2,8 @@
 
 Sending data through 2 shift registers 74HC4094
 
+The Data first goes into U20 which is at address 0x0040 and then into U19 which is at address 0x0050
+
  */
 //Pin connected to STR of 74HC4094
 int strobePin = 8;
@@ -11,37 +13,11 @@ int clockPin = 12;
 int dataPin = 11;
 
 
-unsigned int dataArray[13] = {
-  0x0F80,  // reg 7, bit 7 = 1  (arm / acknowledge)
-  0x0F00,  // reg 7, bit 7 = 0  (exit service mode)
-
-  0x4100, 0x8100,  // H
-  0x4100, 0x5100,  // E
-  0x4100, 0xC100,  // L
-  0x4100, 0xC100,  // L
-  0x4100, 0xF100   // O
+unsigned int dataArray[6] = {
+  /*TODO*/
 };
 
-
-/*
-unsigned int dataArray[13] = {
-0x1111,
-0x2222,
-0x3333,
-0x4444,
-0x5555,
-0x1111,
-0x2222,
-0x3333,
-0x4444,
-0x5555,
-0x1111,
-0x2222,
-0x3333  
-};
-*/
-
-unsigned int stupidSwap(unsigned int value) {
+unsigned int protectionSwap(unsigned int value) {
   // Extract upper byte (DAT_EXTMEM_0050)
   unsigned int upper = (value >> 8) & 0xFF;
   unsigned int lower = value & 0xFF;
@@ -77,11 +53,11 @@ void setup() {
 
 void shiftOut16(int dataPin, int clockPin, unsigned int value) {
 
-  for (int i = 15; i >= 0; i--) {
+  for (/*TODO*/) {
 
     digitalWrite(clockPin, LOW);
 
-    digitalWrite(dataPin, (value & (1 << i)) ? HIGH : LOW);
+    digitalWrite(dataPin, /*TODO*/);
     digitalWrite(clockPin, HIGH);
     delay(1);
   }
@@ -92,10 +68,9 @@ void shiftOut16(int dataPin, int clockPin, unsigned int value) {
 
 void loop() {
 
-  for (int j = 0; j < 13; j++) {
+  for (int j = 0; j < 6; j++) {
 
-    //unsigned int data = stupidSwap(dataArray[j]);
-    unsigned int data = dataArray[j];
+    unsigned int data = protectionSwap(dataArray[j]);
 
     digitalWrite(strobePin, LOW);
 
