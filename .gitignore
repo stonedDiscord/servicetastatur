@@ -45,3 +45,4 @@ firmware/*.mem
 firmware/*.rel
 firmware/*.rst
 firmware/*.sym
+firmware/.pio/
