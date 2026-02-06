@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    paths: ['firmware/main.c']
+    paths: ['firmware/*']
   pull_request:
-    paths: ['firmware/main.c']
+    paths: ['firmware/*']
   workflow_dispatch:
 
 jobs:
@@ -12,23 +12,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
 
-    - name: Install sdcc
-      uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        packages: sdcc binutils
-
-    - name: Build with sdcc
-      working-directory: firmware
-      run: sdcc -mmcs51 main.c
-
-    - name: Convert to binary
-      working-directory: firmware
-      run: objcopy -Iihex -Obinary main.ihx service_tastatur_v3.3.u3
-
-    - name: Upload ROM artifact
-      uses: actions/upload-artifact@v6
-      with:
-        name: servicet
-        path: firmware/service_tastatur_v3.3.u3
+      - name: Build PlatformIO Project
+        working-directory: firmware
+        run: pio run
