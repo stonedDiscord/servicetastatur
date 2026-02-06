@@ -1,10 +1,22 @@
 /*
  * Keypad test
- * compile with sdcc -mmcs51
  * Displays the current keypad state on the connected LCD
  */
 
-#include <8051.h>
+ #if defined(STC12C5AXXS2)
+   #include <stc12.h>
+#elif defined(STC89C5XRX)
+   #include <stc89.h>
+#elif defined(AT89S51)
+   #include <at89x51.h>
+#elif defined(AT89S52)
+   #include <at89x52.h>
+#elif defined(Generic8052)
+   #include "Generic8052.h"
+#else // Assume Generic8051
+   #include "Generic8051.h"
+#endif
+
 #include <stdint.h>
 
 #include "hd44780.h"
