@@ -17,6 +17,8 @@ int dataOutPin = 11;
 
 int dataInPin = 7;
 
+byte dataIn = 0;
+
 unsigned int initArray[8] = {
     0xEFF7, 0xBFDF, 0xBFDF, 0xBFDF, 0xEFF7, 0xEFF7, 0xBFDF, 0xBFDF,
 };
@@ -57,6 +59,7 @@ void shiftOut16(int dataOutPin, int clockPin, unsigned int rawValue)
     digitalWrite(clockPin, LOW);
 
     digitalWrite(dataOutPin, (value >> i) & 1);
+    dataIn = (dataIn << 1) | digitalRead(dataInPin);
     digitalWrite(clockPin, HIGH);
     delay(1);
   }
@@ -135,5 +138,6 @@ void loop()
       }
       Serial.println(input); // Echo back the command
   }
+  Serial.println(dataIn);
   delay(200); // Small delay to prevent busy waiting
 }
