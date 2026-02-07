@@ -17,7 +17,7 @@ int dataOutPin = 11;
 
 int dataInPin = 7;
 
-byte dataIn = 0;
+unsigned int dataIn = 0;
 
 unsigned int initArray[8] = {
     0xEFF7, 0xBFDF, 0xBFDF, 0xBFDF, 0xEFF7, 0xEFF7, 0xBFDF, 0xBFDF,
@@ -95,49 +95,19 @@ void setup()
 
   Serial.begin(9600);
 
-  shiftOut16(dataOutPin, clockPin, initArray[0]);
-  shiftOut16(dataOutPin, clockPin, initArray[1]);
+  for (int i = 0; i < 8; i++) {
+    shiftOut16(dataOutPin, clockPin, initArray[i]);
+  }
 }
 
 
 
 void loop()
 {
-  shiftOut16(dataOutPin, clockPin, initArray[0]);
-  shiftOut16(dataOutPin, clockPin, initArray[1]);
-  shiftOut16(dataOutPin, clockPin, initArray[2]);
-  shiftOut16(dataOutPin, clockPin, initArray[3]);
-  shiftOut16(dataOutPin, clockPin, initArray[4]);
-  shiftOut16(dataOutPin, clockPin, initArray[5]);
-  shiftOut16(dataOutPin, clockPin, initArray[6]);
-  shiftOut16(dataOutPin, clockPin, initArray[7]);
-  if (Serial.available() > 0) {
-    String input = Serial.readStringUntil('\n');
-    input.trim(); // Remove any whitespace
-    if (input.length() == 4) {
-        // Try to parse as 16-bit hex value
-        char* end;
-        unsigned int value = strtol(input.c_str(), &end, 16);
-        if (*end == '\0') { // valid hex
-          shiftOut16(dataOutPin, clockPin, value);
-        } else {
-          // treat as characters
-          for (unsigned int i = 0; i < input.length(); i++) {
-            char c = input[i];
-            byte charCode = (c >= '0' && c <= '9') ? c - '0' : (byte)c;
-            printChar(charCode);
-          }
-        }
-      } else {
-        // treat as characters
-        for (unsigned int i = 0; i < input.length(); i++) {
-          char c = input[i];
-          byte charCode = (c >= '0' && c <= '9') ? c - '0' : (byte)c;
-          printChar(charCode);
-        }
-      }
-      Serial.println(input); // Echo back the command
+  for (int i = 0; i < 8; i++) {
+    shiftOut16(dataOutPin, clockPin, initArray[i]);
+    Serial.println(dataIn, HEX);
+    delay(100);
   }
-  Serial.println(dataIn);
-  delay(200); // Small delay to prevent busy waiting
+  
 }
