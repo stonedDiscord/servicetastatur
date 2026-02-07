@@ -10,7 +10,9 @@ int strobePin = 8;
 // Pin connected to CP of 74HC4094
 int clockPin = 12;
 // Pin connected to D of 74HC4094
-int dataPin = 11;
+int dataOutPin = 11;
+
+int dataInPin = 7;
 
 unsigned int initArray[8] = {
     0xEFF7, 0xBFDF, 0xBFDF, 0xBFDF, 0xEFF7, 0xEFF7, 0xBFDF, 0xBFDF,
@@ -43,10 +45,10 @@ void printChar(byte charCode)
   byte highByte = (highNib << 4) | 0x3;
   byte lowByte = (0x5 << 4) | lowNib;
   unsigned int value = (highByte << 8) | lowByte;
-  shiftOut16(dataPin, clockPin, value);
+  shiftOut16(dataOutPin, clockPin, value);
 }
 
-void shiftOut16(int dataPin, int clockPin, unsigned int rawValue)
+void shiftOut16(int dataOutPin, int clockPin, unsigned int rawValue)
 {
   byte lowByte = (rawValue >> 8) & 0xFF;
   byte highByte = rawValue & 0xFF;
@@ -61,7 +63,7 @@ void shiftOut16(int dataPin, int clockPin, unsigned int rawValue)
 
     digitalWrite(clockPin, LOW);
 
-    digitalWrite(dataPin, (value >> i) & 1);
+    digitalWrite(dataOutPin, (value >> i) & 1);
     digitalWrite(clockPin, HIGH);
     delay(1);
   }
@@ -79,29 +81,30 @@ void setup()
   // set pins to output because they are addressed in the main loop
   pinMode(strobePin, OUTPUT);
   pinMode(clockPin, OUTPUT);
-  pinMode(dataPin, OUTPUT);
+  pinMode(dataOutPin, OUTPUT);
+  pinMode(dataInPin, INPUT);
 
   // Initialize strobe low to enable shifting
   digitalWrite(strobePin, LOW);
 
   Serial.begin(9600);
 
-  shiftOut16(dataPin, clockPin, initArray[0]);
-  shiftOut16(dataPin, clockPin, initArray[1]);
+  shiftOut16(dataOutPin, clockPin, initArray[0]);
+  shiftOut16(dataOutPin, clockPin, initArray[1]);
 }
 
 
 
 void loop()
 {
-  shiftOut16(dataPin, clockPin, initArray[0]);
-  shiftOut16(dataPin, clockPin, initArray[1]);
-  shiftOut16(dataPin, clockPin, initArray[2]);
-  shiftOut16(dataPin, clockPin, initArray[3]);
-  shiftOut16(dataPin, clockPin, initArray[4]);
-  shiftOut16(dataPin, clockPin, initArray[5]);
-  shiftOut16(dataPin, clockPin, initArray[6]);
-  shiftOut16(dataPin, clockPin, initArray[7]);
+  shiftOut16(dataOutPin, clockPin, initArray[0]);
+  shiftOut16(dataOutPin, clockPin, initArray[1]);
+  shiftOut16(dataOutPin, clockPin, initArray[2]);
+  shiftOut16(dataOutPin, clockPin, initArray[3]);
+  shiftOut16(dataOutPin, clockPin, initArray[4]);
+  shiftOut16(dataOutPin, clockPin, initArray[5]);
+  shiftOut16(dataOutPin, clockPin, initArray[6]);
+  shiftOut16(dataOutPin, clockPin, initArray[7]);
   if (Serial.available() > 0) {
     String input = Serial.readStringUntil('\n');
     input.trim(); // Remove any whitespace
@@ -110,7 +113,7 @@ void loop()
         char* end;
         unsigned int value = strtol(input.c_str(), &end, 16);
         if (*end == '\0') { // valid hex
-          shiftOut16(dataPin, clockPin, value);
+          shiftOut16(dataOutPin, clockPin, value);
         } else {
           // treat as characters
           for (unsigned int i = 0; i < input.length(); i++) {
