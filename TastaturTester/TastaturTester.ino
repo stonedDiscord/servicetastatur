@@ -12,8 +12,8 @@ int clockPin = 12;
 // Pin connected to D of 74HC4094
 int dataPin = 11;
 
-unsigned int initArray[2] = {
-    0x0E00, 0x7000, 
+unsigned int initArray[8] = {
+    0xEFF7, 0xBFDF, 0xBFDF, 0xBFDF, 0xEFF7, 0xEFF7, 0xBFDF, 0xBFDF,
 };
 
 byte protectionSwap(byte value)
@@ -48,10 +48,10 @@ void printChar(byte charCode)
 
 void shiftOut16(int dataPin, int clockPin, unsigned int rawValue)
 {
-  byte highByte = (rawValue >> 8) & 0xFF;
-  byte lowByte = rawValue & 0xFF;
+  byte lowByte = (rawValue >> 8) & 0xFF;
+  byte highByte = rawValue & 0xFF;
   byte processedHigh = reverseAll(highByte);
-  byte processedLow = protectionSwap(reverseAll(lowByte));
+  byte processedLow = reverseAll(lowByte); //protectionSwap(reverseAll(lowByte));
   unsigned int value = (processedHigh << 8) | processedLow;
 
   digitalWrite(strobePin, LOW);
@@ -96,6 +96,12 @@ void loop()
 {
   shiftOut16(dataPin, clockPin, initArray[0]);
   shiftOut16(dataPin, clockPin, initArray[1]);
+  shiftOut16(dataPin, clockPin, initArray[2]);
+  shiftOut16(dataPin, clockPin, initArray[3]);
+  shiftOut16(dataPin, clockPin, initArray[4]);
+  shiftOut16(dataPin, clockPin, initArray[5]);
+  shiftOut16(dataPin, clockPin, initArray[6]);
+  shiftOut16(dataPin, clockPin, initArray[7]);
   if (Serial.available() > 0) {
     String input = Serial.readStringUntil('\n');
     input.trim(); // Remove any whitespace
