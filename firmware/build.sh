@@ -1,7 +1,7 @@
-rm main.ihx
+rm .pio/build/at89s52/firmware.hex
 rm service_tastatur_v3.3.u3
-sdcc -mmcs51 main.c
-objcopy -Iihex -Obinary main.ihx service_tastatur_v3.3.u3
+pio run
+objcopy -Iihex -Obinary .pio/build/at89s52/firmware.hex service_tastatur_v3.3.u3
 
 if [ ! -f service_tastatur_v3.3.u3 ]; then
     echo "Error: service_tastatur_v3.3.u3 not found"
