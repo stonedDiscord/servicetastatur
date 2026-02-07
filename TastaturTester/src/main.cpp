@@ -5,7 +5,10 @@ Sending data through 2 shift registers 74HC4094
 The Data first goes into U20 which is at address 0x0040 and then into U19 which is at address 0x0050
 Both registers have all the data lines reversed and U19 has D1 and D3 swapped.
  */
-// Pin connected to STR of 74HC4094
+
+#include <Arduino.h>
+
+ // Pin connected to STR of 74HC4094
 int strobePin = 8;
 // Pin connected to CP of 74HC4094
 int clockPin = 12;
@@ -38,16 +41,6 @@ byte reverseAll(byte indata)
   return out;
 }
 
-void printChar(byte charCode)
-{
-  byte highNib = (charCode >> 4) & 0xF;
-  byte lowNib = charCode & 0xF;
-  byte highByte = (highNib << 4) | 0x3;
-  byte lowByte = (0x5 << 4) | lowNib;
-  unsigned int value = (highByte << 8) | lowByte;
-  shiftOut16(dataOutPin, clockPin, value);
-}
-
 void shiftOut16(int dataOutPin, int clockPin, unsigned int rawValue)
 {
   byte lowByte = (rawValue >> 8) & 0xFF;
@@ -73,6 +66,16 @@ void shiftOut16(int dataOutPin, int clockPin, unsigned int rawValue)
   digitalWrite(strobePin, HIGH); // latch outputs
   delay(1);
   digitalWrite(strobePin, LOW);
+}
+
+void printChar(byte charCode)
+{
+  byte highNib = (charCode >> 4) & 0xF;
+  byte lowNib = charCode & 0xF;
+  byte highByte = (highNib << 4) | 0x3;
+  byte lowByte = (0x5 << 4) | lowNib;
+  unsigned int value = (highByte << 8) | lowByte;
+  shiftOut16(dataOutPin, clockPin, value);
 }
 
 void setup()
