@@ -106,7 +106,9 @@ void loop()
 {
   for (int i = 0; i < 8; i++) {
     shiftOut16(dataOutPin, clockPin, initArray[i]);
-    Serial.println(dataIn, HEX);
+    if (dataIn != 0) {
+      Serial.println(dataIn, HEX);
+    }
     delay(100);
   }
   
