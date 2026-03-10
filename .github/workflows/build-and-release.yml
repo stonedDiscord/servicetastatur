@@ -115,6 +115,9 @@ jobs:
       - name: Render bottom half
         run: openscad -D haelfte=BOT -o render/bot.3mf case.scad
 
+      - name: Render button
+        run: openscad -o render/taster.3mf taster.scad
+
       - name: Upload render artifacts
         uses: actions/upload-artifact@v6
         with:
