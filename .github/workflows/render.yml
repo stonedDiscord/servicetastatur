@@ -28,7 +28,10 @@ jobs:
 
       - run: cp -r libraries /usr/local/share/openscad/
 
-      - run: openscad -D haelfte=TOP -o top.3mf -o top.stl case.scad
+      - run: openscad -D haelfte=TOP -o render/top.3mf -o render/top.stl case.scad
 
-      - run: openscad -D haelfte=BOT -o bot.3mf -o bot.stl case.scad
+      - run: openscad -D haelfte=BOT -o render/bot.3mf -o render/bot.stl case.scad
       
+      - uses: actions/upload-artifact@v6
+        with:
+          path: render/*
