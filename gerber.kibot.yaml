@@ -1,0 +1,11 @@
+kibot:
+    version: 1
+
+outputs:
+        
+  - name: 'gerbers'
+    comment: "Generate gerber files"
+    type: gerber
+    dir: .
+    options:
+      output: Schematic.pdf

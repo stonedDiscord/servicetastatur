@@ -24,14 +24,25 @@ jobs:
 
       - uses: INTI-CMNB/KiBot@v2_k9
         with:
-          config: config.kibot.yaml
-          dir: output
+          config: pdf.kibot.yaml
+          dir: drawings
 
       - name: Upload drawings
         uses: actions/upload-artifact@v6
         with:
           name: Servicetastatur-drawings-${{ github.sha }}
-          path: output
+          path: drawings
+
+      - uses: INTI-CMNB/KiBot@v2_k9
+        with:
+          config: gerber.kibot.yaml
+          dir: gerbers
+
+      - name: Upload gerbers
+        uses: actions/upload-artifact@v6
+        with:
+          name: Servicetastatur-gerbers-${{ github.sha }}
+          path: gerbers/Gerbers.zip
 
   build:
     runs-on: ubuntu-latest
