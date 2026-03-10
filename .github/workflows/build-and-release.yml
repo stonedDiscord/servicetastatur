@@ -4,14 +4,14 @@ on:
   push:
     paths:
       - '**.kicad_*'
-      - 'firmware/*'
-      - 'TastaturTester/*'
+      - 'firmware/**'
+      - 'TastaturTester/**'
       - '*.scad'
   pull_request:
     paths:
       - '**.kicad_*'
-      - 'firmware/*'
-      - 'TastaturTester/*'
+      - 'firmware/**'
+      - 'TastaturTester/**'
       - '*.scad'
   workflow_dispatch:
 
