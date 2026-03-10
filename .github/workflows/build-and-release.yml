@@ -146,12 +146,13 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v8
         with:
+          skip-decompress: true
           path: artifacts
 
       - name: Upload to Latest Release
         uses: softprops/action-gh-release@v1
         with:
-          files: artifacts/*.zip
+          files: artifacts/*
           tag_name: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
