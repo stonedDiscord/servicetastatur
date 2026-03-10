@@ -2,7 +2,6 @@ name: Build
 
 on:
   push:
-    paths: ['firmware/*']
   pull_request:
     paths: ['firmware/*']
   workflow_dispatch:
