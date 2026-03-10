@@ -31,9 +31,10 @@ jobs:
           dir: drawings
 
       - name: Upload drawings
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Servicetastatur-drawings-${{ github.sha }}
+          archive: true
           path: drawings
 
       - uses: INTI-CMNB/KiBot@v2_k9
@@ -41,9 +42,10 @@ jobs:
           config: gerber.kibot.yaml
 
       - name: Upload gerbers
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Servicetastatur-gerbers-${{ github.sha }}
+          archive: true
           path: gerberdir
 
   build:
@@ -75,9 +77,10 @@ jobs:
         run: pio run
 
       - name: Upload built binary
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Servicetastatur-firmware-${{ github.sha }}
+          archive: true
           path: firmware/.pio/build/stc12c5axxS2/firmware.hex
 
   render:
@@ -116,19 +119,20 @@ jobs:
       - name: Create render directory
         run: mkdir render
 
+      - name: Render button
+        run: openscad -o render/taster.3mf taster.scad
+
       - name: Render top half
         run: openscad -D haelfte=TOP -o render/top.3mf case.scad
 
       - name: Render bottom half
         run: openscad -D haelfte=BOT -o render/bot.3mf case.scad
 
-      - name: Render button
-        run: openscad -o render/taster.3mf taster.scad
-
       - name: Upload render artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Servicetastatur-case-${{ github.sha }}
+          archive: true
           path: render/*
 
   upload-to-release:
@@ -140,15 +144,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
 
       - name: Upload to Latest Release
         uses: softprops/action-gh-release@v1
         with:
-          files: artifacts/**/*
+          files: artifacts/*.zip
           tag_name: latest
-          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
