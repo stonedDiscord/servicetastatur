@@ -1,0 +1,134 @@
+name: Build and Release
+
+on:
+  push:
+    paths:
+      - '**.kicad_sch'
+      - '**.kicad_pcb'
+      - 'firmware/*'
+      - '*.scad'
+  pull_request:
+    paths:
+      - '**.kicad_sch'
+      - '**.kicad_pcb'
+      - 'firmware/*'
+      - '*.scad'
+  workflow_dispatch:
+
+jobs:
+  kibot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v6
+
+      - uses: INTI-CMNB/KiBot@v2_k9
+        with:
+          config: config.kibot.yaml
+          dir: output
+
+      - name: Upload drawings
+        uses: actions/upload-artifact@v6
+        with:
+          name: Servicetastatur-drawings-${{ github.sha }}
+          path: output
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v6
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Build PlatformIO Project
+        working-directory: firmware
+        run: pio run
+
+      - name: Upload built binary
+        uses: actions/upload-artifact@v6
+        with:
+          name: Servicetastatur-firmware-${{ github.sha }}
+          path: firmware/.pio/build/at89s52/firmware.hex
+
+  render:
+    runs-on: ubuntu-latest
+    container:
+      image: openscad/openscad:latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v6
+
+      - name: Cache SCAD libraries
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: libraries
+          key: scad-libraries-v1
+          restore-keys: scad-libraries-v1
+
+      - name: Checkout jl_scad library
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/checkout@v6
+        with:
+          repository: lijon/jl_scad
+          path: libraries/jl_scad
+
+      - name: Checkout BOSL2 library
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/checkout@v6
+        with:
+          repository: BelfrySCAD/BOSL2
+          path: libraries/BOSL2
+
+      - name: Install libraries
+        run: cp -r libraries /usr/local/share/openscad/
+
+      - name: Create render directory
+        run: mkdir render
+
+      - name: Render top half
+        run: openscad -D haelfte=TOP -o render/top.3mf case.scad
+
+      - name: Render bottom half
+        run: openscad -D haelfte=BOT -o render/bot.3mf case.scad
+
+      - name: Upload render artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: Servicetastatur-case-${{ github.sha }}
+          path: render/*
+
+  upload-to-release:
+    needs: [kibot, build, render]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v6
+        with:
+          path: artifacts
+
+      - name: Upload to Latest Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifacts/**/*
+          tag_name: latest
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
