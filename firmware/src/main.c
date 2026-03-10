@@ -132,13 +132,13 @@ static const char* key_code_to_name(uint8_t key_code) {
         case 0x02: return "F2";
         case 0x03: return "F3";
         case 0x04: return "F4";
-        case 0x05: return "Up";
+        case 0x05: return "HOCH";
         case 0x06: return "OK";
-        case 0x07: return "Left";
-        case 0x08: return "Down";
-        case 0x09: return "Right";
+        case 0x07: return "Links";
+        case 0x08: return "RUNTER";
+        case 0x09: return "RECHTS";
         case 0x10: return "F1+F4";
-        case 0x11: return "F2+Up";
+        case 0x11: return "F2+HOCH";
         default: return "None";
     }
 }
