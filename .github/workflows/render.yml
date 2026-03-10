@@ -28,6 +28,8 @@ jobs:
 
       - run: cp -r libraries /usr/local/share/openscad/
 
+      - run: mkdir render
+
       - run: openscad -D haelfte=TOP -o render/top.3mf -o render/top.stl case.scad
 
       - run: openscad -D haelfte=BOT -o render/bot.3mf -o render/bot.stl case.scad
