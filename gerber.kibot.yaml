@@ -1,0 +1,9 @@
+kibot:
+    version: 1
+
+outputs:
+        
+  - name: 'gerbers'
+    comment: "Gerbers for the board house"
+    type: gerber
+    dir: gerberdir
