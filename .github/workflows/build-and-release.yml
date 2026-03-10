@@ -3,15 +3,15 @@ name: Build and Release
 on:
   push:
     paths:
-      - '**.kicad_sch'
-      - '**.kicad_pcb'
+      - '**.kicad_*'
       - 'firmware/*'
+      - 'TastaturTester/*'
       - '*.scad'
   pull_request:
     paths:
-      - '**.kicad_sch'
-      - '**.kicad_pcb'
+      - '**.kicad_*'
       - 'firmware/*'
+      - 'TastaturTester/*'
       - '*.scad'
   workflow_dispatch:
 
