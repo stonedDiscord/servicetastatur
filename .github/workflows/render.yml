@@ -35,10 +35,10 @@ jobs:
         run: mkdir render
 
       - name: Render top half
-        run: openscad -D haelfte=TOP -o render/top.3mf -o render/top.stl case.scad
+        run: openscad -D haelfte=TOP -o render/top.3mf case.scad
 
       - name: Render bottom half
-        run: openscad -D haelfte=BOT -o render/bot.3mf -o render/bot.stl case.scad
+        run: openscad -D haelfte=BOT -o render/bot.3mf case.scad
 
       - name: Upload render artifacts
         uses: actions/upload-artifact@v6
