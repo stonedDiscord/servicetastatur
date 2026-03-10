@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: Servicetastatur-firmware-${{ github.sha }}
-          path: firmware/.pio/build/at89s52/firmware.hex
+          path: firmware/.pio/build/stc12c5axxS2/firmware.hex
 
   render:
     runs-on: ubuntu-latest
