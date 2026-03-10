@@ -4,8 +4,6 @@ kibot:
 outputs:
         
   - name: 'gerbers'
-    comment: "Generate gerber files"
+    comment: "Gerbers for the board house"
     type: gerber
-    dir: .
-    options:
-      output: Schematic.pdf
+    dir: gerberdir

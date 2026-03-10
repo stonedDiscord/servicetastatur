@@ -36,13 +36,12 @@ jobs:
       - uses: INTI-CMNB/KiBot@v2_k9
         with:
           config: gerber.kibot.yaml
-          dir: gerbers
 
       - name: Upload gerbers
         uses: actions/upload-artifact@v6
         with:
           name: Servicetastatur-gerbers-${{ github.sha }}
-          path: gerbers/Gerbers.zip
+          path: gerberdir
 
   build:
     runs-on: ubuntu-latest
