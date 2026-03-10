@@ -28,5 +28,7 @@ jobs:
 
       - run: cp -r libraries /usr/local/share/openscad/
 
-      - run: openscad -o case.3mf case.scad
+      - run: openscad -Dhalve=TOP -o top.3mf -o top.stl case.scad
+
+      - run: openscad -Dhalve=BOT -o bot.3mf -o bot.stl case.scad
       
