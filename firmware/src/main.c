@@ -185,6 +185,7 @@ void INT1_ISR (void) __interrupt (2) {
 }
 
 void main(void) {
+    AUXR = 0x02; // Use external memory only, disable internal RAM
     lcd_init();
     EX1 = 1;
 
