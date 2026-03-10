@@ -185,7 +185,7 @@ void INT1_ISR (void) __interrupt (2) {
 }
 
 void main(void) {
-    AUXR = 0x02; // Use external memory only, disable internal RAM
+    AUXR = 0x02; // Use external memory
     lcd_init();
     EX1 = 1;
 
@@ -194,7 +194,6 @@ void main(void) {
     // Line 1: title
     lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE1_ADDR | 0x00);
     lcd_puts("Keypad Test        ");
-    //EA = 1;
     while (1) {
             uint8_t key = scan_kbd();
      
@@ -207,6 +206,5 @@ void main(void) {
             EA=1;
             spin_delay(100);
             EA=0;
-            
         }
 }
