@@ -66,8 +66,12 @@ jobs:
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      - name: Build PlatformIO Project
+      - name: Build Firmware Project
         working-directory: firmware
+        run: pio run
+
+      - name: Build Tester Project
+        working-directory: TastaturTester
         run: pio run
 
       - name: Upload built binary
