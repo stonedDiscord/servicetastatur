@@ -26,5 +26,7 @@ jobs:
           repository: BelfrySCAD/BOSL2
           path: libraries/BOSL2
 
+      - run: cp -r libraries /usr/local/share/openscad/
+
       - run: openscad -o case.3mf case.scad
       
