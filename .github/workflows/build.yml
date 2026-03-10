@@ -11,13 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout main repository
+        uses: actions/checkout@v6
+
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pip
             ~/.platformio/.cache
           key: ${{ runner.os }}-pio
+
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
@@ -27,3 +30,9 @@ jobs:
       - name: Build PlatformIO Project
         working-directory: firmware
         run: pio run
+
+      - name: Upload built binary
+        uses: actions/upload-artifact@v6
+        with:
+          name: Servicetastatur-firmware-${{ github.sha }}
+          path: firmware/.pio/build/at89s52/firmware.hex
