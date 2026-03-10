@@ -1,0 +1,30 @@
+name: Render
+
+on:
+  push:
+    paths: ['*.scad']
+  pull_request:
+    paths: ['*.scad']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: openscad/openscad:latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/checkout@v6
+        with:
+          repository: lijon/jl_scad
+          path: libraries/jl_scad
+
+      - uses: actions/checkout@v6
+        with:
+          repository: BelfrySCAD/BOSL2
+          path: libraries/BOSL2
+
+      - run: openscad -o case.3mf case.scad
+      
