@@ -14,26 +14,35 @@ jobs:
       image: openscad/openscad:latest
 
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout main repository
+        uses: actions/checkout@v6
 
-      - uses: actions/checkout@v6
+      - name: Checkout jl_scad library
+        uses: actions/checkout@v6
         with:
           repository: lijon/jl_scad
           path: libraries/jl_scad
 
-      - uses: actions/checkout@v6
+      - name: Checkout BOSL2 library
+        uses: actions/checkout@v6
         with:
           repository: BelfrySCAD/BOSL2
           path: libraries/BOSL2
 
-      - run: cp -r libraries /usr/local/share/openscad/
+      - name: Install libraries
+        run: cp -r libraries /usr/local/share/openscad/
 
-      - run: mkdir render
+      - name: Create render directory
+        run: mkdir render
 
-      - run: openscad -D haelfte=TOP -o render/top.3mf -o render/top.stl case.scad
+      - name: Render top half
+        run: openscad -D haelfte=TOP -o render/top.3mf -o render/top.stl case.scad
 
-      - run: openscad -D haelfte=BOT -o render/bot.3mf -o render/bot.stl case.scad
-      
-      - uses: actions/upload-artifact@v6
+      - name: Render bottom half
+        run: openscad -D haelfte=BOT -o render/bot.3mf -o render/bot.stl case.scad
+
+      - name: Upload render artifacts
+        uses: actions/upload-artifact@v6
         with:
+          name: Servicetastatur-case-${{ github.sha }}
           path: render/*
