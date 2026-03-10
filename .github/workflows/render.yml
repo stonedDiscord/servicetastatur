@@ -16,13 +16,23 @@ jobs:
       - name: Checkout main repository
         uses: actions/checkout@v6
 
+      - name: Cache SCAD libraries
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: libraries
+          key: scad-libraries-v1
+          restore-keys: scad-libraries-v1
+
       - name: Checkout jl_scad library
+        if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v6
         with:
           repository: lijon/jl_scad
           path: libraries/jl_scad
 
       - name: Checkout BOSL2 library
+        if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v6
         with:
           repository: BelfrySCAD/BOSL2
