@@ -21,7 +21,6 @@ fp-info-cache
 **.net
 **.ipc
 **.zip
-**.u3
 
 # Autorouter files (exported from Pcbnew)
 *.dsn
@@ -35,6 +34,7 @@ drawings/
 difference/
 *.pdf
 
+**.u3
 firmware/*.bin
 firmware/*.asm
 firmware/*.ihx
