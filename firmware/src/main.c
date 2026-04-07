@@ -3,18 +3,18 @@
  * Displays the current keypad state on the connected LCD
  */
 
- #if defined(STC12C5AXXS2)
-   #include <stc12.h>
+#if defined(STC12C5AXXS2)
+#include <stc12.h>
 #elif defined(STC89C5XRX)
-   #include <stc89.h>
+#include <stc89.h>
 #elif defined(AT89S51)
-   #include <at89x51.h>
+#include <at89x51.h>
 #elif defined(AT89S52)
-   #include <at89x52.h>
+#include <at89x52.h>
 #elif defined(Generic8052)
-   #include "Generic8052.h"
+#include "Generic8052.h"
 #else // Assume Generic8051
-   #include "Generic8051.h"
+#include "Generic8051.h"
 #endif
 
 #include <stdint.h>
@@ -40,84 +40,131 @@ __xdata volatile uint8_t* const LCD_CMD_R  = (__xdata uint8_t*)0x0071;
 __xdata volatile uint8_t* const LCD_DATA_W = (__xdata uint8_t*)0x0072;
 __xdata volatile uint8_t* const LCD_DATA_R = (__xdata uint8_t*)0x0073;
 
-
-static void spin_delay(uint16_t delay) {
+static void spin_delay(uint16_t delay)
+{
     uint16_t i;
-    for (i = 0; i < delay; i++);
+    for (i = 0; i < delay; i++)
+        ;
 }
 
-static void lcd_wait_ready(void) {
-    while (*LCD_CMD_R & HD44780_BUSY);
+static void lcd_wait_ready(void)
+{
+    while (*LCD_CMD_R & HD44780_BUSY)
+        ;
 }
 
-static void lcd_cmd(uint8_t cmd) {
+static void lcd_cmd(uint8_t cmd)
+{
     lcd_wait_ready();
     *LCD_CMD_W = cmd;
 }
 
-static void lcd_putc(char c) {
+static void lcd_putc(char c)
+{
     lcd_wait_ready();
     *LCD_DATA_W = c;
 }
 
-static void lcd_puts(const char *s) {
-    while (*s) {
+static void lcd_puts(const char *s)
+{
+    while (*s)
+    {
         lcd_putc(*s++);
     }
 }
 
-static void lcd_init(void) {
-    lcd_cmd(HD44780_CMD_FUNCTION_SET | HD44780_FUNCTION_8BIT | HD44780_FUNCTION_2LINE | HD44780_FUNCTION_5X7DOTS);
-    lcd_cmd(HD44780_CMD_DISPLAY_CTRL | HD44780_DISPLAY_ON | HD44780_DISPLAY_CURSOR_OFF | HD44780_DISPLAY_BLINK_OFF);
-    lcd_cmd(HD44780_CMD_ENTRY_MODE   | HD44780_ENTRY_LTR);
-    lcd_cmd(HD44780_CMD_CLEAR);
-}
-
 // Keypad scan function
-uint8_t scan_kbd(void) {
+uint8_t scan_kbd(void)
+{
     uint8_t row_state;
     uint8_t key_count = 0;
     uint8_t key_code = 0;
     uint8_t column_input;
     P1 = 0xfb; // P1.2 column 3, F1, F2, F3
     row_state = P1 & 0x70;
-    if (row_state == 0x50) { key_count = 1; key_code = 1; } // F1
-    else if (row_state == 0x30) { key_count = 1; key_code = 2; } // F2
-    else if (row_state == 0x60) { key_count = 1; key_code = 3; } // F3
+    if (row_state == 0x50)
+    {
+        key_count = 1;
+        key_code = 1;
+    } // F1
+    else if (row_state == 0x30)
+    {
+        key_count = 1;
+        key_code = 2;
+    } // F2
+    else if (row_state == 0x60)
+    {
+        key_count = 1;
+        key_code = 3;
+    } // F3
 
     P1 = 0xfd; // P1.1 column 2, Left, Down, Right
     row_state = P1 & 0x70;
-    if (row_state == 0x50) { key_count++; key_code = 7; } // Left
-    else if (row_state == 0x30) { key_count++; key_code = 8; } // Down
-    else if (row_state == 0x60) { key_count++; key_code = 9; } // Right
+    if (row_state == 0x50)
+    {
+        key_count++;
+        key_code = 7;
+    } // Left
+    else if (row_state == 0x30)
+    {
+        key_count++;
+        key_code = 8;
+    } // Down
+    else if (row_state == 0x60)
+    {
+        key_count++;
+        key_code = 9;
+    } // Right
 
     P1 = 0xfe; // P1.0 column 1, F4, Up, OK
     row_state = P1;
     column_input = row_state & 0x70;
-    if (column_input == 0x50) {
-        if (key_code == 1) key_code = 0x10; // F1 + F4
-        else { key_code = 4; key_count++; } // F4
+    if (column_input == 0x50)
+    {
+        if (key_code == 1)
+            key_code = 0x10; // F1 + F4
+        else
+        {
+            key_code = 4;
+            key_count++;
+        } // F4
     }
-    else if (column_input == 0x30) {
-        if (key_code == 2) key_code = 0x11; // F2 + Up
-        else { key_count++; key_code = 5; } // Up
+    else if (column_input == 0x30)
+    {
+        if (key_code == 2)
+            key_code = 0x11; // F2 + Up
+        else
+        {
+            key_count++;
+            key_code = 5;
+        } // Up
     }
-    else if (column_input == 0x60) { key_count++; key_code = 6; } // OK
+    else if (column_input == 0x60)
+    {
+        key_count++;
+        key_code = 6;
+    } // OK
 
     P1 = 0xff;
-    if (key_count != 1) key_code = 0; // No key or multiple keys pressed
+    if (key_count != 1)
+        key_code = 0; // No key or multiple keys pressed
     return key_code;
 }
 
 // Convert a small number to decimal string and display it
-static void lcd_putnum(uint8_t n) {
+static void lcd_putnum(uint8_t n)
+{
     char buf[4];
     char *p = buf + sizeof(buf) - 1;
     *p = '\0';
-    if (n == 0) {
+    if (n == 0)
+    {
         *--p = '0';
-    } else {
-        while (n > 0) {
+    }
+    else
+    {
+        while (n > 0)
+        {
             *--p = '0' + (n % 10);
             n /= 10;
         }
@@ -126,20 +173,34 @@ static void lcd_putnum(uint8_t n) {
 }
 
 // Convert key code to key name
-static const char* key_code_to_name(uint8_t key_code) {
-    switch (key_code) {
-        case 0x01: return "F1";
-        case 0x02: return "F2";
-        case 0x03: return "F3";
-        case 0x04: return "F4";
-        case 0x05: return "HOCH";
-        case 0x06: return "OK";
-        case 0x07: return "Links";
-        case 0x08: return "RUNTER";
-        case 0x09: return "RECHTS";
-        case 0x10: return "F1+F4";
-        case 0x11: return "F2+HOCH";
-        default: return "None";
+static const char *key_code_to_name(uint8_t key_code)
+{
+    switch (key_code)
+    {
+    case 0x01:
+        return "F1";
+    case 0x02:
+        return "F2";
+    case 0x03:
+        return "F3";
+    case 0x04:
+        return "F4";
+    case 0x05:
+        return "HOCH";
+    case 0x06:
+        return "OK";
+    case 0x07:
+        return "Links";
+    case 0x08:
+        return "RUNTER";
+    case 0x09:
+        return "RECHTS";
+    case 0x10:
+        return "F1+F4";
+    case 0x11:
+        return "F2+HOCH";
+    default:
+        return "None";
     }
 }
 
@@ -169,24 +230,27 @@ void read_gsg(void)
 }
 
 // Interrupt handler External 0
-void INT0_ISR (void) __interrupt (0) {
-    EA=0;
-    //lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 15));
-    //lcd_puts("INT0");
+void INT0_ISR(void) __interrupt(0)
+{
+    EA = 0;
+    // lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE2_ADDR + 15));
+    // lcd_puts("INT0");
     read_gsg();
 }
 
 // Interrupt handler External 1
-void INT1_ISR (void) __interrupt (2) {
-    EA=0;
-    //lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE1_ADDR + 15));
-    //lcd_puts("INT1");
+void INT1_ISR(void) __interrupt(2)
+{
+    EA = 0;
+    // lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | (HD44780_LINE1_ADDR + 15));
+    // lcd_puts("INT1");
     read_gsg();
 }
 
-void main(void) {
+void main(void)
+{
     AUXR = 0x02; // Use external memory
-    lcd_init();
+    reset_all();
     EX1 = 1;
 
     uint16_t rend = 0;
@@ -194,17 +258,86 @@ void main(void) {
     // Line 1: title
     lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE1_ADDR | 0x00);
     lcd_puts("Keypad Test        ");
-    while (1) {
-            uint8_t key = scan_kbd();
-     
-            lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x00); // Line 2
-            lcd_puts("Key:          ");  // clear old value with spaces
-            lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
-            lcd_puts(key_code_to_name(key));
-            rend++;
-            *GSG6_W= (uint8_t)(rend & 0x00FF);
-            EA=1;
-            spin_delay(100);
-            EA=0;
-        }
+    while (1)
+    {
+        uint8_t key = scan_kbd();
+
+        lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x00); // Line 2
+        lcd_puts("Key:          ");                                      // clear old value with spaces
+        lcd_cmd(HD44780_CMD_SET_DDRAM_ADDR | HD44780_LINE2_ADDR | 0x05); // move cursor after "Key: "
+        lcd_puts(key_code_to_name(key));
+        rend++;
+        *GSG6_W = (uint8_t)(rend & 0x00FF);
+        EA = 1;
+        spin_delay(100);
+        EA = 0;
+    }
+}
+
+void reset_all()
+{
+    reset_hw();
+    reset_int();
+    reset_timer();
+    sfr_setup();
+    reset_vars();
+    lcd_init();
+}
+
+static void lcd_init(void)
+{
+    lcd_cmd(HD44780_CMD_FUNCTION_SET | HD44780_FUNCTION_8BIT | HD44780_FUNCTION_2LINE | HD44780_FUNCTION_5X7DOTS);
+    lcd_cmd(HD44780_CMD_DISPLAY_CTRL | HD44780_DISPLAY_ON | HD44780_DISPLAY_CURSOR_OFF | HD44780_DISPLAY_BLINK_OFF);
+    lcd_cmd(HD44780_CMD_ENTRY_MODE | HD44780_ENTRY_LTR);
+    lcd_cmd(HD44780_CMD_CLEAR);
+}
+
+void reset_hw()
+{
+    P0 = 0xff;
+    P1 = 0xff;
+    P1 = 0x00;
+    P2 = 0xff;
+    P3 = 0xff;
+    *GSG2_W = 0xff;
+    *GSG3_W = 0xff;
+    *GSG6_W = 0x00;
+    return;
+}
+
+void reset_int()
+{
+    EA = 0;
+    ET0 = 0;
+    TR0 = 0;
+    ES = 0;
+    EX0 = 0;
+    EX1 = 0;
+    TCON = 0;
+    return;
+}
+
+void reset_timer()
+{
+    TR1 = 0;
+    TH1 = 0;
+    TL1 = 0;
+    return;
+}
+
+void reset_vars()
+{
+    return;
+}
+
+void sfr_setup()
+{
+    TMOD = 0x21;
+    TH1 = 0xfc;
+    TR1 = 1;
+    SCON = 0x42;
+    ES = 0;
+    REN = 1;
+    TI = 0;
+    return;
 }
