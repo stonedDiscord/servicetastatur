@@ -3,6 +3,12 @@
  * Displays the current keypad state on the connected LCD
  */
 
+ /*
+#undef __SDCC_mcs51
+#include "lint.h"
+#define __SDCC_mcs51
+*/
+
 #if defined(STC12C5AXXS2)
 #include <stc12.h>
 #elif defined(STC89C5XRX)
