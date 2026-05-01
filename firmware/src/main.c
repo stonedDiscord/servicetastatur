@@ -63,12 +63,15 @@ __idata __at(0x26) uint8_t dat_26;
 __idata __at(0x32) uint8_t dat_32;
 __idata __at(0x33) uint8_t dat_33;
 __idata __at(0x34) uint8_t dat_34;
+__idata __at(0x3c) uint8_t dat_3c;
+__idata __at(0x3d) uint8_t dat_3d;
 __idata __at(0x3f) uint8_t dat_3f;
 __idata __at(0x40) uint8_t dat_40;
 __idata __at(0x44) uint8_t dat_44;
 __idata __at(0x45) uint8_t dat_45;
 __idata __at(0x46) uint8_t dat_46;
 __idata __at(0x47) uint8_t dat_47;
+__idata __at(0x4b) uint8_t dat_4b;
 __idata __at(0x4d) uint8_t dat_4d; // Status / Error
 
 // Bit addressable variables
@@ -110,9 +113,13 @@ __code char s_rdkm[] = "RDKM HAFG    xxxx xxxx  alte Tastatur ?";
 // Function Prototypes
 void die(void);
 uint8_t key_lookup(uint8_t key, __code uint8_t *table);
-uint8_t string_lookup(uint8_t offset, uint16_t addr, uint8_t add_val);
+uint8_t string_lookup(uint8_t mode, uint16_t addr, uint8_t add_val);
 uint8_t read_params(uint8_t mode, uint16_t addr, uint8_t idx);
+uint8_t get_lcd_command(void);
+void wait_counter(uint8_t count);
+void decrement_range(uint8_t col, uint16_t count);
 void reset_all(void);
+void lcd_wait_ready(void);
 void scan_keypad(void);
 void lcd_cmd(uint8_t cmd);
 void lcd_putc(uint8_t character);
@@ -226,6 +233,86 @@ uint8_t read_params(uint8_t mode, uint16_t addr, uint8_t idx)
         uint8_t val1 = *(__xdata uint8_t *)(ptr + 1);
         bank3_r7 = *(__xdata uint8_t *)(ptr + 2);
         return val0 | val1;
+    }
+}
+
+/* get_lcd_command - reads LCD command/status via special sequence
+ * Assembly: Sends 0xD and 0x2 to LCD control, then reads dat_4b
+ * Returns a command byte based on dat_4b value ranges
+ */
+uint8_t get_lcd_command(void)
+{
+    /* lcd_wait_ready + send 0xD to control */
+    lcd_wait_ready();
+    *LCD_CMD_W = 0xD;
+    
+    lcd_wait_ready();
+    *LCD_CMD_W = 0x2;
+    
+    dat_22 = dat_4b;
+    dat_23 = dat_4b;
+    
+    /* Based on dat_4b ranges, send different commands */
+    if (dat_4b != 0)
+    {
+        if (dat_4b < 9)
+        {
+            lcd_wait_ready();
+            *LCD_CMD_W = dat_4b + 0x7F;
+        }
+        else if (dat_4b < 0x11)
+        {
+            lcd_wait_ready();
+            *LCD_CMD_W = dat_4b + 0x7F;
+        }
+        else if (dat_4b < 0x0D)
+        {
+            lcd_wait_ready();
+            *LCD_CMD_W = dat_4b + 0xB7;
+        }
+        else
+        {
+            lcd_wait_ready();
+            *LCD_CMD_W = dat_4b + 0xB8;
+        }
+    }
+    
+    return dat_4b;
+}
+
+/* wait_counter - delays by incrementing dat_3c until >= count */
+void wait_counter(uint8_t count)
+{
+    dat_3d = count;
+    dat_3c = 0;
+    
+    while (1)
+    {
+        if (dat_3c >= dat_3d)
+            break;
+        dat_3c++;
+    }
+}
+
+/* decrement_range - increments 16-bit counter (dat_22:dat_23) until >= count
+ * Note: Despite the name, this function increments the counter
+ */
+void decrement_range(uint8_t col, uint16_t count)
+{
+    dat_25 = (uint8_t)count;
+    dat_24 = col;
+    dat_22 = 0;
+    dat_23 = 0;
+    
+    while (1)
+    {
+        /* Compare dat_22:dat_23 with dat_24:dat_25 */
+        if (dat_22 > dat_24 || (dat_22 == dat_24 && dat_23 >= dat_25))
+            break;
+        
+        dat_23++;
+        if (dat_23 == 0)
+            dat_22++;
     }
 }
 
