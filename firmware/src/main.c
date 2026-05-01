@@ -88,7 +88,8 @@ typedef struct
     uint8_t extra[22];
 } MenuItem;
 
-__code MenuItem menu_items[] __at(0x324b);
+/* Menu items are defined elsewhere */
+#define MENU_ITEMS_BASE ((__code MenuItem *)0x324b)
 
 // Code memory strings
 __code char s_init[] = "Es ist kein GeldSpielGerát aktiv !! ...";
@@ -107,6 +108,8 @@ __code char s_rdkm[] = "RDKM HAFG    xxxx xxxx  alte Tastatur ?";
 #define TABLE_BASE ((__code uint8_t*)0x2cf7)
 
 // Function Prototypes
+void die(void);
+uint8_t key_lookup(uint8_t key, __code uint8_t *table);
 void reset_all(void);
 void scan_keypad(void);
 void lcd_cmd(uint8_t cmd);
@@ -119,7 +122,45 @@ void read_status(void);
 void eeprom_init(void);
 uint8_t get_string(uint8_t mode, uint16_t addr);
 
-// Low-level LCD functions
+void die(void)
+{
+    while (1)
+        ;
+}
+
+/* key_lookup - searches a code table for a key match
+ * Unique calling convention: caller pushes table pointer before calling
+ * Returns by pushing two bytes (flags1, flags0) on stack then returning
+ * 
+ * Table format: [flags0, flags1, key] triplets
+ * If flags0==0 and flags1==0: end marker (returns 0)
+ * Returns flags0 when key matches
+ */
+uint8_t key_lookup(uint8_t key, __code uint8_t *table)
+{
+    while (1)
+    {
+        uint8_t flags0 = table[0];
+        if (flags0 != 0)
+            goto check_key;
+        
+        uint8_t flags1 = table[1];
+        if (flags1 != 0)
+            goto check_key;
+        
+        /* End marker found - return 0 */
+        return 0;
+        
+    check_key:
+        if (table[2] == key)
+        {
+            /* Found match - return flags0 */
+            return table[0];
+        }
+        table += 3;
+    }
+}
+
 void lcd_wait_ready(void)
 {
     uint16_t timeout = 0;
@@ -484,9 +525,9 @@ void kb_logic(void)
     while (bank3_r5 == 2)
     {
         lcd_cmd(0x01);
-        lcd_puts(menu_items[bank3_r6].p_line1);
+        lcd_puts(*(const char __code **)MENU_ITEMS_BASE[bank3_r6].p_line1);
         lcd_cmd(0xc0);
-        lcd_puts(menu_items[bank3_r6].p_line2);
+        lcd_puts(*(const char __code **)MENU_ITEMS_BASE[bank3_r6].p_line2);
         while (1)
         {
             scan_keypad();
