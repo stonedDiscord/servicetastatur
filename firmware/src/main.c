@@ -110,6 +110,8 @@ __code char s_rdkm[] = "RDKM HAFG    xxxx xxxx  alte Tastatur ?";
 // Function Prototypes
 void die(void);
 uint8_t key_lookup(uint8_t key, __code uint8_t *table);
+uint8_t string_lookup(uint8_t offset, uint16_t addr, uint8_t add_val);
+uint8_t read_params(uint8_t mode, uint16_t addr, uint8_t idx);
 void reset_all(void);
 void scan_keypad(void);
 void lcd_cmd(uint8_t cmd);
@@ -158,6 +160,72 @@ uint8_t key_lookup(uint8_t key, __code uint8_t *table)
             return table[0];
         }
         table += 3;
+    }
+}
+
+/* string_lookup - adds offset to address with carry handling
+ * Called before get_string to adjust the address
+ * Assembly: ADD A,param_4; JNC get_string; INC param_3
+ *           (then falls through to get_string)
+ * Mode is passed in ACC (offset param), addr is in R2R3, add_val in R7
+ */
+uint8_t string_lookup(uint8_t mode, uint16_t addr, uint8_t add_val)
+{
+    /* ADD A,param_4 - add value to low byte with carry */
+    uint8_t low = addr & 0xFF;
+    uint8_t high = (addr >> 8) & 0xFF;
+    
+    uint8_t result = low + add_val;
+    if (result < low)
+    {
+        /* Carry occurred - increment high byte */
+        high++;
+    }
+    /* JNC get_string was conditional, we always proceed to get_string */
+    return get_string(mode, (high << 8) | result);
+}
+
+/* read_params - reads 3-byte parameter from tables based on mode
+ * param_1 (R1): mode (0-3)
+ * param_2 (R2R3): address for modes 1-3
+ * param_3 (R3): index for mode 0, or high addr for mode 3
+ * Returns: A | R6 (OR of low and middle bytes)
+ */
+uint8_t read_params(uint8_t mode, uint16_t addr, uint8_t idx)
+{
+    if (mode == 0)
+    {
+        /* Read from indirect RAM: R0 = idx, then @R0, @(R0+1), @(R0+2) */
+        __idata uint8_t *ptr = (__idata uint8_t *)idx;
+        uint8_t val0 = *ptr;
+        uint8_t val1 = *(ptr + 1);
+        bank3_r7 = *(ptr + 2);
+        return val0 | val1;
+    }
+    else if (mode == 1)
+    {
+        /* Read from external RAM: MOVX A,@DPTR three times */
+        uint8_t val0 = *(__xdata uint8_t *)addr;
+        uint8_t val1 = *(__xdata uint8_t *)(addr + 1);
+        bank3_r7 = *(__xdata uint8_t *)(addr + 2);
+        return val0 | val1;
+    }
+    else if (mode == 2)
+    {
+        /* Read from code memory: MOVC A,@A+DPTR */
+        uint8_t val0 = *(__code uint8_t *)addr;
+        uint8_t val1 = *(__code uint8_t *)(addr + 1);
+        bank3_r7 = *(__code uint8_t *)(addr + 2);
+        return val0 | val1;
+    }
+    else
+    {
+        /* Read from external RAM via indirect: MOVX A,@R0 */
+        __idata uint8_t *ptr = (__idata uint8_t *)addr;
+        uint8_t val0 = *(__xdata uint8_t *)ptr;
+        uint8_t val1 = *(__xdata uint8_t *)(ptr + 1);
+        bank3_r7 = *(__xdata uint8_t *)(ptr + 2);
+        return val0 | val1;
     }
 }
 
