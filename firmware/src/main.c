@@ -56,10 +56,19 @@ __idata __at(0x4f) uint8_t key_code;
 __idata __at(0x50) uint8_t last_key;
 
 __idata __at(0x22) uint8_t dat_22;
-__idata __at(0x23) uint8_t key_count;
+__idata __at(0x23) uint8_t dat_23; // keycount and lcd arg
+__idata __at(0x24) uint8_t dat_24;
+__idata __at(0x25) uint8_t dat_25;
+__idata __at(0x26) uint8_t dat_26;
 __idata __at(0x32) uint8_t dat_32;
 __idata __at(0x33) uint8_t dat_33;
 __idata __at(0x34) uint8_t dat_34;
+__idata __at(0x3f) uint8_t dat_3f;
+__idata __at(0x40) uint8_t dat_40;
+__idata __at(0x44) uint8_t dat_44;
+__idata __at(0x45) uint8_t dat_45;
+__idata __at(0x46) uint8_t dat_46;
+__idata __at(0x47) uint8_t dat_47;
 __idata __at(0x4d) uint8_t dat_4d; // Status / Error
 
 // Bit addressable variables
@@ -95,16 +104,20 @@ __code char s_rdkm[] = "RDKM HAFG    xxxx xxxx  alte Tastatur ?";
 // If dat_32 = 0x10, A = 0x10 + 0xf7 = 0x07. Address = 0x2d07.
 // This is different from 0x2c04.
 
+#define TABLE_BASE ((__code uint8_t*)0x2cf7)
+
 // Function Prototypes
 void reset_all(void);
 void scan_keypad(void);
 void lcd_cmd(uint8_t cmd);
 void lcd_putc(uint8_t character);
 void lcd_puts(const char __code *s);
+void clear_and_print(uint8_t mode, const char __code *pstring);
 void kb_logic(void);
 void main_logic_state1_inner(void);
 void read_status(void);
 void eeprom_init(void);
+uint8_t get_string(uint8_t mode, uint16_t addr);
 
 // Low-level LCD functions
 void lcd_wait_ready(void)
@@ -122,14 +135,18 @@ void lcd_wait_ready(void)
 
 void lcd_cmd(uint8_t cmd)
 {
+    dat_23 = cmd;
+    dat_22 = 0;
     lcd_wait_ready();
-    *LCD_CMD_W = cmd;
+    *LCD_CMD_W = dat_23;
 }
 
 void lcd_putc(uint8_t character)
 {
+    dat_23 = character;
+    dat_22 = 0;
     lcd_wait_ready();
-    *LCD_DATA_W = character;
+    *LCD_DATA_W = dat_23;
 }
 
 void lcd_puts(const char __code *s)
@@ -145,39 +162,39 @@ void lcd_puts(const char __code *s)
 void scan_keypad(void)
 {
     uint8_t row_state;
-    key_count = 0;
+    dat_23 = 0;
     P1 = 0xfb; // P1.2 column 3, F1, F2, F3
     row_state = P1 & 0x70;
     if (row_state == 0x50)
     {
-        key_count++;
+        dat_23++;
         key_code = 1;
     } // F1
     else if (row_state == 0x30)
     {
-        key_count++;
+        dat_23++;
         key_code = 2;
     } // F2
     else if (row_state == 0x60)
     {
-        key_count++;
+        dat_23++;
         key_code = 3;
     } // F3
     P1 = 0xfd; // P1.1 column 2, Left, Down, Right
     row_state = P1 & 0x70;
     if (row_state == 0x50)
     {
-        key_count++;
+        dat_23++;
         key_code = 7;
     } // Left
     else if (row_state == 0x30)
     {
-        key_count++;
+        dat_23++;
         key_code = 8;
     } // Down
     else if (row_state == 0x60)
     {
-        key_count++;
+        dat_23++;
         key_code = 9;
     } // Right
     P1 = 0xfe; // P1.0 column 1, F4, Up, OK
@@ -189,7 +206,7 @@ void scan_keypad(void)
         else
         {
             key_code = 4;
-            key_count++;
+            dat_23++;
         }
     }
     else if (row_state == 0x30)
@@ -199,17 +216,17 @@ void scan_keypad(void)
         else
         {
             key_code = 5;
-            key_count++;
+            dat_23++;
         }
     }
     else if (row_state == 0x60)
     {
-        key_count++;
+        dat_23++;
         key_code = 6;
     } // OK
 
     P1 = 0xff;
-    if (key_count != 1)
+    if (dat_23 != 1)
         key_code = 0;
 }
 
@@ -256,57 +273,86 @@ void eeprom_init(void)
     *CTRL_4000 = 0x01;
 }
 
+uint8_t get_string(uint8_t mode, uint16_t addr)
+{
+    if (mode == 0)
+        return *(__idata uint8_t *)(uint8_t)addr;
+    if (mode == 1)
+        return *(__xdata uint8_t *)addr;
+    if (mode == 2)
+        return *(__code uint8_t *)addr;
+    return *(__pdata uint8_t *)(uint8_t)addr;
+}
+
+void clear_and_print(uint8_t mode, const char __code *pstring)
+{
+    uint16_t addr = (uint16_t)pstring;
+    dat_26 = (uint8_t)addr;
+    dat_25 = (uint8_t)(addr >> 8);
+    dat_24 = mode;
+
+    lcd_cmd(0x01);
+
+    while (1)
+    {
+        uint16_t current_addr = (dat_25 << 8) | dat_26;
+        uint8_t c = get_string(dat_24, current_addr);
+        if (c == 0)
+            break;
+
+        dat_26++;
+        if (dat_26 == 0)
+            dat_25++;
+
+        lcd_putc(c);
+    }
+}
+
 void read_status(void)
 {
-    uint8_t val;
     while (1)
     {
         dat_32 = 0;
         while (dat_32 < 0x11)
         {
-            // Loading data from code memory at 0x2c00 + (dat_32 + 0xf7)
-            // Simplified: we'll use a local array with the values from that range
-            static __code uint8_t test_vals[] = {
-                0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, // 0x2cf8 - 0x2cff
-                0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, // 0x2d00 - 0x2d07
-                0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe  // 0x2d08 - 0x2d0f
-            };
-            // Note: the assembly math results in values starting from 0x2cf7?
-            // CODE:17e3 ADD A, #0xf7. If dat_32=0, A=0xf7.
-            // CODE:17e8 ADDC A, #0x2c. Result 0x2cf7.
-            // Let's assume the table values are what matters.
-
-            // This is a simplified reconstruction of the hardware test loop
-            val = 0x55; // Placeholder for table lookup
-
-            P1 = val;
-            if (P1 != val)
+            P1 = TABLE_BASE[dat_32];
+            if (P1 != TABLE_BASE[dat_32])
                 dat_4d = 0x31;
 
-            P3 = val | 0xc0;
-            if ((P3 & 0x3f) != (val & 0x3f))
-                dat_4d = 0x33;
+            P3 = TABLE_BASE[dat_32] | 0xc0;
+
+            // Complex bit logic from disassembly 1822-1831
+            {
+                uint8_t diff = TABLE_BASE[dat_32] ^ P3;
+                uint8_t res = (diff != 0) ? 0xc1 : 0xc0;
+                if (res != 0) // This matches the JZ logic which is essentially always true
+                    dat_4d = 0x33;
+            }
 
             P2 = 0;
-            dat_33 = *GSG1_W; // Address 0x10
-            *GSG1_W = val;
-            *GSG2_W = val;
-            *GSG3_W = ~val;
+            dat_33 = *(__xdata uint8_t *)0x0000;
+
+            *GSG1_W = TABLE_BASE[dat_32];
+            *GSG2_W = TABLE_BASE[dat_32];
+            *GSG3_W = ~TABLE_BASE[dat_32];
+
             dat_33 = *GSG4_R;
             dat_33 = *GSG5_R;
-            *GSG6_W = val;
-            *LCD_DATA_W = val;
+
+            *GSG6_W = TABLE_BASE[dat_32];
+            *LCD_DATA_W = TABLE_BASE[dat_32];
+
             dat_33 = *LCD_CMD_R;
-            *LCD_CMD_W = val;
+
+            *LCD_CMD_W = TABLE_BASE[dat_32];
+
             dat_33 = *LCD_DATA_R;
-            *CTRL_4000 = val;
-            *EXTMEM_8000 = ~val;
+            dat_47 = dat_33;
+
+            *CTRL_4000 = dat_47;
+            *EXTMEM_8000 = ~dat_33;
 
             dat_32++;
-
-            scan_keypad();
-            if (key_code != 0)
-                return; // Exit loop if key pressed
         }
     }
 }
@@ -373,37 +419,15 @@ void reset_all()
     reset_timer();
     sfr_setup();
     reset_vars();
+    
+    // reset_lcd
     lcd_cmd(0x38);
     lcd_cmd(0x0c);
     lcd_cmd(0x06);
     lcd_cmd(0x01);
 }
 
-void main(void)
-{
-    reset_all();
-    if (P3_2 == 0)
-        read_status();
-    EX1 = 1;
-    EA = 1;
-    bank3_r5 = 3;
-    while (1)
-    {
-        if (bank3_r5 == 3)
-        {
-            lcd_cmd(0x01);
-            lcd_puts(s_init);
-            while (bank3_r5 == 3)
-                ;
-        }
-        if (bank3_r5 == 2)
-            kb_logic();
-        if (bank3_r5 == 1)
-            main_logic_state1_inner();
-    }
-}
-
-void main_logic_state1_inner(void)
+void main_logic_state1(void)
 {
     dat_34 = 0;
     while (bank3_r5 == 1)
@@ -415,6 +439,42 @@ void main_logic_state1_inner(void)
         }
         scan_keypad();
         dat_34 = key_code;
+        // ... more bit logic from disassembly ...
+    }
+}
+
+void main(void)
+{
+    EA = 0;
+    reset_all();
+    
+    if (RXD == 0) // RXD is P3_0
+        read_status();
+        
+    eeprom_check();
+    
+    IE1 = 0;
+    IE0 = 0;
+    EA = 1;
+    
+    bank3_r5 = 3;
+    while (1)
+    {
+        if (bank3_r5 == 3)
+        {
+            clear_and_print(2, s_init);
+            while (bank3_r5 == 3)
+                ;
+        }
+        else if (bank3_r5 == 2)
+        {
+            clear_and_print(2, s_rdkm);
+            kb_logic();
+        }
+        else if (bank3_r5 == 1)
+        {
+            main_logic_state1();
+        }
     }
 }
 
@@ -452,16 +512,31 @@ void kb_logic(void)
 
 void ext_int1_isr(void) __interrupt(2)
 {
-    uint8_t gsg5 = *GSG5_R;
-    bank3_r7 = (gsg5 >> 1) & 7;
+    uint8_t gsg5;
     if (bank3_r5 == 3)
         bank3_r5 = 2;
-    if (bank3_r5 == 1 && (gsg5 & 1))
+
+    gsg5 = *GSG5_R;
+    bank3_r7 = (gsg5 >> 1) & 7;
+
+    if (bank3_r5 == 1)
     {
-        uint8_t val = ((*GSG4_R & 0x0F) << 4) | ((gsg5 & 0xF0) >> 4);
-        if (*GSG4_R & 0x20)
-            lcd_cmd(val);
-        else
-            lcd_putc(val);
+        if (gsg5 & 1)
+        {
+            // lcd_wait_ready
+            while (*LCD_CMD_R & 0x80)
+                ;
+
+            if (*GSG4_R & 0x20)
+            {
+                uint8_t val = ((*GSG4_R & 0x0f) << 4) | ((gsg5 & 0xf0) >> 4);
+                *LCD_CMD_W = val;
+            }
+            else
+            {
+                uint8_t val = ((*GSG4_R & 0x0f) << 4) | ((gsg5 & 0xf0) >> 4);
+                *LCD_DATA_W = val;
+            }
+        }
     }
 }
