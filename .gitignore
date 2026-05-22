@@ -34,15 +34,17 @@ drawings/
 difference/
 *.pdf
 
+*.txt
+
 **.u3
-firmware/*.bin
-firmware/*.asm
-firmware/*.ihx
-firmware/*.lk
-firmware/*.lst
-firmware/*.map
-firmware/*.mem
-firmware/*.rel
-firmware/*.rst
-firmware/*.sym
+*.bin
+*.asm
+*.ihx
+*.lk
+*.lst
+*.map
+*.mem
+*.rel
+*.rst
+*.sym
 firmware/.pio/
