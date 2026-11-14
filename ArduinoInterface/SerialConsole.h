@@ -80,8 +80,8 @@ private:
 // runs in the machine ISRs and a slow console cannot block the firmware loop.
 class ConsoleDisplay {
 public:
-    char frame[256];
-    uint8_t length, sent;
+    char frame[288];
+    uint16_t length, sent;
     bool terminal;
     ConsoleDisplay() : length(0), sent(0), terminal(false), force(true), restoreCursor(false),
                        lastMode(255), lastKey(255), lastAddress(255),
@@ -109,7 +109,9 @@ public:
         }
         else text(PSTR("\r\n"));
         text(PSTR("LCD 40x2 mode: ")); append('0' + mode);
-        text(PSTR("\r\n")); border();
+        text(PSTR("\r\n"));
+        if (terminal) text(PSTR("\x1b[37;44m"));
+        border();
         for (uint8_t row = 0; row < 2; ++row) {
             append('|');
             for (uint8_t col = 0; col < 40; ++col) {
@@ -118,11 +120,13 @@ public:
                     && (lcd.address & 0x3f) == (col + lcd.shift) % 40;
                 if (cursor) text((lcd.displayControl & 1) ? PSTR("\x1b[5;7m") : PSTR("\x1b[4m"));
                 append(printable(previous[row * 40 + col]));
-                if (cursor) text(PSTR("\x1b[0m"));
+                if (cursor) text(PSTR("\x1b[0;37;44m"));
             }
             text(PSTR("|\r\n"));
         }
-        border(); text(PSTR("Key: "));
+        border();
+        if (terminal) text(PSTR("\x1b[0m"));
+        text(PSTR("Key: "));
         append(hex(key >> 4)); append(hex(key & 15));
         text(PSTR("  ? help  t ANSI  r redraw\r\n"));
         if (restoreCursor) { text(PSTR("\x1b[?25h")); restoreCursor = false; }
