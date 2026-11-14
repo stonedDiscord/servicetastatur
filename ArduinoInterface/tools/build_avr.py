@@ -39,6 +39,25 @@ if args.lcd1602:
 elif args.tft:
     common.append('-DSERVICE_KEYBOARD_TFT=1')
 
+# Use the same unmodified Arduino libraries as the IDE and PlatformIO.
+dependency_env = 'uno_tft' if args.tft else 'uno_lcd1602'
+dependencies = project / '.pio/libdeps' / dependency_env
+names = ('GFX Library for Arduino',) if args.tft else ('LiquidCrystal',)
+library_sources = []
+for name in names:
+    library = dependencies / name
+    if not library.is_dir():
+        raise SystemExit(f'Missing {name}. Run: pio pkg install -e {dependency_env}')
+    root = library / 'src'
+    common.append(f'-I{root}')
+    library_sources.extend(path for path in sorted(root.rglob('*')) if path.suffix in ('.cpp', '.c'))
+if args.tft:
+    for name in ('SPI', 'Wire'):
+        root = args.arduino_core / 'libraries' / name / 'src'
+        common.append(f'-I{root}')
+        library_sources.extend(path for path in sorted(root.rglob('*')) if path.suffix in ('.cpp', '.c'))
+
+
 def run(tool, *flags, capture=False):
     return subprocess.run([str(args.avr_bin / tool), *map(str, flags)], check=True,
                           text=True, stdout=subprocess.PIPE if capture else None).stdout
@@ -72,6 +91,10 @@ for source in sorted(project.iterdir()):
         continue
     obj = output / (source.name + '.o')
     compile_source(source, obj, application=True)
+    objects.append(obj)
+for index, source in enumerate(library_sources):
+    obj = output / f'library-{index}.o'
+    compile_source(source, obj)
     objects.append(obj)
 elf = output / 'ArduinoInterface.elf'
 run('avr-g++', tool_prefix, '-mmcu=atmega328p', '-Os', '-flto', '-Wl,--gc-sections',
