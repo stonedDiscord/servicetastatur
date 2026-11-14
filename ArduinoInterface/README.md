@@ -23,6 +23,8 @@ Am Automaten
 | 2 | DataST |
 | 1 | 5V |
 
+![Kabeldiagramm](https://raw.githubusercontent.com/stonedDiscord/servicetastatur/schema_bb.png)
+
 Die Stromversorgung nur anschließen falls der Ardunio nicht per USB angeschlossen ist.
 Und dann bitte an VIN und nicht direkt 5V.
 GND befindet sich zwischen 5V und VIN am Shield falls es nicht beschriftet ist.
