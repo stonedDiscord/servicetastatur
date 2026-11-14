@@ -7,7 +7,9 @@ import tempfile
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--board', choices=('uno', 'nano'), default='uno')
-parser.add_argument('--lcd1602', action='store_true', help='Build the legacy LCD1602 keypad version')
+display = parser.add_mutually_exclusive_group()
+display.add_argument('--lcd1602', action='store_true', help='Build the LCD1602 keypad version (default)')
+display.add_argument('--tft', action='store_true', help='Build the RM68130 TFT/touch version')
 parser.add_argument('--avr-bin', type=Path,
                     default=Path.home() / '.platformio/packages/toolchain-atmelavr/bin')
 parser.add_argument('--arduino-core', type=Path,
@@ -34,6 +36,8 @@ common = ['-mmcu=atmega328p', '-DF_CPU=16000000L', '-DARDUINO=10819',
 
 if args.lcd1602:
     common.append('-DSERVICE_KEYBOARD_TFT=0')
+elif args.tft:
+    common.append('-DSERVICE_KEYBOARD_TFT=1')
 
 def run(tool, *flags, capture=False):
     return subprocess.run([str(args.avr_bin / tool), *map(str, flags)], check=True,
