@@ -4,6 +4,7 @@
 #include "OpenSmartTft.h"
 #else
 #include "ShieldKeys.h"
+#include <LiquidCrystal.h>
 #endif
 #include "VirtualLcd.h"
 #include "SerialConsole.h"
@@ -31,6 +32,14 @@ volatile uint8_t queueTail;
 VirtualLcd display;
 #if !SERVICE_KEYBOARD_TFT
 VirtualKeys keys;
+LiquidCrystal &physicalLcd()
+{
+    // Construct after Arduino initializes GPIO/timers, and only with a shield.
+    static LiquidCrystal lcd(Board::lcdRsPin, Board::lcdEnablePin,
+                             Board::lcdDataPins[0], Board::lcdDataPins[1],
+                             Board::lcdDataPins[2], Board::lcdDataPins[3]);
+    return lcd;
+}
 #endif
 ConsoleKeys consoleKeys;
 ConsoleDisplay consoleDisplay;
@@ -83,51 +92,11 @@ inline void SERVICE_KEYBOARD_ISR_ATTR outputBit() {
 }
 
 #if !SERVICE_KEYBOARD_TFT
-// The LCD R/W pin is tied low on the standard shield. Each physical write is
-// separated by >=50us, with interrupts enabled throughout the enable pulse.
-void lcdNibble(uint8_t nibble)
-{
-#if defined(ARDUINO_ARCH_ESP32)
-    digitalWrite(Board::lcdEnablePin, LOW);
-    for (uint8_t bit = 0; bit < 4; ++bit)
-        digitalWrite(Board::lcdDataPins[bit], (nibble >> bit) & 1);
-    delayMicroseconds(1); // RS/data setup before the enable pulse
-    digitalWrite(Board::lcdEnablePin, HIGH);
-    delayMicroseconds(1);
-    digitalWrite(Board::lcdEnablePin, LOW);
-    delayMicroseconds(1); // data hold and minimum enable-low time
-#else
-    // PORTD low nibble contains RX/TX and unused header pins.
-    // Preserve it: LCD data are D4..D7, all on PORTD's upper nibble.
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        PORTD = (PORTD & 0x0f) | (nibble << 4);
-    }
-    PORTB |= _BV(PB1); // E = D9
-    delayMicroseconds(1);
-    PORTB &= ~_BV(PB1);
-#endif
-}
-
+// Physical bus timing belongs to LiquidCrystal; refresh stays incremental.
 void lcdWrite(bool data, uint8_t value)
 {
-#if defined(ARDUINO_ARCH_ESP32)
-    digitalWrite(Board::lcdRsPin, data ? HIGH : LOW);
-#else
-    if (data) PORTB |= _BV(PB0); // RS = D8
-    else PORTB &= ~_BV(PB0);
-#endif
-    lcdNibble(value >> 4);
-    lcdNibble(value & 15);
-#if defined(ARDUINO_ARCH_ESP32)
-    // Match LiquidCrystal's conservative settling time on the faster CPU.
-    // Clear and home need much longer than normal commands.
-    if (!data && (value == 0x01 || (value & 0xfe) == 0x02))
-        delayMicroseconds(2000);
-    else
-        delayMicroseconds(100);
-#else
-    delayMicroseconds(Board::lcdStepUs);
-#endif
+    if (data) physicalLcd().write(value);
+    else physicalLcd().command(value);
 }
 
 bool overlayActive(uint32_t now)
@@ -375,58 +344,20 @@ void hardware_begin()
     PORTD |= _BV(PD3) | _BV(PD5); // ClockIn, Enable
 #endif
 #else
-    // Initialize the shield without touching D10: some backlight circuits short
-    // a driven-high D10 through the backlight transistor base.
+    // The six-pin constructor leaves the shield's D10 backlight untouched.
     if (Board::shieldEnabled) {
+        physicalLcd().begin(16, 2);
 #if defined(ARDUINO_ARCH_ESP32)
-        pinMode(Board::lcdRsPin, OUTPUT);
-        pinMode(Board::lcdEnablePin, OUTPUT);
-        digitalWrite(Board::lcdRsPin, LOW);
-        digitalWrite(Board::lcdEnablePin, LOW);
-        for (uint8_t pin : Board::lcdDataPins) {
-            pinMode(pin, OUTPUT);
-            digitalWrite(pin, LOW);
-        }
         if (Board::keypadEnabled) {
             pinMode(Board::keyPin, INPUT);
-            // Put the reported 1.1V idle near full scale on this channel.
             analogSetPinAttenuation(Board::keyPin, ADC_0db);
         }
-#else
-        DDRD |= 0xf0; // LCD D4..D7
-        DDRB |= _BV(PB0) | _BV(PB1); // RS, E
-        PORTB &= ~(_BV(PB0) | _BV(PB1));
 #endif
     }
 #if !defined(ARDUINO_ARCH_ESP32)
     PORTC = (PORTC & ~_BV(PC1)) | _BV(PC2) | _BV(PC3) | _BV(PC4);
     DDRC = (DDRC & ~(_BV(PC2) | _BV(PC3) | _BV(PC4))) | _BV(PC1);
-    // A1 OutST low; A2 Enable, A3 ClockIn, A4 InST with pull-ups.
 #endif
-    if (Board::shieldEnabled) {
-#if defined(ARDUINO_ARCH_ESP32)
-        delay(100); // allow the shield's 5V supply and LCD oscillator to settle
-        lcdNibble(3); delay(5);
-        lcdNibble(3); delay(5);
-        lcdNibble(3); delayMicroseconds(150);
-        lcdNibble(2); delayMicroseconds(150);
-        lcdWrite(false, 0x28); // 4-bit, two lines
-        lcdWrite(false, 0x08); // display off while clearing
-        lcdWrite(false, 0x01);
-        lcdWrite(false, 0x06);
-        lcdWrite(false, 0x0c);
-#else
-        delay(50);
-        lcdNibble(3); delay(5);
-        lcdNibble(3); delayMicroseconds(150);
-        lcdNibble(3); delayMicroseconds(150);
-        lcdNibble(2); delayMicroseconds(150);
-        lcdWrite(false, 0x28); // 4-bit, two lines
-        lcdWrite(false, 0x0c);
-        lcdWrite(false, 0x06);
-        lcdWrite(false, 0x01); delay(2);
-#endif
-    }
     memset(shown, 0xff, sizeof(shown));
 #endif
     // Interrupts are enabled by firmware_begin after all protocol state is reset.

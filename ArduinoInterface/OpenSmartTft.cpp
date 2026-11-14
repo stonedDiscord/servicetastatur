@@ -3,6 +3,7 @@
 #include "OpenSmartTft.h"
 #include "TouchControls.h"
 #include "TftFont.h"
+#include <Arduino_GFX_Library.h>
 
 namespace ServiceKeyboard { namespace Tft {
 namespace {
@@ -24,56 +25,49 @@ const char labels[13][8] PROGMEM = {
     "F1+F4", "F2+UP", "VIEW <", "VIEW >"
 };
 
-// Index order is RD, WR, RS, CS. Preserve the AVR register fast path.
-inline void control(uint8_t index, bool high) {
-#if defined(ARDUINO_ARCH_ESP32)
-    digitalWrite(Board::tftControlPins[index], high ? HIGH : LOW);
-#else
-    if (high) PORTC |= uint8_t(1 << index);
-    else PORTC &= ~uint8_t(1 << index);
-#endif
-}
-
-// OPEN-SMART 8-bit bus: D0..7 = 8,9,10,11,4,13,6,7.
-// Masked atomic writes preserve the machine input/output and interrupt pins.
-void bus(uint8_t value) {
-#if defined(ARDUINO_ARCH_ESP32)
-    for (uint8_t bit = 0; bit < 8; ++bit)
-        digitalWrite(Board::tftDataPins[bit], (value >> bit) & 1);
-#else
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        PORTB = (PORTB & ~0x2f) | (value & 0x2f);
-        PORTD = (PORTD & ~0xd0) | (value & 0xd0);
+// SWPAR8 handles the data pins. On AVR, digitalWrite protects the shared
+// control port from the J3 ISR updating OutST on A5 between read and write.
+class ShieldBus : public Arduino_SWPAR8 {
+public:
+    using Arduino_SWPAR8::Arduino_SWPAR8;
+    void beginWrite() override {
+        digitalWrite(Board::tftControlPins[3], LOW);
+        digitalWrite(Board::tftControlPins[2], HIGH);
     }
-#endif
-    control(1, false); // WR
-    control(1, true);
-}
-void word(uint16_t value) { bus(value >> 8); bus(value); }
-void command(uint8_t reg) {
-    control(2, false);
-    word(reg);
-    control(2, true);
-}
-void reg(uint8_t address, uint16_t value) {
-    control(3, false);
-    command(address);
-    word(value);
-    control(3, true);
-}
-void window(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
-    // Landscape: exchange GRAM axes; AM makes logical X advance first.
-    reg(0x36, y + h - 1); reg(0x37, y);
-    reg(0x38, x + w - 1); reg(0x39, x);
-    reg(0x20, y); reg(0x21, x);
-    control(3, false);
-    command(0x22);
+    void endWrite() override { digitalWrite(Board::tftControlPins[3], HIGH); }
+    void writeCommand(uint8_t value) override { writeCommand16(value); }
+    // The parallel RM68130 bus requires a 16-bit register index, even when
+    // Arduino_ILI9225 supplies an 8-bit command through its SPI-style API.
+    void writeC8D16(uint8_t command, uint16_t value) override {
+        writeCommand(command);
+        Arduino_SWPAR8::write16(value);
+    }
+    void writeCommand16(uint16_t value) override {
+        digitalWrite(Board::tftControlPins[2], LOW);
+        Arduino_SWPAR8::write16(value);
+        digitalWrite(Board::tftControlPins[2], HIGH);
+    }
+    void writeCommandBytes(uint8_t *data, uint32_t length) override {
+        digitalWrite(Board::tftControlPins[2], LOW);
+        while (length--) Arduino_SWPAR8::write(*data++);
+        digitalWrite(Board::tftControlPins[2], HIGH);
+    }
+};
+
+ShieldBus bus(Board::tftControlPins[2], Board::tftControlPins[3],
+                   Board::tftControlPins[1], Board::tftControlPins[0],
+                   Board::tftDataPins[0], Board::tftDataPins[1],
+                   Board::tftDataPins[2], Board::tftDataPins[3],
+                   Board::tftDataPins[4], Board::tftDataPins[5],
+                   Board::tftDataPins[6], Board::tftDataPins[7]);
+Arduino_ILI9225 lcd(&bus, Board::tftResetPin, 1);
+uint16_t pixels[6 * 8];
+// One glyph buffer, rather than a framebuffer: fits in the Uno's 2KB SRAM.
+void drawGlyph(uint8_t x, uint8_t y, uint8_t width) {
+    lcd.draw16bitRGBBitmap(x, y, pixels, width, cellHeight);
 }
 void fill(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint16_t color) {
-    window(x, y, w, h);
-    uint16_t n = uint16_t(w) * h;
-    while (n--) word(color);
-    control(3, true);
+    lcd.fillRect(x, y, w, h, color);
 }
 uint8_t fontColumn(uint8_t value, uint8_t col) {
     // HD44780 A00 German letters, block, and a visible fallback.
@@ -89,11 +83,10 @@ void label(uint8_t x, uint8_t y, const char *text, uint16_t color) {
     for (uint8_t i = 0; i < 36; ++i) {
         const uint8_t c = pgm_read_byte(text + i);
         if (!c) break;
-        window(x + i * 6, y, 6, 8);
         for (uint8_t row = 0; row < 8; ++row)
             for (uint8_t col = 0; col < 6; ++col)
-                word(col < 5 && (fontColumn(c, col) & (1 << row)) ? color : 0);
-        control(3, true);
+                pixels[row * 6 + col] = col < 5 && (fontColumn(c, col) & (1 << row)) ? color : 0;
+        drawGlyph(x + i * 6, y, 6);
     }
 }
 void button(uint8_t index, bool pressed) {
@@ -183,37 +176,7 @@ uint8_t sample() {
 } // namespace
 
 void begin() {
-#if defined(ARDUINO_ARCH_ESP32)
-    for (uint8_t pin : Board::tftDataPins) pinMode(pin, OUTPUT);
-    for (uint8_t pin : Board::tftControlPins) {
-        digitalWrite(pin, HIGH);
-        pinMode(pin, OUTPUT);
-    }
-    const uint8_t resetPin = Board::tftResetPin;
-#else
-    DDRB |= 0x2f; DDRD |= 0xd0; DDRC |= 0x0f;
-    PORTC |= 0x0f; // RD, WR, RS and CS idle high
-    const uint8_t resetPin = 2;
-#endif
-    pinMode(resetPin, OUTPUT); digitalWrite(resetPin, LOW); delay(10);
-    digitalWrite(resetPin, HIGH); delay(50);
-    // Initialization sequence follows MCUFRIEND_kbv (FreeBSD license; LICENSE-MCUFRIEND.txt).
-    // RM68130 (ID 0x6813), ILI9225-compatible 176x220 register interface.
-    for (uint8_t i = 0x10; i <= 0x14; ++i) reg(i, 0);
-    delay(40);
-    reg(0x11, 0x0018); reg(0x12, 0x6121); reg(0x13, 0x006f);
-    reg(0x14, 0x495f); reg(0x10, 0x0800); delay(10);
-    reg(0x11, 0x103b); delay(50);
-    reg(0x01, 0x001c); reg(0x02, 0x0100); reg(0x03, 0x1038); // 90 degrees
-    reg(0x07, 0); reg(0x08, 0x0808); reg(0x0b, 0x1100);
-    reg(0x0c, 0); reg(0x0f, 0x0d01); reg(0x15, 0x0020);
-    reg(0x30, 0); reg(0x31, 219); reg(0x32, 0); reg(0x33, 0);
-    reg(0x34, 219); reg(0x35, 0);
-    static const uint16_t gamma[] PROGMEM = {
-        0, 0x0808, 0x080a, 0x000a, 0x0a08, 0x0808, 0, 0x0a00, 0x0710, 0x0710
-    };
-    for (uint8_t i = 0; i < 10; ++i) reg(0x50 + i, pgm_read_word(&gamma[i]));
-    reg(0x07, 0x0012); delay(50); reg(0x07, 0x1017);
+    lcd.begin(); // ILI9225-compatible RM68130, 220x176 landscape
     fill(0, 0, TouchControls::screenWidth, TouchControls::screenHeight, 0);
     for (uint8_t i = 0; i < 13; ++i) button(i, false);
     memset(shown, 0xff, sizeof(shown));
@@ -259,16 +222,16 @@ void refresh(VirtualLcd &display, uint32_t now) {
         if (!scan) glyphsDirty = false;
         if (shown[pos] == c && !dirty) continue;
         shown[pos] = c;
-        window(textLeft + (pos % columns) * cellWidth, 6 + (pos / columns) * 12, cellWidth, cellHeight);
+
         for (uint8_t y = 0; y < cellHeight; ++y) {
             for (uint8_t x = 0; x < cellWidth; ++x) {
                 const uint8_t bits = c < 16 ? 0 : fontColumn(c, x);
                 bool pixel = c < 16 ? (display.cgram[(c & 7) * 8 + y] & (1 << (4 - x))) : (bits & (1 << y));
                 if (pos == cursor && (blink || ((display.displayControl & 2) && y == cellHeight - 1))) pixel = true;
-                word(pixel ? white : 0);
+                pixels[y * cellWidth + x] = pixel ? white : 0;
             }
         }
-        control(3, true);
+        drawGlyph(textLeft + (pos % columns) * cellWidth, 6 + (pos / columns) * 12, cellWidth);
         return;
     }
 }
