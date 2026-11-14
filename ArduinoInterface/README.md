@@ -23,9 +23,15 @@ Am Automaten
 | 2 | DataST |
 | 1 | 5V |
 
-Für die Stromversorgung am besten den 5V Pin vom Automaten an VIN am Arduino anschließen.
+Die Stromversorgung nur anschließen falls der Ardunio nicht per USB angeschlossen ist.
+Und dann bitte an VIN und nicht direkt 5V.
 GND befindet sich zwischen 5V und VIN am Shield falls es nicht beschriftet ist.
 
 ## Arduino IDE
 Für das RM68130-TFT/Touch-Shield in `Hardware.h` den Standardwert von
 `SERVICE_KEYBOARD_TFT` auf `1` setzen.
+
+Im Bibliotheksverwalter installieren:
+
+- LCD1602: **LiquidCrystal**
+- TFT: **GFX Library for Arduino** von Moon On Our Nation
