@@ -71,8 +71,15 @@ constexpr uint8_t lcdRsPin = 12, lcdEnablePin = 13;
 constexpr uint8_t lcdDataPins[4] = {17, 16, 27, 14};
 #else
 constexpr uint8_t keyPin = 14; // A0 on Uno and Nano
+constexpr uint8_t lcdRsPin = 8, lcdEnablePin = 9;
+constexpr uint8_t lcdDataPins[4] = {4, 5, 6, 7};
 #endif
 #if SERVICE_KEYBOARD_TFT
+#if !defined(ARDUINO_ARCH_ESP32)
+constexpr uint8_t tftDataPins[8] = {8, 9, 10, 11, 4, 13, 6, 7};
+constexpr uint8_t tftControlPins[4] = {14, 15, 16, 17}; // RD, WR, RS, CS
+constexpr uint8_t tftResetPin = 2;
+#endif
 // OPEN-SMART bus uses D11 and D2: J3 OutST moves to A5, Enable to D5.
 // Default resistive panel wiring. X- and Y+ must support analogRead.
 #if defined(ARDUINO_ARCH_ESP32)
