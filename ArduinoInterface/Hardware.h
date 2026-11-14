@@ -26,11 +26,9 @@
 #endif
 
 #ifndef SERVICE_KEYBOARD_TFT
-#if defined(ARDUINO_ARCH_ESP32)
+// Default for Arduino IDE builds: LCD1602 keypad shield.
+// Set to 1 here (or via a build flag) to use the RM68130 TFT/touch shield.
 #define SERVICE_KEYBOARD_TFT 0
-#else
-#define SERVICE_KEYBOARD_TFT 1
-#endif
 #endif
 
 #ifndef SERVICE_KEYBOARD_SHIELD
@@ -46,8 +44,8 @@
 #endif
 
 // Legacy LCD1602 keypad shield: RS=8, E=9, D4..D7=4..7, buttons=A0.
-// J3 machine connector: InST=D12 INPUT, ClockIn=D3 INPUT,
-// TFT: Enable=D5 INPUT, OutST=A5 OUTPUT. Legacy: Enable=D2, OutST=D11.
+// LCD1602 J3: A1=OutST OUTPUT, A2=Enable, A3=ClockIn, A4=InST INPUT.
+// TFT J3 retains InST=D12, ClockIn=D3, Enable=D5, OutST=A5 on AVR.
 namespace Board {
 // Set false to use USB serial alone, with no LCD/keypad shield attached.
 constexpr bool shieldEnabled = SERVICE_KEYBOARD_SHIELD != 0;
@@ -56,15 +54,18 @@ constexpr bool keypadEnabled = shieldEnabled && SERVICE_KEYBOARD_KEYPAD != 0;
 // WEMOS D1 R32: Arduino APIs use native GPIO numbers, not Uno D numbers.
 // Plug-on LCD1602 shield A0 connects to GPIO2. Verify voltage before use.
 constexpr uint8_t keyPin = SERVICE_KEYBOARD_KEY_PIN;
-constexpr uint8_t inStPin = 19, clockPin = 25;
 #if SERVICE_KEYBOARD_TFT
+constexpr uint8_t inStPin = 19, clockPin = 25;
 constexpr uint8_t enablePin = 16, outStPin = 22;
 // Header A2/A3/A5 are input-only: rewire TFT RS/CS and J3 OutST.
 constexpr uint8_t tftDataPins[8] = {12, 13, 5, 23, 17, 18, 27, 14};
 constexpr uint8_t tftControlPins[4] = {2, 4, 32, 33}; // RD, WR, RS, CS
 constexpr uint8_t tftResetPin = 26;
 #else
-constexpr uint8_t enablePin = 26, outStPin = 23;
+// D1 R32 analog header: A1=GPIO4, A2=GPIO35, A3=GPIO34, A4=GPIO36.
+// These inputs have no internal pull-ups; provide external bias if needed.
+constexpr uint8_t inStPin = 36, clockPin = 34;
+constexpr uint8_t enablePin = 35, outStPin = 4;
 #endif
 constexpr uint8_t lcdRsPin = 12, lcdEnablePin = 13;
 constexpr uint8_t lcdDataPins[4] = {17, 16, 27, 14};

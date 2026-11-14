@@ -64,6 +64,8 @@ uint8_t shownControl = 0xff;
 #endif
 #if SERVICE_KEYBOARD_TFT && !defined(ARDUINO_ARCH_ESP32)
 volatile bool enableHigh;
+#elif !defined(ARDUINO_ARCH_ESP32)
+volatile uint8_t linkPinState;
 #endif
 
 inline void SERVICE_KEYBOARD_ISR_ATTR outputBit() {
@@ -75,8 +77,8 @@ inline void SERVICE_KEYBOARD_ISR_ATTR outputBit() {
     if (machineLink.output.high()) PORTC |= _BV(PC5); // A5 / OutST
     else PORTC &= ~_BV(PC5);
 #else
-    if (machineLink.output.high()) PORTB |= _BV(PB3); // D11 / OutST
-    else PORTB &= ~_BV(PB3);
+    if (machineLink.output.high()) PORTC |= _BV(PC1); // A1 / OutST
+    else PORTC &= ~_BV(PC1);
 #endif
 }
 
@@ -95,7 +97,7 @@ void lcdNibble(uint8_t nibble)
     digitalWrite(Board::lcdEnablePin, LOW);
     delayMicroseconds(1); // data hold and minimum enable-low time
 #else
-    // PORTD low nibble contains RX/TX and the two machine interrupts.
+    // PORTD low nibble contains RX/TX and unused header pins.
     // Preserve it: LCD data are D4..D7, all on PORTD's upper nibble.
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         PORTD = (PORTD & 0x0f) | (nibble << 4);
@@ -284,20 +286,23 @@ void serviceConsole(uint32_t now)
 #if defined(ARDUINO_ARCH_ESP32)
 static void SERVICE_KEYBOARD_ISR_ATTR clockInterrupt()
 {
+#if SERVICE_KEYBOARD_TFT
     machineLink.clock(GPIO.in & (uint32_t(1) << Board::inStPin));
+#else
+    machineLink.clock(GPIO.in1.val & (uint32_t(1) << (Board::inStPin - 32)));
+#endif
     outputBit();
 }
 
 static void SERVICE_KEYBOARD_ISR_ATTR enableInterrupt()
 {
-#else
+#elif SERVICE_KEYBOARD_TFT
 ISR(INT1_vect)
 {
     machineLink.clock(PINB & _BV(PB4)); // D12 / InST; U13 DS is grounded
     outputBit();
 }
 
-#if SERVICE_KEYBOARD_TFT
 ISR(PCINT2_vect)
 {
     const bool high = PIND & _BV(PD5);
@@ -305,9 +310,18 @@ ISR(PCINT2_vect)
     enableHigh = high;
     if (!rising) return;
 #else
-ISR(INT0_vect)
+ISR(PCINT1_vect)
 {
-#endif
+    // Both inputs share PORTC's pin-change vector. Sample once and process
+    // ClockIn before Enable if both rising edges are observed together.
+    const uint8_t pins = PINC;
+    const uint8_t rising = pins & ~linkPinState;
+    linkPinState = pins;
+    if (rising & _BV(PC3)) {
+        machineLink.clock(pins & _BV(PC4)); // A4 / InST
+        outputBit();
+    }
+    if (!(rising & _BV(PC2))) return; // A2 / Enable, rising only
 #endif
     uint16_t frame;
     if (!machineLink.input.latch(frame)) ++linkShortFrames;
@@ -343,9 +357,11 @@ void hardware_begin()
 #if defined(ARDUINO_ARCH_ESP32)
     analogReadResolution(10); // retain the LCD1602 ladder's 0..1023 thresholds
     analogSetAttenuation(ADC_11db);
-    pinMode(Board::inStPin, INPUT_PULLUP);
-    pinMode(Board::clockPin, INPUT_PULLUP);
-    pinMode(Board::enablePin, INPUT_PULLUP);
+    // GPIO34..39 do not provide internal pull-ups.
+    const uint8_t inputMode = SERVICE_KEYBOARD_TFT ? INPUT_PULLUP : INPUT;
+    pinMode(Board::inStPin, inputMode);
+    pinMode(Board::clockPin, inputMode);
+    pinMode(Board::enablePin, inputMode);
     digitalWrite(Board::outStPin, LOW);
     pinMode(Board::outStPin, OUTPUT);
 #endif
@@ -383,12 +399,9 @@ void hardware_begin()
 #endif
     }
 #if !defined(ARDUINO_ARCH_ESP32)
-    DDRB |= _BV(PB3); // OutST
-    DDRB &= ~_BV(PB4);                     // InST
-    DDRD &= ~(_BV(PD2) | _BV(PD3));         // Enable, ClockIn
-    PORTD |= _BV(PD2) | _BV(PD3);
-    PORTB |= _BV(PB4);
-    PORTB &= ~_BV(PB3);
+    PORTC = (PORTC & ~_BV(PC1)) | _BV(PC2) | _BV(PC3) | _BV(PC4);
+    DDRC = (DDRC & ~(_BV(PC2) | _BV(PC3) | _BV(PC4))) | _BV(PC1);
+    // A1 OutST low; A2 Enable, A3 ClockIn, A4 InST with pull-ups.
 #endif
     if (Board::shieldEnabled) {
 #if defined(ARDUINO_ARCH_ESP32)
@@ -443,11 +456,10 @@ void hardware_link_begin()
         PCICR |= _BV(PCIE2);
         EIMSK |= _BV(INT1);
 #else
-        // INT0 rising (ENST/Enable), INT1 rising (ClockIn).
-        EICRA = (EICRA & ~(_BV(ISC00) | _BV(ISC01) | _BV(ISC10) | _BV(ISC11)))
-              | _BV(ISC00) | _BV(ISC01) | _BV(ISC10) | _BV(ISC11);
-        EIFR = _BV(INTF0) | _BV(INTF1);
-        EIMSK |= _BV(INT0) | _BV(INT1);
+        PCMSK1 |= _BV(PCINT10) | _BV(PCINT11); // A2 Enable, A3 ClockIn
+        linkPinState = PINC;
+        PCIFR = _BV(PCIF1);
+        PCICR |= _BV(PCIE1);
 #endif
     }
 #endif
