@@ -26,17 +26,22 @@
 #endif
 
 #ifndef SERVICE_KEYBOARD_TFT
-// Default for Arduino IDE builds: LCD1602 keypad shield.
+// Display type when a shield is enabled: LCD1602 keypad shield by default.
 // Set to 1 here (or via a build flag) to use the RM68130 TFT/touch shield.
 #define SERVICE_KEYBOARD_TFT 0
 #endif
 
 #ifndef SERVICE_KEYBOARD_SHIELD
+#if defined(ARDUINO_AVR_NANO)
+// Classic Nano defaults to USB serial controls and the virtual display.
+#define SERVICE_KEYBOARD_SHIELD 0
+#else
 #define SERVICE_KEYBOARD_SHIELD 1
+#endif
 #endif
 
 #ifndef SERVICE_KEYBOARD_KEYPAD
-#define SERVICE_KEYBOARD_KEYPAD 1
+#define SERVICE_KEYBOARD_KEYPAD SERVICE_KEYBOARD_SHIELD
 #endif
 
 #ifndef SERVICE_KEYBOARD_KEY_PIN
