@@ -1,0 +1,26 @@
+{
+  "build": {
+    "arduino": {
+      "board": "GENERIC_C542RCTX",
+      "variant_h": "variant_generic.h"
+    },
+    "core": "stm32",
+    "cpu": "cortex-m33",
+    "extra_flags": "-DSTM32C5 -DSTM32C5xx -DSTM32C542xx -DUSE_HALV2_DRIVER -DSERVICE_KEYBOARD_NUCLEO_C542RC",
+    "f_cpu": "144000000L",
+    "ldscript": "boards/stm32c542rc.ld",
+    "mcu": "stm32c542rct6",
+    "product_line": "STM32C542xx",
+    "variant": "STM32C5xx/C532R(B-C)T_C542RCT"
+  },
+  "frameworks": ["arduino"],
+  "name": "ST NUCLEO-C542RC",
+  "upload": {
+    "maximum_ram_size": 65536,
+    "maximum_size": 262144,
+    "protocol": "custom",
+    "protocols": ["custom"]
+  },
+  "url": "https://www.st.com/en/evaluation-tools/nucleo-c542rc.html",
+  "vendor": "ST"
+}

@@ -15,14 +15,31 @@
 #include <pgmspace.h>
 #define SERVICE_KEYBOARD_ISR_ATTR IRAM_ATTR
 #else
-#include <avr/pgmspace.h>
-#include <util/atomic.h>
+#include <string.h>
+#ifndef PROGMEM
+#define PROGMEM
+#endif
+#ifndef PSTR
+#define PSTR(s) (s)
+#endif
+#ifndef pgm_read_byte
+#define pgm_read_byte(p) (*(const uint8_t *)(p))
+#endif
+#ifndef pgm_read_ptr
+#define pgm_read_ptr(p) (*(p))
+#endif
+#ifndef memcpy_P
+#define memcpy_P memcpy
+#endif
+#ifndef strlen_P
+#define strlen_P strlen
+#endif
 #define SERVICE_KEYBOARD_ISR_ATTR
 #endif
 #endif
 
-#if !defined(__AVR_ATmega328P__) && !defined(ARDUINO_ARCH_ESP32) && !defined(SERVICE_KEYBOARD_HOST_TEST)
-#error "Select an ATmega328P Uno/Nano or an ESP32 WEMOS D1 R32."
+#if !defined(ARDUINO_UNOR4_MINIMA) && !defined(SERVICE_KEYBOARD_NUCLEO_C542RC) && !defined(ARDUINO_ARCH_ESP32) && !defined(SERVICE_KEYBOARD_HOST_TEST)
+#error "Select an Arduino Uno R4 Minima, ST Nucleo C542RC or ESP32 WEMOS D1 R32."
 #endif
 
 #ifndef SERVICE_KEYBOARD_TFT
@@ -32,12 +49,7 @@
 #endif
 
 #ifndef SERVICE_KEYBOARD_SHIELD
-#if defined(ARDUINO_AVR_NANO)
-// Classic Nano defaults to USB serial controls and the virtual display.
-#define SERVICE_KEYBOARD_SHIELD 0
-#else
 #define SERVICE_KEYBOARD_SHIELD 1
-#endif
 #endif
 
 #ifndef SERVICE_KEYBOARD_KEYPAD
@@ -48,9 +60,22 @@
 #define SERVICE_KEYBOARD_KEY_PIN 2
 #endif
 
+// Exclusive Select/idle boundary in 10-bit ADC counts. Calibrate using K in
+// the serial console; keep this below the measured released-key reading.
+#ifndef SERVICE_KEYBOARD_SELECT_ADC_MAX
+#if defined(SERVICE_KEYBOARD_NUCLEO_C542RC)
+// Measured on the Nucleo: Select=907..910, released=1023.
+#define SERVICE_KEYBOARD_SELECT_ADC_MAX 966
+#else
+#define SERVICE_KEYBOARD_SELECT_ADC_MAX 900
+#endif
+#endif
+static_assert(SERVICE_KEYBOARD_SELECT_ADC_MAX > 600 && SERVICE_KEYBOARD_SELECT_ADC_MAX <= 1023,
+              "Select ADC boundary must be above Left and below full scale");
+
 // Legacy LCD1602 keypad shield: RS=8, E=9, D4..D7=4..7, buttons=A0.
 // LCD1602 J3: A1=OutST OUTPUT, A2=Enable, A3=ClockIn, A4=InST INPUT.
-// TFT J3 retains InST=D12, ClockIn=D3, Enable=D5, OutST=A5 on AVR.
+// TFT J3: InST=D12, ClockIn=D3, Enable=D2, OutST=A5; reset moves to D5.
 namespace Board {
 // Set false to use USB serial alone, with no LCD/keypad shield attached.
 constexpr bool shieldEnabled = SERVICE_KEYBOARD_SHIELD != 0;
@@ -74,23 +99,52 @@ constexpr uint8_t enablePin = 35, outStPin = 4;
 #endif
 constexpr uint8_t lcdRsPin = 12, lcdEnablePin = 13;
 constexpr uint8_t lcdDataPins[4] = {17, 16, 27, 14};
+#elif defined(SERVICE_KEYBOARD_NUCLEO_C542RC)
+// Digital indices from STM32duino's GENERIC_C542RCTX variant. PIN_Ax aliases
+// do not fit GFX's int8_t pin arguments. Wire by the MCU pin names below,
+// not by Arduino shield header numbers.
+constexpr uint8_t keyPin = 0; // PA0
+constexpr uint8_t lcdRsPin = 9, lcdEnablePin = 37; // PA9, PC6
+constexpr uint8_t lcdDataPins[4] = {32, 20, 26, 8}; // PC1, PB4, PB10, PA8
+#if SERVICE_KEYBOARD_TFT
+constexpr uint8_t inStPin = 6, clockPin = 19; // PA6, PB3 (EXTI3)
+constexpr uint8_t enablePin = 10, outStPin = 31; // PA10 (EXTI10), PC0
+constexpr uint8_t tftDataPins[8] = {9, 37, 40, 7, 32, 5, 26, 8};
+constexpr uint8_t tftControlPins[4] = {0, 1, 4, 16}; // PA0, PA1, PA4, PB0
+constexpr uint8_t tftResetPin = 20; // PB4
 #else
-constexpr uint8_t keyPin = 14; // A0 on Uno and Nano
+constexpr uint8_t inStPin = 36, clockPin = 16; // PC5, PB0 (EXTI0)
+constexpr uint8_t enablePin = 4, outStPin = 1; // PA4 (EXTI4), PA1
+#endif
+#else
+#if defined(SERVICE_KEYBOARD_HOST_TEST)
+constexpr uint8_t A0 = 14, A1 = 15, A2 = 16, A3 = 17, A4 = 18, A5 = 19;
+#endif
+constexpr uint8_t keyPin = A0;
+#if SERVICE_KEYBOARD_TFT
+constexpr uint8_t inStPin = 12, clockPin = 3;
+constexpr uint8_t enablePin = 2, outStPin = A5;
+#else
+constexpr uint8_t inStPin = A4, clockPin = A3;
+constexpr uint8_t enablePin = A2, outStPin = A1;
+#endif
 constexpr uint8_t lcdRsPin = 8, lcdEnablePin = 9;
 constexpr uint8_t lcdDataPins[4] = {4, 5, 6, 7};
 #endif
 #if SERVICE_KEYBOARD_TFT
-#if !defined(ARDUINO_ARCH_ESP32)
+#if !defined(ARDUINO_ARCH_ESP32) && !defined(SERVICE_KEYBOARD_NUCLEO_C542RC)
 constexpr uint8_t tftDataPins[8] = {8, 9, 10, 11, 4, 13, 6, 7};
-constexpr uint8_t tftControlPins[4] = {14, 15, 16, 17}; // RD, WR, RS, CS
-constexpr uint8_t tftResetPin = 2;
+constexpr uint8_t tftControlPins[4] = {A0, A1, A2, A3}; // RD, WR, RS, CS
+constexpr uint8_t tftResetPin = 5;
 #endif
-// OPEN-SMART bus uses D11 and D2: J3 OutST moves to A5, Enable to D5.
+// D2 and D3 provide independent external interrupts on the Uno R4 Minima.
 // Default resistive panel wiring. X- and Y+ must support analogRead.
 #if defined(ARDUINO_ARCH_ESP32)
 constexpr uint8_t touchXp = 27, touchYp = 4, touchXm = 32, touchYm = 14;
+#elif defined(SERVICE_KEYBOARD_NUCLEO_C542RC)
+constexpr uint8_t touchXp = 26, touchYp = 1, touchXm = 4, touchYm = 8; // PB10, PA1, PA4, PA8
 #else
-constexpr uint8_t touchXp = 6, touchYp = 15, touchXm = 16, touchYm = 7;
+constexpr uint8_t touchXp = 6, touchYp = A1, touchXm = A2, touchYm = 7;
 #endif
 constexpr bool touchEnabled = true;
 constexpr bool touchSwapAxes = true; // landscape: raw Y controls screen X

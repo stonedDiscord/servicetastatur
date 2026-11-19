@@ -5,13 +5,12 @@
 #else
 #include "ShieldKeys.h"
 #include <LiquidCrystal.h>
+#include <stdio.h>
 #endif
 #include "VirtualLcd.h"
 #include "SerialConsole.h"
 #if defined(ARDUINO_ARCH_ESP32)
 #include <soc/gpio_struct.h>
-#else
-#include <avr/interrupt.h>
 #endif
 
 using namespace ServiceKeyboard;
@@ -32,6 +31,9 @@ volatile uint8_t queueTail;
 VirtualLcd display;
 #if !SERVICE_KEYBOARD_TFT
 VirtualKeys keys;
+bool keypadDebug;
+uint16_t keypadAdc;
+uint32_t keypadDebugAt;
 LiquidCrystal &physicalLcd()
 {
     // Construct after Arduino initializes GPIO/timers, and only with a shield.
@@ -52,6 +54,9 @@ const char consoleHelp[] PROGMEM =
     "Tap: key (180ms). Hold: + then key. Release: 0, space or -.\r\n"
     "Arrows and terminal F1-F4 also work; CR/LF are ignored.\r\n"
     "? help   T toggle ANSI screen   R redraw\r\n"
+#if !SERVICE_KEYBOARD_TFT
+    "K toggle keypad ADC diagnostics (0..1023)\r\n"
+#endif
     "Mode 1=PROFITECH  2=old keyboard  3=no machine\r\n";
 const char *helpPosition = consoleHelp;
 bool helpPaused;
@@ -71,23 +76,28 @@ int8_t shownCursor = -2;
 uint8_t shownControl = 0xff;
 
 #endif
-#if SERVICE_KEYBOARD_TFT && !defined(ARDUINO_ARCH_ESP32)
-volatile bool enableHigh;
-#elif !defined(ARDUINO_ARCH_ESP32)
-volatile uint8_t linkPinState;
-#endif
 
 inline void SERVICE_KEYBOARD_ISR_ATTR outputBit() {
 #if defined(ARDUINO_ARCH_ESP32)
     // Atomic write-one registers avoid a read/modify/write of other GPIOs.
     if (machineLink.output.high()) GPIO.out_w1ts = uint32_t(1) << Board::outStPin;
     else GPIO.out_w1tc = uint32_t(1) << Board::outStPin;
-#elif SERVICE_KEYBOARD_TFT
-    if (machineLink.output.high()) PORTC |= _BV(PC5); // A5 / OutST
-    else PORTC &= ~_BV(PC5);
+#elif defined(SERVICE_KEYBOARD_NUCLEO_C542RC)
+#if SERVICE_KEYBOARD_TFT
+    GPIOC->BSRR = machineLink.output.high() ? (1UL << 0) : (1UL << 16); // PC0
 #else
-    if (machineLink.output.high()) PORTC |= _BV(PC1); // A1 / OutST
-    else PORTC &= ~_BV(PC1);
+    GPIOA->BSRR = machineLink.output.high() ? (1UL << 1) : (1UL << 17); // PA1
+#endif
+#elif defined(ARDUINO_UNOR4_MINIMA)
+#if SERVICE_KEYBOARD_TFT
+    if (machineLink.output.high()) R_PORT1->POSR = 1U << 0; // A5 / P100
+    else R_PORT1->PORR = 1U << 0;
+#else
+    if (machineLink.output.high()) R_PORT0->POSR = 1U << 0; // A1 / P000
+    else R_PORT0->PORR = 1U << 0;
+#endif
+#else
+    digitalWrite(Board::outStPin, machineLink.output.high() ? HIGH : LOW);
 #endif
 }
 
@@ -135,8 +145,9 @@ void pollKeys(uint32_t now)
     const ShieldButton sample = decodeMeasuredEsp32Button(adc, millivolts);
 #else
     const uint16_t adc = analogRead(Board::keyPin);
-    const ShieldButton sample = decodeShieldExampleButton(adc);
+    const ShieldButton sample = decodeShieldExampleButton(adc, SERVICE_KEYBOARD_SELECT_ADC_MAX);
 #endif
+    keypadAdc = adc;
     if (sample != candidateButton) {
         candidateButton = sample;
         candidateSince = now;
@@ -218,6 +229,13 @@ void serviceConsole(uint32_t now)
 {
     for (uint8_t n = 0; n < 16 && Serial.available(); ++n) {
         const uint8_t c = Serial.read();
+#if !SERVICE_KEYBOARD_TFT
+        if (c == 'k' || c == 'K') {
+            keypadDebug = !keypadDebug;
+            if (!keypadDebug) consoleDisplay.redraw();
+            continue;
+        }
+#endif
         if (helpPaused && c != '\r' && c != '\n') {
             helpPaused = false;
             consoleDisplay.redraw();
@@ -234,8 +252,26 @@ void serviceConsole(uint32_t now)
         }
     }
     consoleKeys.tick(now);
-    if (!helpPosition && !helpPaused)
+    if (!helpPosition && !helpPaused
+#if !SERVICE_KEYBOARD_TFT
+        && !keypadDebug
+#endif
+    )
         consoleDisplay.update(display, machine_mode, hardware_key(), now);
+#if !SERVICE_KEYBOARD_TFT
+    if (keypadDebug && !consoleDisplay.busy() && !helpPosition &&
+        uint32_t(now - keypadDebugAt) >= 250) {
+        char line[64];
+        const int length = snprintf(line, sizeof(line),
+            "\r\nADC=%u button=%u key=%u selectMax=%u\r\n",
+            unsigned(keypadAdc), unsigned(stableButton), unsigned(hardware_key()),
+            unsigned(SERVICE_KEYBOARD_SELECT_ADC_MAX));
+        if (length > 0 && length < int(sizeof(line)) && Serial.availableForWrite() >= length) {
+            Serial.write(reinterpret_cast<const uint8_t *>(line), length);
+            keypadDebugAt = now;
+        }
+    }
+#endif
     // Never call a blocking Serial.print: only fill space already in the UART
     // transmit ring and keep each service call short for key/LCD processing.
     for (uint8_t n = 0; n < 16 && Serial.availableForWrite() > 0; ++n) {
@@ -252,45 +288,45 @@ void serviceConsole(uint32_t now)
 
 // ClockIn rising edge clocks both 4094s and U13, whose Q7 changes after the
 // edge. The machine samples the previously presented bit at that edge.
-#if defined(ARDUINO_ARCH_ESP32)
 static void SERVICE_KEYBOARD_ISR_ATTR clockInterrupt()
 {
+#if !defined(ARDUINO_ARCH_ESP32)
+    const uint32_t interruptState = __get_PRIMASK();
+    __disable_irq();
+#endif
+#if defined(ARDUINO_ARCH_ESP32)
 #if SERVICE_KEYBOARD_TFT
     machineLink.clock(GPIO.in & (uint32_t(1) << Board::inStPin));
 #else
     machineLink.clock(GPIO.in1.val & (uint32_t(1) << (Board::inStPin - 32)));
 #endif
+#elif defined(SERVICE_KEYBOARD_NUCLEO_C542RC)
+#if SERVICE_KEYBOARD_TFT
+    machineLink.clock(GPIOA->IDR & (1UL << 6)); // PA6
+#else
+    machineLink.clock(GPIOC->IDR & (1UL << 5)); // PC5
+#endif
+#elif defined(ARDUINO_UNOR4_MINIMA)
+#if SERVICE_KEYBOARD_TFT
+    machineLink.clock(R_PORT1->PIDR & (1U << 10)); // D12 / P110
+#else
+    machineLink.clock(R_PORT1->PIDR & (1U << 1)); // A4 / P101
+#endif
+#else
+    machineLink.clock(digitalRead(Board::inStPin) == HIGH);
+#endif
     outputBit();
+#if !defined(ARDUINO_ARCH_ESP32)
+    __set_PRIMASK(interruptState);
+#endif
 }
 
 static void SERVICE_KEYBOARD_ISR_ATTR enableInterrupt()
 {
-#elif SERVICE_KEYBOARD_TFT
-ISR(INT1_vect)
-{
-    machineLink.clock(PINB & _BV(PB4)); // D12 / InST; U13 DS is grounded
-    outputBit();
-}
-
-ISR(PCINT2_vect)
-{
-    const bool high = PIND & _BV(PD5);
-    const bool rising = high && !enableHigh;
-    enableHigh = high;
-    if (!rising) return;
-#else
-ISR(PCINT1_vect)
-{
-    // Both inputs share PORTC's pin-change vector. Sample once and process
-    // ClockIn before Enable if both rising edges are observed together.
-    const uint8_t pins = PINC;
-    const uint8_t rising = pins & ~linkPinState;
-    linkPinState = pins;
-    if (rising & _BV(PC3)) {
-        machineLink.clock(pins & _BV(PC4)); // A4 / InST
-        outputBit();
-    }
-    if (!(rising & _BV(PC2))) return; // A2 / Enable, rising only
+#if !defined(ARDUINO_ARCH_ESP32)
+    // The machine handlers share state and must not nest on ARM.
+    const uint32_t interruptState = __get_PRIMASK();
+    __disable_irq();
 #endif
     uint16_t frame;
     if (!machineLink.input.latch(frame)) ++linkShortFrames;
@@ -301,6 +337,9 @@ ISR(PCINT1_vect)
     if (firmware_receive(frameGsg4(frame), frameGsg5(frame), reply))
         machineLink.output.load(reply);
     outputBit();
+#if !defined(ARDUINO_ARCH_ESP32)
+    __set_PRIMASK(interruptState);
+#endif
 }
 
 void SERVICE_KEYBOARD_ISR_ATTR hardware_lcd_enqueue_isr(bool data, uint8_t value)
@@ -323,26 +362,21 @@ void SERVICE_KEYBOARD_ISR_ATTR hardware_lcd_enqueue_isr(bool data, uint8_t value
 void hardware_begin()
 {
     Serial.begin(115200);
-#if defined(ARDUINO_ARCH_ESP32)
     analogReadResolution(10); // retain the LCD1602 ladder's 0..1023 thresholds
+#if defined(ARDUINO_ARCH_ESP32)
     analogSetAttenuation(ADC_11db);
     // GPIO34..39 do not provide internal pull-ups.
-    const uint8_t inputMode = SERVICE_KEYBOARD_TFT ? INPUT_PULLUP : INPUT;
+    const auto inputMode = SERVICE_KEYBOARD_TFT ? INPUT_PULLUP : INPUT;
+#else
+    const auto inputMode = INPUT_PULLUP;
+#endif
     pinMode(Board::inStPin, inputMode);
     pinMode(Board::clockPin, inputMode);
     pinMode(Board::enablePin, inputMode);
     digitalWrite(Board::outStPin, LOW);
     pinMode(Board::outStPin, OUTPUT);
-#endif
 #if SERVICE_KEYBOARD_TFT
     if (Board::shieldEnabled) Tft::begin();
-#if !defined(ARDUINO_ARCH_ESP32)
-    DDRC |= _BV(PC5); // A5 OutST
-    PORTC &= ~_BV(PC5);
-    DDRB &= ~_BV(PB4); PORTB |= _BV(PB4); // D12 InST
-    DDRD &= ~(_BV(PD3) | _BV(PD5));
-    PORTD |= _BV(PD3) | _BV(PD5); // ClockIn, Enable
-#endif
 #else
     // The six-pin constructor leaves the shield's D10 backlight untouched.
     if (Board::shieldEnabled) {
@@ -354,10 +388,6 @@ void hardware_begin()
         }
 #endif
     }
-#if !defined(ARDUINO_ARCH_ESP32)
-    PORTC = (PORTC & ~_BV(PC1)) | _BV(PC2) | _BV(PC3) | _BV(PC4);
-    DDRC = (DDRC & ~(_BV(PC2) | _BV(PC3) | _BV(PC4))) | _BV(PC1);
-#endif
     memset(shown, 0xff, sizeof(shown));
 #endif
     // Interrupts are enabled by firmware_begin after all protocol state is reset.
@@ -365,35 +395,14 @@ void hardware_begin()
 
 void hardware_link_begin()
 {
-#if defined(ARDUINO_ARCH_ESP32)
     detachInterrupt(digitalPinToInterrupt(Board::clockPin));
     detachInterrupt(digitalPinToInterrupt(Board::enablePin));
     machineLink = MachineShiftRegisters();
     outputBit();
-    // Both handlers are installed on the Arduino loop core and dispatched by
-    // the same GPIO interrupt service, so they cannot run concurrently.
+    // ESP32 dispatches both handlers on the Arduino loop core. ARM handlers
+    // use interrupt masking to serialize access to the shift registers.
     attachInterrupt(digitalPinToInterrupt(Board::clockPin), clockInterrupt, RISING);
     attachInterrupt(digitalPinToInterrupt(Board::enablePin), enableInterrupt, RISING);
-#else
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        machineLink = MachineShiftRegisters();
-        outputBit();
-#if SERVICE_KEYBOARD_TFT
-        enableHigh = PIND & _BV(PD5);
-        EICRA = (EICRA & ~(_BV(ISC10) | _BV(ISC11))) | _BV(ISC10) | _BV(ISC11);
-        EIFR = _BV(INTF1);
-        PCMSK2 |= _BV(PCINT21); // D5 ENST: pin-change interrupt, rising only
-        PCIFR = _BV(PCIF2);
-        PCICR |= _BV(PCIE2);
-        EIMSK |= _BV(INT1);
-#else
-        PCMSK1 |= _BV(PCINT10) | _BV(PCINT11); // A2 Enable, A3 ClockIn
-        linkPinState = PINC;
-        PCIFR = _BV(PCIF1);
-        PCICR |= _BV(PCIE1);
-#endif
-    }
-#endif
 }
 
 void hardware_service()

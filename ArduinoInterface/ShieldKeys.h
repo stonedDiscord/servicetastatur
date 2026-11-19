@@ -17,14 +17,14 @@ inline ShieldButton decodeButton(uint16_t adc)
     return NoButton;
 }
 
-inline ShieldButton decodeShieldExampleButton(uint16_t adc)
+inline ShieldButton decodeShieldExampleButton(uint16_t adc, uint16_t selectMax = 900)
 {
     // The example's second independent if overrides Right for 80..99.
     if (adc < 80) return RightButton;
     if (adc < 200) return UpButton;
     if (adc < 400) return DownButton;
     if (adc < 600) return LeftButton;
-    if (adc < 900) return SelectButton;
+    if (adc < selectMax) return SelectButton;
     return NoButton;
 }
 

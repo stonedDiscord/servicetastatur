@@ -25,8 +25,7 @@ const char labels[13][8] PROGMEM = {
     "F1+F4", "F2+UP", "VIEW <", "VIEW >"
 };
 
-// SWPAR8 handles the data pins. On AVR, digitalWrite protects the shared
-// control port from the J3 ISR updating OutST on A5 between read and write.
+// SWPAR8 handles the data pins; Arduino GPIO APIs handle the control pins.
 class ShieldBus : public Arduino_SWPAR8 {
 public:
     using Arduino_SWPAR8::Arduino_SWPAR8;
@@ -62,7 +61,7 @@ ShieldBus bus(Board::tftControlPins[2], Board::tftControlPins[3],
                    Board::tftDataPins[6], Board::tftDataPins[7]);
 Arduino_ILI9225 lcd(&bus, Board::tftResetPin, 1);
 uint16_t pixels[6 * 8];
-// One glyph buffer, rather than a framebuffer: fits in the Uno's 2KB SRAM.
+// Render one glyph at a time without allocating a full framebuffer.
 void drawGlyph(uint8_t x, uint8_t y, uint8_t width) {
     lcd.draw16bitRGBBitmap(x, y, pixels, width, cellHeight);
 }
@@ -114,16 +113,6 @@ void status(uint8_t mode, uint8_t key) {
 }
 uint8_t sample() {
     // Four-wire resistive panel. ADC pins must be on X- and Y+.
-    // Save/restore only touch bits, keeping the interrupt-driven OutST intact.
-#if !defined(ARDUINO_ARCH_ESP32)
-    const uint8_t pins[] = {Board::touchXp, Board::touchYp, Board::touchXm, Board::touchYm};
-    uint8_t dirs[4], levels[4];
-    for (uint8_t i = 0; i < 4; ++i) {
-        const uint8_t mask = digitalPinToBitMask(pins[i]);
-        dirs[i] = *portModeRegister(digitalPinToPort(pins[i])) & mask;
-        levels[i] = *portOutputRegister(digitalPinToPort(pins[i])) & mask;
-    }
-#endif
     pinMode(Board::touchXp, OUTPUT); digitalWrite(Board::touchXp, LOW);
     pinMode(Board::touchYm, OUTPUT); digitalWrite(Board::touchYm, HIGH);
     pinMode(Board::touchXm, INPUT); digitalWrite(Board::touchXm, LOW);
@@ -144,22 +133,12 @@ uint8_t sample() {
     delayMicroseconds(10);
     analogRead(Board::touchXm);
     const int16_t y1 = analogRead(Board::touchXm), y2 = analogRead(Board::touchXm);
-#if defined(ARDUINO_ARCH_ESP32)
     // These four shared LCD pins are always outputs between samples.
     // Restore their idle levels while CS remains high.
     digitalWrite(Board::touchXp, LOW); pinMode(Board::touchXp, OUTPUT);
     digitalWrite(Board::touchYm, LOW); pinMode(Board::touchYm, OUTPUT);
     digitalWrite(Board::touchYp, HIGH); pinMode(Board::touchYp, OUTPUT);
     digitalWrite(Board::touchXm, HIGH); pinMode(Board::touchXm, OUTPUT);
-#else
-    for (uint8_t i = 0; i < 4; ++i) {
-        const uint8_t port = digitalPinToPort(pins[i]), mask = digitalPinToBitMask(pins[i]);
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            *portOutputRegister(port) = (*portOutputRegister(port) & ~mask) | levels[i];
-            *portModeRegister(port) = (*portModeRegister(port) & ~mask) | dirs[i];
-        }
-    }
-#endif
     if (Board::touchDebug && uint32_t(millis() - debugAt) >= 250 && Serial.availableForWrite() >= 48) {
         debugAt = millis();
         Serial.print(F("\r\nTouch x=")); Serial.print((x1 + x2) / 2);

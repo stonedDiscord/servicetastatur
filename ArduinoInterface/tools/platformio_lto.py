@@ -5,7 +5,6 @@ import shutil
 Import('env')
 
 toolchains = {
-    'atmelavr': ('toolchain-atmelavr', 'avr'),
     'espressif32': ('toolchain-xtensa-esp32', 'xtensa-esp32-elf'),
 }
 if env.PioPlatform().name in toolchains:
