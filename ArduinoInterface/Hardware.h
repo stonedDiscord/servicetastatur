@@ -38,14 +38,22 @@
 #endif
 #endif
 
-#if !defined(ARDUINO_UNOR4_MINIMA) && !defined(SERVICE_KEYBOARD_NUCLEO_C542RC) && !defined(ARDUINO_ARCH_ESP32) && !defined(SERVICE_KEYBOARD_HOST_TEST)
-#error "Select an Arduino Uno R4 Minima, ST Nucleo C542RC or ESP32 WEMOS D1 R32."
+#if defined(__AVR_ATmega328P__)
+#define SERVICE_KEYBOARD_AVR_SPI 1
+#endif
+
+#if !defined(SERVICE_KEYBOARD_AVR_SPI) && !defined(ARDUINO_UNOR4_MINIMA) && !defined(SERVICE_KEYBOARD_NUCLEO_C542RC) && !defined(ARDUINO_ARCH_ESP32) && !defined(SERVICE_KEYBOARD_HOST_TEST)
+#error "Select an Arduino Uno/Nano ATmega328P, Uno R4 Minima, ST Nucleo C542RC or ESP32 WEMOS D1 R32."
 #endif
 
 #ifndef SERVICE_KEYBOARD_TFT
 // Display type when a shield is enabled: LCD1602 keypad shield by default.
 // Set to 1 here (or via a build flag) to use the RM68130 TFT/touch shield.
 #define SERVICE_KEYBOARD_TFT 0
+#endif
+
+#if defined(SERVICE_KEYBOARD_AVR_SPI) && SERVICE_KEYBOARD_TFT
+#error "AVR hardware SPI requires the LCD1602 or serial-console configuration."
 #endif
 
 #ifndef SERVICE_KEYBOARD_SHIELD
@@ -121,7 +129,11 @@ constexpr uint8_t enablePin = 4, outStPin = 1; // PA4 (EXTI4), PA1
 constexpr uint8_t A0 = 14, A1 = 15, A2 = 16, A3 = 17, A4 = 18, A5 = 19;
 #endif
 constexpr uint8_t keyPin = A0;
-#if SERVICE_KEYBOARD_TFT
+#if defined(SERVICE_KEYBOARD_AVR_SPI)
+// Hardware SPI: MOSI input, SCK input, MISO output. SS (D10) stays low.
+constexpr uint8_t inStPin = 11, clockPin = 13;
+constexpr uint8_t enablePin = 2, outStPin = 12;
+#elif SERVICE_KEYBOARD_TFT
 constexpr uint8_t inStPin = 12, clockPin = 3;
 constexpr uint8_t enablePin = 2, outStPin = A5;
 #else

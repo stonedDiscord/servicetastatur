@@ -1,5 +1,8 @@
 #include "Hardware.h"
 #include "LinkProtocol.h"
+#if defined(SERVICE_KEYBOARD_AVR_SPI)
+#include <avr/interrupt.h>
+#endif
 #if SERVICE_KEYBOARD_TFT
 #include "OpenSmartTft.h"
 #else
@@ -286,6 +289,39 @@ void serviceConsole(uint32_t now)
 }
 } // namespace
 
+#if defined(SERVICE_KEYBOARD_AVR_SPI)
+namespace {
+volatile uint16_t spiFrame;
+volatile uint8_t spiBytes;
+
+inline void spiReceiveByte()
+{
+    const uint8_t value = SPDR; // SPSR must have been read first to clear SPIF.
+    SPDR = 0; // U13 shifts zeros after the reply byte.
+    spiFrame = uint16_t((spiFrame << 8) | value);
+    if (spiBytes != 255) ++spiBytes;
+}
+}
+
+ISR(SPI_STC_vect)
+{
+    (void)SPSR; // SPIF is cleared automatically on vector entry.
+    spiReceiveByte();
+}
+
+static void enableInterrupt()
+{
+    // INT0 has priority over SPI_STC: drain a just-completed byte first.
+    if (SPSR & _BV(SPIF)) spiReceiveByte();
+    const uint16_t frame = spiFrame;
+    if (spiBytes < 2) ++linkShortFrames;
+    spiBytes = 0;
+    ++linkFrameCount;
+    uint8_t reply;
+    if (firmware_receive(frameGsg4(frame), frameGsg5(frame), reply))
+        SPDR = reply;
+}
+#else
 // ClockIn rising edge clocks both 4094s and U13, whose Q7 changes after the
 // edge. The machine samples the previously presented bit at that edge.
 static void SERVICE_KEYBOARD_ISR_ATTR clockInterrupt()
@@ -342,6 +378,8 @@ static void SERVICE_KEYBOARD_ISR_ATTR enableInterrupt()
 #endif
 }
 
+#endif // SERVICE_KEYBOARD_AVR_SPI
+
 void SERVICE_KEYBOARD_ISR_ATTR hardware_lcd_enqueue_isr(bool data, uint8_t value)
 {
 #if defined(ARDUINO_ARCH_ESP32)
@@ -362,7 +400,9 @@ void SERVICE_KEYBOARD_ISR_ATTR hardware_lcd_enqueue_isr(bool data, uint8_t value
 void hardware_begin()
 {
     Serial.begin(115200);
+#if !defined(SERVICE_KEYBOARD_AVR_SPI)
     analogReadResolution(10); // retain the LCD1602 ladder's 0..1023 thresholds
+#endif
 #if defined(ARDUINO_ARCH_ESP32)
     analogSetAttenuation(ADC_11db);
     // GPIO34..39 do not provide internal pull-ups.
@@ -395,6 +435,24 @@ void hardware_begin()
 
 void hardware_link_begin()
 {
+#if defined(SERVICE_KEYBOARD_AVR_SPI)
+    const uint8_t savedSreg = SREG;
+    cli();
+    SPCR = 0;
+    spiFrame = 0;
+    spiBytes = 0;
+    // SS is not EnST: externally hold D10 low across bytes and strobes.
+    // Disconnect any shield backlight circuit from D10 before grounding it.
+    pinMode(10, INPUT);
+    digitalWrite(10, LOW);
+    (void)SPSR;
+    (void)SPDR;
+    SPDR = 0;
+    // Mode 0, MSB first: sample rising edges, change MISO on falling edges.
+    SPCR = _BV(SPE) | _BV(SPIE);
+    attachInterrupt(digitalPinToInterrupt(Board::enablePin), enableInterrupt, RISING);
+    SREG = savedSreg;
+#else
     detachInterrupt(digitalPinToInterrupt(Board::clockPin));
     detachInterrupt(digitalPinToInterrupt(Board::enablePin));
     machineLink = MachineShiftRegisters();
@@ -403,6 +461,7 @@ void hardware_link_begin()
     // use interrupt masking to serialize access to the shift registers.
     attachInterrupt(digitalPinToInterrupt(Board::clockPin), clockInterrupt, RISING);
     attachInterrupt(digitalPinToInterrupt(Board::enablePin), enableInterrupt, RISING);
+#endif
 }
 
 void hardware_service()
